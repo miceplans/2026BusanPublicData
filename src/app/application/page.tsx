@@ -2,6 +2,7 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { ContestHeader, fieldClass } from '@/components/contest-header';
 import { INDUSTRIES, PARTICIPATION_TYPES } from '@/types';
+import { useToast } from '@/components/toast';
 type App = {
   receipt_number: string;
   team_name: string;
@@ -31,6 +32,7 @@ type App = {
   }[];
 };
 export default function Page() {
+  const { showToast } = useToast();
   const [app, setApp] = useState<App | null>(null);
   const [editable, setEditable] = useState(false);
   const [message, setMessage] = useState('');
@@ -50,14 +52,21 @@ export default function Page() {
           location.href = '/application/login';
           return null;
         }
-        return r.json();
+        const v = await r.json();
+        if (!r.ok) {
+          showToast(v.error ?? '신청 정보를 불러오지 못했습니다.');
+          return null;
+        }
+        return v;
       })
       .then((v) => {
         if (v) {
           setApp(v.application);
           setEditable(v.editable);
         }
-      });
+      })
+      .catch(() => showToast('네트워크 오류로 신청 정보를 불러오지 못했습니다.'));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -84,32 +93,59 @@ export default function Page() {
           isLeader: m.is_leader,
         })),
     };
-    const r = await fetch('/api/application/me', {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
-    const v = await r.json();
-    setMessage(r.ok ? '수정 내용을 저장했습니다.' : v.error);
+    try {
+      const r = await fetch('/api/application/me', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const v = await r.json();
+      if (!r.ok) {
+        showToast(v.error ?? '저장하지 못했습니다.');
+        return;
+      }
+      setMessage('수정 내용을 저장했습니다.');
+    } catch {
+      showToast('네트워크 오류로 저장하지 못했습니다. 다시 시도해주세요.');
+    }
   }
   async function deleteFile(id: string) {
     if (!confirm('이 증빙자료를 삭제하시겠습니까?')) return;
-    const r = await fetch(`/api/application/files/${id}`, { method: 'DELETE' });
-    const v = await r.json();
-    setMessage(r.ok ? '증빙자료를 삭제했습니다.' : v.error);
-    if (r.ok) reload();
+    try {
+      const r = await fetch(`/api/application/files/${id}`, {
+        method: 'DELETE',
+      });
+      const v = await r.json();
+      if (!r.ok) {
+        showToast(v.error ?? '삭제하지 못했습니다.');
+        return;
+      }
+      setMessage('증빙자료를 삭제했습니다.');
+      reload();
+    } catch {
+      showToast('네트워크 오류로 삭제하지 못했습니다. 다시 시도해주세요.');
+    }
   }
   async function addFiles() {
     const files = fileInputRef.current?.files;
     if (!files?.length) return;
     const body = new FormData();
     for (const file of Array.from(files)) body.append('files', file);
-    const r = await fetch('/api/application/files', { method: 'POST', body });
-    const v = await r.json();
-    setMessage(r.ok ? '증빙자료를 추가했습니다.' : v.error);
-    if (r.ok) {
+    try {
+      const r = await fetch('/api/application/files', {
+        method: 'POST',
+        body,
+      });
+      const v = await r.json();
+      if (!r.ok) {
+        showToast(v.error ?? '추가하지 못했습니다.');
+        return;
+      }
+      setMessage('증빙자료를 추가했습니다.');
       if (fileInputRef.current) fileInputRef.current.value = '';
       reload();
+    } catch {
+      showToast('네트워크 오류로 추가하지 못했습니다. 다시 시도해주세요.');
     }
   }
   if (!app)

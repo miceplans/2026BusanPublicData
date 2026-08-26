@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { ContestHeader } from '@/components/contest-header';
 import { APPLICATION_STATUSES } from '@/types';
+import { useToast } from '@/components/toast';
 type Row = {
   id: string;
   receipt_number: string;
@@ -17,6 +18,7 @@ type Row = {
   application_files: { count: number }[];
 };
 export default function Page() {
+  const { showToast } = useToast();
   const [items, setItems] = useState<Row[]>([]);
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState('');
@@ -32,25 +34,40 @@ export default function Page() {
           location.href = '/admin/login';
           return null;
         }
-        return r.json();
+        const v = await r.json();
+        if (!r.ok) {
+          showToast(v.error ?? '목록을 불러오지 못했습니다.');
+          return null;
+        }
+        return v;
       })
       .then((v) => {
         if (v) {
           setItems(v.items);
           setTotal(v.total);
         }
-      });
+      })
+      .catch(() => showToast('네트워크 오류로 목록을 불러오지 못했습니다.'));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, status]);
   useEffect(load, [load]);
   async function patch(id: string, body: unknown) {
-    const r = await fetch(`/api/admin/applications/${id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
-    const v = await r.json();
-    setMessage(r.ok ? '변경했습니다.' : v.error);
-    if (r.ok) load();
+    try {
+      const r = await fetch(`/api/admin/applications/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const v = await r.json();
+      if (!r.ok) {
+        showToast(v.error ?? '변경하지 못했습니다.');
+        return;
+      }
+      setMessage('변경했습니다.');
+      load();
+    } catch {
+      showToast('네트워크 오류로 변경하지 못했습니다. 다시 시도해주세요.');
+    }
   }
   async function upload(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -59,19 +76,27 @@ export default function Page() {
     if (!(file instanceof File)) return;
     setExcelFile(file);
     f.set('mode', 'preview');
-    const r = await fetch('/api/admin/excel/import', {
-      method: 'POST',
-      body: f,
-    });
-    const v = await r.json();
-    setMessage(
-      r.ok
-        ? `미리보기: ${v.preview.map((x: { row: number; type: string }) => `${x.row}행 ${x.type}`).join(', ')}`
-        : v.error,
-    );
-    setPreviewReady(
-      r.ok && !v.preview.some((x: { type: string }) => x.type === '오류'),
-    );
+    try {
+      const r = await fetch('/api/admin/excel/import', {
+        method: 'POST',
+        body: f,
+      });
+      const v = await r.json();
+      if (!r.ok) {
+        showToast(v.error ?? '엑셀 검증에 실패했습니다.');
+        setPreviewReady(false);
+        return;
+      }
+      setMessage(
+        `미리보기: ${v.preview.map((x: { row: number; type: string }) => `${x.row}행 ${x.type}`).join(', ')}`,
+      );
+      setPreviewReady(
+        !v.preview.some((x: { type: string }) => x.type === '오류'),
+      );
+    } catch {
+      showToast('네트워크 오류로 엑셀 검증에 실패했습니다. 다시 시도해주세요.');
+      setPreviewReady(false);
+    }
   }
   async function applyExcel() {
     if (
@@ -82,12 +107,21 @@ export default function Page() {
     const body = new FormData();
     body.set('file', excelFile);
     body.set('mode', 'apply');
-    const r = await fetch('/api/admin/excel/import', { method: 'POST', body });
-    const v = await r.json();
-    setMessage(r.ok ? `${v.result.updated}건을 반영했습니다.` : v.error);
-    if (r.ok) {
+    try {
+      const r = await fetch('/api/admin/excel/import', {
+        method: 'POST',
+        body,
+      });
+      const v = await r.json();
+      if (!r.ok) {
+        showToast(v.error ?? '엑셀 반영에 실패했습니다.');
+        return;
+      }
+      setMessage(`${v.result.updated}건을 반영했습니다.`);
       setPreviewReady(false);
       load();
+    } catch {
+      showToast('네트워크 오류로 엑셀 반영에 실패했습니다. 다시 시도해주세요.');
     }
   }
   return (

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { ContestHeader } from '@/components/contest-header';
+import { useToast } from '@/components/toast';
 type Detail = Record<string, unknown> & {
   receipt_number: string;
   team_name: string;
@@ -38,6 +39,7 @@ type Detail = Record<string, unknown> & {
   }[];
 };
 export default function Page() {
+  const { showToast } = useToast();
   const { id } = useParams<{ id: string }>();
   const [app, setApp] = useState<Detail | null>(null);
   const [resending, setResending] = useState(false);
@@ -48,24 +50,35 @@ export default function Page() {
           location.assign('/admin/login');
           return null;
         }
-        return r.json();
+        const v = await r.json();
+        if (!r.ok) {
+          showToast(v.error ?? '신청 정보를 불러오지 못했습니다.');
+          return null;
+        }
+        return v;
       })
-      .then((v) => v && setApp(v.application));
+      .then((v) => v && setApp(v.application))
+      .catch(() => showToast('네트워크 오류로 신청 정보를 불러오지 못했습니다.'));
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
   const resend = async () => {
     setResending(true);
-    const r = await fetch(`/api/admin/applications/${id}/resend-email`, {
-      method: 'POST',
-    });
-    setResending(false);
-    if (!r.ok) {
-      alert('재발송 요청에 실패했습니다.');
-      return;
+    try {
+      const r = await fetch(`/api/admin/applications/${id}/resend-email`, {
+        method: 'POST',
+      });
+      if (!r.ok) {
+        showToast('재발송 요청에 실패했습니다.');
+        return;
+      }
+      await load();
+    } catch {
+      showToast('네트워크 오류로 재발송 요청에 실패했습니다.');
+    } finally {
+      setResending(false);
     }
-    await load();
   };
   if (!app) return <p className="p-8">불러오는 중…</p>;
   return (

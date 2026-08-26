@@ -2,8 +2,10 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { ContestHeader, fieldClass } from '@/components/contest-header';
 import { INDUSTRIES, PARTICIPATION_TYPES, type SiteSettings } from '@/types';
+import { useToast } from '@/components/toast';
 type Member = { name: string; role: string; isLeader: boolean };
 export default function ApplyPage() {
+  const { showToast } = useToast();
   const [idempotencyKey] = useState(() => crypto.randomUUID());
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [leaderName, setLeaderName] = useState('');
@@ -11,13 +13,13 @@ export default function ApplyPage() {
     { name: '', role: '대표자', isLeader: true },
     { name: '', role: '', isLeader: false },
   ]);
-  const [message, setMessage] = useState('');
   const [busy, setBusy] = useState(false);
   useEffect(() => {
     fetch('/api/settings')
       .then((r) => r.json())
       .then((v) => setSettings(v.settings))
-      .catch(() => setMessage('운영 설정을 불러올 수 없습니다.'));
+      .catch(() => showToast('운영 설정을 불러올 수 없습니다.'));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const uploadEnabled = !!(
     settings?.evidence_label &&
@@ -32,7 +34,6 @@ export default function ApplyPage() {
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy(true);
-    setMessage('');
     const form = event.currentTarget;
     const fd = new FormData(form);
     const leaderName = String(fd.get('leaderName'));
@@ -61,12 +62,12 @@ export default function ApplyPage() {
       requests: '',
     };
     if (!data.participationType) {
-      setMessage('참가 유형을 선택해주세요.');
+      showToast('참가 유형을 선택해주세요.');
       setBusy(false);
       return;
     }
     if (!data.industry) {
-      setMessage('참가 분야를 선택해주세요.');
+      showToast('참가 분야를 선택해주세요.');
       setBusy(false);
       return;
     }
@@ -74,14 +75,22 @@ export default function ApplyPage() {
     body.set('data', JSON.stringify(data));
     for (const file of fd.getAll('files'))
       if (file instanceof File && file.size) body.append('files', file);
-    const response = await fetch('/api/applications', { method: 'POST', body });
-    const result = await response.json();
-    setBusy(false);
-    if (!response.ok) {
-      setMessage(result.error ?? '제출하지 못했습니다.');
-      return;
+    try {
+      const response = await fetch('/api/applications', {
+        method: 'POST',
+        body,
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        showToast(result.error ?? '제출하지 못했습니다.');
+        return;
+      }
+      location.href = `/apply/complete?receipt=${encodeURIComponent(result.receiptNumber)}`;
+    } catch {
+      showToast('네트워크 오류로 제출하지 못했습니다. 다시 시도해주세요.');
+    } finally {
+      setBusy(false);
     }
-    location.href = `/apply/complete?receipt=${encodeURIComponent(result.receiptNumber)}`;
   }
   return (
     <div className="min-h-screen bg-white">
@@ -228,14 +237,6 @@ export default function ApplyPage() {
             </li>
           </ol>
         </Section>
-        {message && (
-          <p
-            role="alert"
-            className="motion-feedback text-sm font-bold text-red-700"
-          >
-            {message}
-          </p>
-        )}
         <button
           disabled={busy}
           aria-busy={busy}

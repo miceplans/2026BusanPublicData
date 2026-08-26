@@ -1,25 +1,34 @@
 'use client';
 import { FormEvent, useState } from 'react';
 import { ContestHeader, fieldClass } from '@/components/contest-header';
+import { useToast } from '@/components/toast';
 export default function Page() {
-  const [message, setMessage] = useState('');
+  const { showToast } = useToast();
   const [busy, setBusy] = useState(false);
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setBusy(true);
     const f = new FormData(e.currentTarget);
-    const r = await fetch('/api/application/session', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        teamName: f.get('teamName'),
-        password: f.get('password'),
-      }),
-    });
-    const v = await r.json();
-    setBusy(false);
-    if (!r.ok) return setMessage(v.error);
-    location.href = '/application';
+    try {
+      const r = await fetch('/api/application/session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          teamName: f.get('teamName'),
+          password: f.get('password'),
+        }),
+      });
+      const v = await r.json();
+      if (!r.ok) {
+        showToast(v.error ?? '확인하지 못했습니다.');
+        return;
+      }
+      location.href = '/application';
+    } catch {
+      showToast('네트워크 오류가 발생했습니다. 다시 시도해주세요.');
+    } finally {
+      setBusy(false);
+    }
   }
   return (
     <div>
@@ -32,11 +41,6 @@ export default function Page() {
         >
           <Field name="teamName" label="팀명" />
           <Field name="password" label="신청 비밀번호" type="password" />
-          {message && (
-            <p role="alert" className="motion-feedback text-sm text-red-700">
-              {message}
-            </p>
-          )}
           <button
             disabled={busy}
             aria-busy={busy}

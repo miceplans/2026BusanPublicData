@@ -2,7 +2,9 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { ContestHeader, fieldClass } from '@/components/contest-header';
 import type { SiteSettings } from '@/types';
+import { useToast } from '@/components/toast';
 export default function Page() {
+  const { showToast } = useToast();
   const [s, setS] = useState<SiteSettings | null>(null);
   const [msg, setMsg] = useState('');
   useEffect(() => {
@@ -12,20 +14,35 @@ export default function Page() {
           location.href = '/admin/login';
           return null;
         }
-        return r.json();
+        const v = await r.json();
+        if (!r.ok) {
+          showToast(v.error ?? '운영 설정을 불러오지 못했습니다.');
+          return null;
+        }
+        return v;
       })
-      .then((v) => v && setS(v.settings));
+      .then((v) => v && setS(v.settings))
+      .catch(() => showToast('네트워크 오류로 운영 설정을 불러오지 못했습니다.'));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!s) return;
-    const r = await fetch('/api/admin/settings', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(s),
-    });
-    const v = await r.json();
-    setMsg(r.ok ? '운영 설정을 저장했습니다.' : v.error);
+    try {
+      const r = await fetch('/api/admin/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(s),
+      });
+      const v = await r.json();
+      if (!r.ok) {
+        showToast(v.error ?? '저장하지 못했습니다.');
+        return;
+      }
+      setMsg('운영 설정을 저장했습니다.');
+    } catch {
+      showToast('네트워크 오류로 저장하지 못했습니다. 다시 시도해주세요.');
+    }
   }
   if (!s) return <p className="motion-feedback p-8">불러오는 중…</p>;
   return (

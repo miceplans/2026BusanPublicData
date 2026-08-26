@@ -1,22 +1,30 @@
 'use client';
-import { FormEvent, useState } from 'react';
+import { FormEvent } from 'react';
 import { ContestHeader, fieldClass } from '@/components/contest-header';
+import { useToast } from '@/components/toast';
 export default function Page() {
-  const [message, setMessage] = useState('');
+  const { showToast } = useToast();
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const f = new FormData(e.currentTarget);
-    const r = await fetch('/api/admin/session', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: f.get('email'),
-        password: f.get('password'),
-      }),
-    });
-    const v = await r.json();
-    if (!r.ok) return setMessage(v.error);
-    location.href = '/admin/applications';
+    try {
+      const r = await fetch('/api/admin/session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: f.get('email'),
+          password: f.get('password'),
+        }),
+      });
+      const v = await r.json();
+      if (!r.ok) {
+        showToast(v.error ?? '로그인하지 못했습니다.');
+        return;
+      }
+      location.href = '/admin/applications';
+    } catch {
+      showToast('네트워크 오류가 발생했습니다. 다시 시도해주세요.');
+    }
   }
   return (
     <div>
@@ -40,11 +48,6 @@ export default function Page() {
           type="password"
           className={fieldClass}
         />
-        {message && (
-          <p role="alert" className="motion-feedback text-sm text-red-700">
-            {message}
-          </p>
-        )}
         <button className="motion-control rounded-[10px] bg-[#1b4292] p-4 font-bold text-white hover:bg-[#153675]">
           로그인
         </button>

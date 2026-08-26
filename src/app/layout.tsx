@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import './globals.css';
+import { ToastProvider } from '@/components/toast';
 
 export const metadata: Metadata = {
   title: '참가 신청',
@@ -13,7 +14,9 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <main className="min-h-screen w-full">{children}</main>
+        <ToastProvider>
+          <main className="min-h-screen w-full">{children}</main>
+        </ToastProvider>
       </body>
     </html>
   );
