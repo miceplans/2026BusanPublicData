@@ -1,0 +1,409 @@
+@import 'tailwindcss';
+
+:root {
+  color-scheme: light;
+  font-family:
+    Pretendard,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #ffffff;
+  color: #171717;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+:focus-visible {
+  outline: 3px solid rgba(0, 83, 185, 0.45);
+  outline-offset: 3px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+@keyframes motion-settle {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.hero-copy {
+  animation: hero-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hero-stats {
+  animation: hero-enter 420ms 90ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.motion-success,
+.motion-feedback {
+  animation: motion-settle 160ms ease-out both;
+}
+.motion-control {
+  transition:
+    background-color 120ms ease-out,
+    border-color 120ms ease-out;
+}
+.motion-control:not(:disabled):active {
+  filter: brightness(0.96);
+}
+.motion-row {
+  transition: background-color 160ms ease-out;
+}
+.motion-row:hover {
+  background: #f7f9fc;
+}
+.official-landing {
+  word-break: keep-all;
+  letter-spacing: -0.018em;
+}
+.landing-section-block {
+  scroll-margin-top: 2rem;
+  padding-block: 3.5rem;
+  border-bottom: 1px solid #d4d4d4;
+}
+.landing-section-block:last-child {
+  border-bottom: 0;
+}
+.landing-section-block > h2 {
+  font-size: 30px;
+  line-height: 1.35;
+  font-weight: 700;
+  letter-spacing: -0.045em;
+}
+.subheading {
+  margin-top: 2.4rem;
+  font-size: 19px;
+  line-height: 1.45;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+.award-flow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+}
+.award-card {
+  min-width: 0;
+  padding: 1.25rem;
+  border: 1px solid #c7cbd3;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(27, 66, 146, 0.06);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+.award-card:hover,
+.award-card:focus-visible {
+  border-color: #1b4292;
+  outline: none;
+  box-shadow: 0 14px 32px rgba(27, 66, 146, 0.15);
+  transform: translateY(-5px);
+}
+.award-card h3 {
+  font-size: 20px;
+  line-height: 1.4;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+.award-arrow {
+  display: grid;
+  place-items: center;
+  color: #1b4292;
+  font-size: 25px;
+  font-weight: 800;
+  height: 42px;
+}
+.award-arrow span {
+  transition: transform 180ms ease;
+  transform: rotate(90deg);
+}
+.award-flow:hover .award-arrow span {
+  transform: translateY(3px) rotate(90deg);
+}
+.info-list {
+  border-top: 2px solid #222;
+}
+.info-list > div {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  border-bottom: 1px solid #aaa;
+  font-size: 15px;
+  line-height: 1.65;
+}
+.info-list dt,
+.info-list dd {
+  padding: 15px 14px;
+}
+.info-list dt {
+  font-weight: 700;
+}
+.data-row {
+  display: grid;
+  width: 100%;
+  border-bottom: 1px solid #aaa;
+}
+.data-row:last-child {
+  border-bottom: 0;
+}
+.data-row > * {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 12px;
+  border-right: 1px solid #aaa;
+  text-align: center;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: -0.025em;
+}
+.data-row > *:last-child {
+  border-right: 0;
+}
+.data-head {
+  min-height: 54px;
+  background: #1b4292;
+  color: white;
+  font-weight: 700;
+}
+.data-head > * {
+  border-color: #fff;
+}
+.prose-box {
+  font-size: 15px;
+  line-height: 1.8;
+  letter-spacing: -0.018em;
+}
+.prose-box h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.6rem;
+  padding-left: 0.8rem;
+  border-left: 3px solid #1b4292;
+  font-size: 18px;
+  line-height: 1.5;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+.prose-box ul,
+.prose-box ol {
+  display: grid;
+  gap: 0.45rem;
+  padding-left: 1.25rem;
+}
+.prose-box ul {
+  list-style: disc;
+}
+.prose-box ol {
+  list-style: decimal;
+}
+@media (max-width: 520px) {
+  .official-landing {
+    word-break: normal;
+    overflow-wrap: anywhere;
+  }
+  .landing-section-block {
+    padding-block: 2.5rem;
+  }
+  .landing-section-block > h2 {
+    font-size: 25px;
+  }
+  .award-card {
+    padding: 1rem;
+  }
+  .info-list > div {
+    grid-template-columns: 82px minmax(0, 1fr);
+  }
+  .info-list dt,
+  .info-list dd {
+    padding-inline: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .motion-success,
+  .motion-feedback,
+  .hero-copy,
+  .hero-stats {
+    animation: none;
+  }
+  .motion-control,
+  .motion-row {
+    transition: none;
+  }
+  .motion-control:not(:disabled):active {
+    filter: none;
+  }
+  .award-card,
+  .award-arrow span {
+    transition: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .official-landing .info-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 2px solid #222;
+    border-left: 1px solid #aaa;
+  }
+
+  .official-landing .info-list > div {
+    display: block;
+    min-width: 0;
+    border-right: 1px solid #aaa;
+  }
+
+  .official-landing .info-list dt {
+    min-height: 51px;
+    border-bottom: 1px solid #ddd;
+    background: #f7f8fa;
+  }
+
+  .official-landing .info-list dd {
+    min-height: 104px;
+    overflow-wrap: anywhere;
+  }
+
+  .official-landing .award-flow {
+    grid-template-columns: minmax(0, 1fr) 56px minmax(0, 1fr);
+  }
+
+  .official-landing .award-arrow {
+    height: auto;
+  }
+
+  .official-landing .award-arrow span {
+    transform: none;
+  }
+
+  .official-landing .award-flow:hover .award-arrow span {
+    transform: translateX(3px);
+  }
+}
+.github-landing {
+  letter-spacing: -0.02em;
+}
+.github-landing .hero-glow {
+  background: radial-gradient(
+    ellipse,
+    rgba(31, 111, 235, 0.25),
+    transparent 68%
+  );
+  pointer-events: none;
+}
+.github-landing .hero-text {
+  background: linear-gradient(90deg, #fff 10%, #79c0ff 48%, #a371f7);
+  background-clip: text;
+  color: transparent;
+}
+.github-landing .landing-section {
+  position: relative;
+  scroll-margin-top: 5rem;
+}
+.github-landing .section-inner {
+  margin-inline: auto;
+  max-width: 1280px;
+  padding: 7rem 1.25rem;
+}
+.github-landing .section-line {
+  position: absolute;
+  left: 9%;
+  top: 0;
+  height: 100%;
+  width: 1px;
+  background: #30363d;
+}
+.github-landing .section-dot {
+  position: absolute;
+  left: calc(9% - 5px);
+  top: 7.4rem;
+  width: 11px;
+  height: 11px;
+  border-radius: 6px;
+  box-shadow: 0 0 18px currentColor;
+}
+.github-landing .eyebrow {
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+.github-landing .feature-title {
+  margin-top: 1.25rem;
+  color: #8b949e;
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
+  line-height: 1.08;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+}
+@media (min-width: 1024px) {
+  .github-landing .section-inner {
+    padding: 9rem 2rem 9rem 17%;
+  }
+  .github-landing .section-dot {
+    top: 9.4rem;
+  }
+}
+@media (max-width: 1023px) {
+  .github-landing .section-line,
+  .github-landing .section-dot {
+    display: none;
+  }
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button,
+a,
+input[type='checkbox'] {
+  touch-action: manipulation;
+}
+
+@media (max-width: 1024px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+
+  button,
+  a {
+    min-height: 44px;
+  }
+}
