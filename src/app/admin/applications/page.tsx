@@ -254,7 +254,7 @@ export default function Page() {
                         const generated =
                           p || `${crypto.randomUUID().slice(0, 8)}!A1`;
                         patch(x.id, { password: generated });
-                        if (!p) alert(`새 비밀번호: ${generated}`);
+                        if (!p) showToast(`새 비밀번호: ${generated}`, 'success');
                       }}
                     >
                       초기화

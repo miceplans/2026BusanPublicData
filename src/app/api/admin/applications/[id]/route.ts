@@ -4,6 +4,7 @@ import { requireAdmin } from '@/lib/admin-auth';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { adminPatchSchema } from '@/validations';
 import { jsonError, validationError } from '@/lib/http';
+import { sendPasswordResetEmail } from '@/lib/email';
 export async function GET(
   _: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -45,6 +46,22 @@ export async function PATCH(
       passwordReset: true,
     },
   });
+  if (parsed.data.password) {
+    const { data: application } = await db
+      .from('applications')
+      .select('id,receipt_number,team_name,leader_email')
+      .eq('id', id)
+      .single();
+    if (application) {
+      await sendPasswordResetEmail({
+        applicationId: application.id,
+        receiptNumber: application.receipt_number,
+        teamName: application.team_name,
+        email: application.leader_email,
+        newPassword: parsed.data.password,
+      });
+    }
+  }
   return NextResponse.json({ ok: true });
 }
 export async function DELETE(

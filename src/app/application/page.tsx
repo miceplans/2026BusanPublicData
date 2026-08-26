@@ -151,7 +151,7 @@ export default function Page() {
   }
   if (!app)
     return (
-      <div>
+      <div className="service-page">
         <ContestHeader />
         <p className="motion-feedback p-8 text-center">
           신청 정보를 불러오는 중입니다…
@@ -159,18 +159,23 @@ export default function Page() {
       </div>
     );
   return (
-    <div>
+    <div className="service-page">
       <ContestHeader helper={`접수번호 ${app.receipt_number}`} />
       <form
         onSubmit={submit}
-        className="motion-page mx-auto flex max-w-[760px] flex-col gap-6 px-5 py-8"
+        className="motion-page mx-auto flex max-w-[800px] flex-col gap-6 px-5 py-10 sm:py-14"
       >
-        <h1 className="text-3xl font-bold">신청 확인·수정</h1>
+        <h1 className="text-3xl font-extrabold tracking-[-0.04em]">
+          신청 확인·수정
+        </h1>
         <p className="rounded-lg bg-[#f5f7fb] p-4 text-sm">
           최종 수정 {new Date(app.updated_at).toLocaleString('ko-KR')}
           {!editable && ' · 현재 읽기 전용'}
         </p>
-        <fieldset disabled={!editable} className="grid gap-4 sm:grid-cols-2">
+        <fieldset
+          disabled={!editable}
+          className="service-card grid gap-5 rounded-2xl p-5 sm:grid-cols-2 sm:p-7"
+        >
           <F n="teamName" l="팀명" v={app.team_name} />
           <F n="leaderName" l="대표자 이름" v={app.leader_name} />
           <F
@@ -200,7 +205,7 @@ export default function Page() {
             <textarea
               name="itemSummary"
               defaultValue={app.item_summary}
-              className="mt-2 min-h-32 w-full rounded-lg border p-3"
+              className="mt-2 min-h-32 w-full border border-[#dfe3e8] bg-white p-3 outline-none focus:border-[#3182f6] focus:ring-3 focus:ring-[#3182f6]/10"
             />
           </label>
           {app.application_members
@@ -216,7 +221,7 @@ export default function Page() {
             <textarea
               name="requests"
               defaultValue={app.requests ?? ''}
-              className="mt-2 min-h-24 w-full rounded-lg border p-3"
+              className="mt-2 min-h-24 w-full border border-[#dfe3e8] bg-white p-3 outline-none focus:border-[#3182f6] focus:ring-3 focus:ring-[#3182f6]/10"
             />
           </label>
         </fieldset>
@@ -265,7 +270,7 @@ export default function Page() {
           </p>
         )}
         {editable && (
-          <button className="motion-control rounded-lg bg-[#1b4292] p-4 font-bold text-white hover:bg-[#153675]">
+          <button className="motion-control min-h-14 rounded-[8px] bg-[#3182f6] p-4 font-bold text-white hover:bg-[#1b64da]">
             수정 내용 저장
           </button>
         )}

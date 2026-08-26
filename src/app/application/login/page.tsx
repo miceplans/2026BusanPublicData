@@ -31,20 +31,25 @@ export default function Page() {
     }
   }
   return (
-    <div>
+    <div className="service-page">
       <ContestHeader />
-      <div className="motion-page mx-auto max-w-[520px] px-5 py-12">
-        <h1 className="text-3xl font-bold">신청 확인·수정</h1>
+      <div className="motion-page mx-auto max-w-[520px] px-5 py-14 sm:py-20">
+        <h1 className="text-3xl font-extrabold tracking-[-0.04em]">
+          신청 확인·수정
+        </h1>
+        <p className="mt-3 text-[15px] text-[#6b7684]">
+          신청할 때 입력한 팀명과 비밀번호를 입력해 주세요.
+        </p>
         <form
           onSubmit={submit}
-          className="motion-card mt-8 flex flex-col gap-5 rounded-2xl border p-6"
+          className="service-card motion-card mt-8 flex flex-col gap-5 rounded-2xl p-6 sm:p-8"
         >
           <Field name="teamName" label="팀명" />
           <Field name="password" label="신청 비밀번호" type="password" />
           <button
             disabled={busy}
             aria-busy={busy}
-            className="motion-control rounded-[10px] bg-[#1b4292] p-4 font-bold text-white hover:bg-[#153675] disabled:hover:bg-[#1b4292]"
+            className="motion-control min-h-14 rounded-[8px] bg-[#3182f6] p-4 font-bold text-white hover:bg-[#1b64da] disabled:bg-[#b0b8c1]"
           >
             {busy ? '확인 중…' : '접수 내용 확인'}
           </button>

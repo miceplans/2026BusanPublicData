@@ -2,6 +2,14 @@
 
 :root {
   color-scheme: light;
+  --color-primary: #3182f6;
+  --color-primary-hover: #1b64da;
+  --color-text: #191f28;
+  --color-muted: #6b7684;
+  --color-surface: #ffffff;
+  --color-background: #f7f8fa;
+  --color-line: #e5e8eb;
+  --control-radius: 6px;
   font-family:
     Pretendard,
     -apple-system,
@@ -18,7 +26,7 @@ body {
   margin: 0;
   min-height: 100vh;
   background: #ffffff;
-  color: #171717;
+  color: var(--color-text);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: clip;
@@ -32,8 +40,27 @@ video {
 }
 
 :focus-visible {
-  outline: 3px solid rgba(0, 83, 185, 0.45);
+  outline: 3px solid rgba(49, 130, 246, 0.28);
   outline-offset: 3px;
+}
+
+:where(input:not([type='checkbox']):not([type='radio']), select, textarea) {
+  border-radius: var(--control-radius) !important;
+}
+
+:where(input, select, textarea)::placeholder {
+  color: #b0b8c1;
+}
+
+.service-page {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+.service-card {
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  background: var(--color-surface);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 }
 
 html {

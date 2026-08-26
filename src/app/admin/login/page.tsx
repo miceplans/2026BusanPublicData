@@ -27,13 +27,15 @@ export default function Page() {
     }
   }
   return (
-    <div>
+    <div className="service-page">
       <ContestHeader helper="운영 담당자 전용" />
       <form
         onSubmit={submit}
-        className="motion-page motion-card mx-auto my-12 flex max-w-[480px] flex-col gap-5 rounded-2xl border p-7"
+        className="service-card motion-page motion-card mx-auto my-12 flex max-w-[480px] flex-col gap-5 rounded-2xl p-7 sm:my-20 sm:p-8"
       >
-        <h1 className="text-3xl font-bold">관리자 로그인</h1>
+        <h1 className="text-3xl font-extrabold tracking-[-0.04em]">
+          관리자 로그인
+        </h1>
         <input
           aria-label="관리자 이메일"
           required
@@ -48,7 +50,7 @@ export default function Page() {
           type="password"
           className={fieldClass}
         />
-        <button className="motion-control rounded-[10px] bg-[#1b4292] p-4 font-bold text-white hover:bg-[#153675]">
+        <button className="motion-control min-h-14 rounded-[8px] bg-[#3182f6] p-4 font-bold text-white hover:bg-[#1b64da]">
           로그인
         </button>
       </form>

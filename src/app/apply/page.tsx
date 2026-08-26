@@ -111,7 +111,7 @@ export default function ApplyPage() {
     }
   }
   return (
-    <div className="min-h-screen bg-white">
+    <div className="service-page">
       <ContestHeader
         helper="참가 신청"
         actionLabel="신청 확인·수정"
@@ -119,9 +119,19 @@ export default function ApplyPage() {
       />
       <form
         onSubmit={submit}
-        className="motion-page mx-auto flex max-w-[760px] flex-col gap-8 px-5 py-8"
+        className="motion-page mx-auto flex max-w-[800px] flex-col gap-5 px-5 py-10 sm:py-14"
       >
-        <h1 className="text-3xl font-bold">참가 신청</h1>
+        <div className="mb-2">
+          <p className="text-sm font-bold text-[#3182f6]">
+            2026 부산 AI 창업 경진대회
+          </p>
+          <h1 className="mt-2 text-3xl font-extrabold tracking-[-0.04em] sm:text-4xl">
+            참가 신청
+          </h1>
+          <p className="mt-3 text-[15px] leading-6 text-[#6b7684]">
+            필수 정보를 정확하게 입력해 주세요.
+          </p>
+        </div>
         <Section title="기본 정보">
           <Grid>
             <Field name="teamName" label="팀명" />
@@ -168,7 +178,7 @@ export default function ApplyPage() {
               name="itemSummary"
               required
               maxLength={settings?.item_summary_max_length ?? 10000}
-              className="min-h-32 rounded-[10px] border border-[#ddd] p-4"
+              className="min-h-32 border border-[#dfe3e8] bg-white p-4 outline-none hover:border-[#c9d0d8] focus:border-[#3182f6] focus:ring-3 focus:ring-[#3182f6]/10"
             />
           </Label>
         </Section>
@@ -295,7 +305,7 @@ export default function ApplyPage() {
         <button
           disabled={busy}
           aria-busy={busy}
-          className="motion-control rounded-[10px] bg-[#1b4292] px-5 py-4 font-bold text-white hover:bg-[#153675] disabled:bg-[#aaa] disabled:hover:bg-[#aaa]"
+          className="motion-control mt-2 min-h-14 rounded-[8px] bg-[#3182f6] px-5 py-4 font-bold text-white hover:bg-[#1b64da] disabled:bg-[#b0b8c1] disabled:hover:bg-[#b0b8c1]"
         >
           {busy ? '제출 중…' : '참가 신청 제출'}
         </button>
@@ -311,8 +321,10 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="motion-section flex flex-col gap-4 pt-2">
-      <h2 className="text-xl font-bold">{title}</h2>
+    <section className="service-card motion-section flex flex-col gap-5 rounded-2xl p-5 sm:p-7">
+      <h2 className="text-xl font-extrabold tracking-[-0.025em] text-[#191f28]">
+        {title}
+      </h2>
       {children}
     </section>
   );
@@ -329,7 +341,7 @@ function Label({
 }) {
   return (
     <label className="flex flex-col gap-2">
-      <span className="text-sm font-bold">{text}</span>
+      <span className="text-sm font-bold text-[#333d4b]">{text}</span>
       {children}
     </label>
   );
@@ -412,7 +424,7 @@ function Dropdown({
           <div
             role="listbox"
             aria-label={label}
-            className={`absolute top-full right-0 left-0 z-10 mt-1 grid gap-1 rounded-[10px] border border-[#e5e5e5] bg-white p-2 shadow-[0_8px_24px_rgba(0,0,0,0.08)] ${columns === 2 ? 'grid-cols-2' : 'grid-cols-1'}`}
+            className={`absolute top-full right-0 left-0 z-10 mt-1 grid gap-1 rounded-[6px] border border-[#e5e8eb] bg-white p-2 shadow-[0_8px_24px_rgba(0,0,0,0.08)] ${columns === 2 ? 'grid-cols-2' : 'grid-cols-1'}`}
           >
             {values.map((v) => {
               const selected = value === v;
