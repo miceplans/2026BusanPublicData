@@ -122,16 +122,17 @@ export default function Page() {
               <li className="overflow-hidden rounded-xl border" key={f.id}>
                 <a
                   className="flex min-h-52 items-center justify-center bg-[#f5f5f5] p-2"
-                  href={`/api/files/${f.id}`}
+                  href={`/api/admin/files/${f.id}`}
                   target="_blank"
                   rel="noreferrer"
+                  title={`${f.original_name} 새 창에서 보기`}
                 >
                   <Image
                     alt={`${f.original_name} 미리보기`}
                     className="h-auto max-h-96 w-auto object-contain"
                     height={400}
                     loading="lazy"
-                    src={`/api/files/${f.id}`}
+                    src={`/api/admin/files/${f.id}`}
                     unoptimized
                     width={640}
                   />
@@ -142,7 +143,7 @@ export default function Page() {
                   </span>
                   <a
                     className="shrink-0 underline"
-                    href={`/api/files/${f.id}?download=1`}
+                    href={`/api/admin/files/${f.id}?download=1`}
                   >
                     다운로드
                   </a>
