@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { SiteFooter } from '@/components/site-footer';
 
 const overview = [
   ['대회명', '2026 부산 AI 창업 경진대회'],
@@ -135,16 +136,11 @@ export default function HomePage() {
         <section className="overflow-hidden bg-[linear-gradient(145deg,#f3f7fc_0%,#ffffff_55%,#eef6ff_100%)] px-5 py-20 sm:px-8 sm:py-28 lg:py-32">
           <div className="mx-auto max-w-[1280px]">
             <div className="hero-copy max-w-[960px]">
-              <p className="text-sm font-extrabold tracking-[0.06em] text-[#0053b9]">
+              <h1 className="mt-6 text-[clamp(2.65rem,5.5vw,4.5rem)] leading-[1.08] font-extrabold tracking-[0.04em]">
                 2026 부산 AI 창업 경진대회
-              </p>
-              <h1 className="mt-6 text-[clamp(2.65rem,5.5vw,4.5rem)] leading-[1.08] font-extrabold tracking-[-0.045em]">
-                2026 부산 AI
-                <br />
-                <span className="text-[#0053b9]">창업 경진대회</span>
               </h1>
               <p className="mt-8 max-w-[680px] text-lg leading-[1.7] text-[#5b5b66] sm:text-xl">
-                부산 9대 전략산업 기반 AI 스타트업을 발굴하고, 예비·초기
+                부산 9대 전략산업 기반 AI 스타트업을 발굴하고,<br/> 예비·초기
                 창업기업의 사업화까지 연결합니다.
               </p>
               <div className="mt-10 flex flex-wrap gap-3">
@@ -367,7 +363,7 @@ export default function HomePage() {
 
         <section className="bg-[#111111] px-5 py-24 text-white sm:px-8 sm:py-32">
           <div className="mx-auto flex max-w-[1280px] flex-col items-start justify-between gap-10 lg:flex-row lg:items-end">
-            <h2 className="max-w-[800px] text-[clamp(2.5rem,6vw,5rem)] leading-[1.02] font-extrabold tracking-[-0.065em]">
+            <h2 className="max-w-[800px] text-[clamp(1.5rem,2vw,5rem)] leading-[1.02] font-extrabold tracking-[0.065em]">
               2026 부산 AI 창업 경진대회
             </h2>
             <Link
@@ -379,6 +375,7 @@ export default function HomePage() {
           </div>
         </section>
       </main>
+      <SiteFooter />
     </div>
   );
 }

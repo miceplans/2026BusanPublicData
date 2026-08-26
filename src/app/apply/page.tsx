@@ -3,6 +3,7 @@ import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { ContestHeader, fieldClass } from '@/components/contest-header';
 import { INDUSTRIES, PARTICIPATION_TYPES, type SiteSettings } from '@/types';
 import { useToast } from '@/components/toast';
+import Link from 'next/link';
 type Member = { name: string; role: string; isLeader: boolean };
 export default function ApplyPage() {
   const { showToast } = useToast();
@@ -290,7 +291,16 @@ export default function ApplyPage() {
             name="exclusionConfirmed"
             text="지원 제외 사유에 해당하지 않습니다."
           />
-          <Check name="privacyAgreed" text="개인정보 수집·이용에 동의합니다." />
+          <Check name="privacyAgreed">
+            <Link
+              className="font-bold text-[#0053b9] underline underline-offset-4"
+              href="/privacy"
+              target="_blank"
+            >
+              개인정보처리방침
+            </Link>
+            을 확인했으며 개인정보 수집·이용에 동의합니다.
+          </Check>
           <ol className="list-decimal space-y-1.5 pl-5 text-xs leading-[1.6] text-[#9ca3af]">
             <li>
               타 대회 수상 또는 사업화 지원금 수혜 이력이 확인된 동일·유사
@@ -454,11 +464,19 @@ function Dropdown({
     </Label>
   );
 }
-function Check({ name, text }: { name: string; text: string }) {
+function Check({
+  name,
+  text,
+  children,
+}: {
+  name: string;
+  text?: string;
+  children?: React.ReactNode;
+}) {
   return (
     <label className="flex gap-3 text-sm">
       <input required name={name} type="checkbox" className="size-5" />
-      {text}
+      <span>{children ?? text}</span>
     </label>
   );
 }
