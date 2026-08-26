@@ -10,17 +10,6 @@ export const INDUSTRIES = [
   '바이오헬스',
 ] as const;
 export const PARTICIPATION_TYPES = ['예비창업팀', '신규창업기업'] as const;
-export const APPLICATION_STATUSES = [
-  '접수완료',
-  '검토중',
-  '보완요청',
-  '예선통과',
-  '예선탈락',
-  '본선수상',
-  '최종탈락',
-  '접수취소',
-] as const;
-export type ApplicationStatus = (typeof APPLICATION_STATUSES)[number];
 export type ApplicationMember = {
   name: string;
   role: string;

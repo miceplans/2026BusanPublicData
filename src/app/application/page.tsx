@@ -17,7 +17,6 @@ type App = {
   eligibility_confirmed: boolean;
   exclusion_confirmed: boolean;
   requests: string | null;
-  status: string;
   updated_at: string;
   application_members: {
     name: string;
@@ -65,7 +64,9 @@ export default function Page() {
           setEditable(v.editable);
         }
       })
-      .catch(() => showToast('네트워크 오류로 신청 정보를 불러오지 못했습니다.'));
+      .catch(() =>
+        showToast('네트워크 오류로 신청 정보를 불러오지 못했습니다.'),
+      );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   async function submit(e: FormEvent<HTMLFormElement>) {
@@ -166,8 +167,7 @@ export default function Page() {
       >
         <h1 className="text-3xl font-bold">신청 확인·수정</h1>
         <p className="rounded-lg bg-[#f5f7fb] p-4 text-sm">
-          접수상태: <b>{app.status}</b> · 최종 수정{' '}
-          {new Date(app.updated_at).toLocaleString('ko-KR')}
+          최종 수정 {new Date(app.updated_at).toLocaleString('ko-KR')}
           {!editable && ' · 현재 읽기 전용'}
         </p>
         <fieldset disabled={!editable} className="grid gap-4 sm:grid-cols-2">

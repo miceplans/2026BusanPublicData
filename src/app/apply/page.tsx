@@ -1,5 +1,5 @@
 'use client';
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { ContestHeader, fieldClass } from '@/components/contest-header';
 import { INDUSTRIES, PARTICIPATION_TYPES, type SiteSettings } from '@/types';
 import { useToast } from '@/components/toast';
@@ -14,6 +14,8 @@ export default function ApplyPage() {
     { name: '', role: '', isLeader: false },
   ]);
   const [busy, setBusy] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     fetch('/api/settings')
       .then((r) => r.json())
@@ -30,6 +32,23 @@ export default function ApplyPage() {
     setMembers((v) =>
       v.map((m, i) => (i === index ? { ...m, [key]: value } : m)),
     );
+  }
+  function onFilesSelected(event: ChangeEvent<HTMLInputElement>) {
+    const selected = Array.from(event.target.files ?? []);
+    event.target.value = '';
+    if (!selected.length) return;
+    setFiles((v) => {
+      const merged = [...v, ...selected];
+      const max = settings?.evidence_max_files;
+      if (max && merged.length > max) {
+        showToast(`증빙자료는 최대 ${max}개까지 첨부할 수 있습니다.`);
+        return merged.slice(0, max);
+      }
+      return merged;
+    });
+  }
+  function removeFile(index: number) {
+    setFiles((v) => v.filter((_, i) => i !== index));
   }
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -73,8 +92,7 @@ export default function ApplyPage() {
     }
     const body = new FormData();
     body.set('data', JSON.stringify(data));
-    for (const file of fd.getAll('files'))
-      if (file instanceof File && file.size) body.append('files', file);
+    for (const file of files) body.append('files', file);
     try {
       const response = await fetch('/api/applications', {
         method: 'POST',
@@ -208,11 +226,48 @@ export default function ApplyPage() {
               개, 파일당{' '}
               {Math.round((settings?.evidence_max_bytes ?? 0) / 1048576)}MB
             </p>
+            <div className="flex flex-col gap-2 rounded-[10px] border border-[#e5e5e5] px-4 py-2">
+              {files.map((file, i) => (
+                <div
+                  key={i}
+                  className={`motion-list-item flex items-center justify-between gap-3 py-2.5 ${
+                    i > 0 ? 'border-t border-[#e5e5e5]' : ''
+                  }`}
+                >
+                  <p className="truncate text-sm text-[#111]">{file.name}</p>
+                  <button
+                    type="button"
+                    className="motion-control shrink-0 text-[13px] font-semibold text-[#0053b9] hover:underline"
+                    onClick={() => removeFile(i)}
+                  >
+                    삭제
+                  </button>
+                </div>
+              ))}
+              <div
+                className={`flex items-center justify-between py-2 ${
+                  files.length > 0 ? 'border-t border-[#e5e5e5]' : ''
+                }`}
+              >
+                <p className="text-xs font-semibold text-[#111]">
+                  {files.length}개 파일 첨부됨
+                </p>
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="motion-control rounded-[10px] bg-[#0053b9] px-3 py-2 text-sm font-bold text-white hover:bg-[#004494]"
+                >
+                  파일 추가
+                </button>
+              </div>
+            </div>
             <input
-              name="files"
+              ref={fileInputRef}
               type="file"
               multiple
+              className="hidden"
               accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+              onChange={onFilesSelected}
             />
           </Section>
         )}

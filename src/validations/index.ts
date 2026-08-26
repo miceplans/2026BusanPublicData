@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { APPLICATION_STATUSES, INDUSTRIES, PARTICIPATION_TYPES } from '@/types';
+import { INDUSTRIES, PARTICIPATION_TYPES } from '@/types';
 
 const requiredText = (label: string, max: number) =>
   z.string().trim().min(1, `${label}을(를) 입력해 주세요.`).max(max);
@@ -102,7 +102,6 @@ export const adminLoginSchema = z.object({
 });
 export const adminPatchSchema = z
   .object({
-    status: z.enum(APPLICATION_STATUSES).optional(),
     password: passwordSchema.optional(),
   })
   .refine((value) => Object.keys(value).length > 0, '변경할 값이 없습니다.');

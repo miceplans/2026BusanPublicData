@@ -4,11 +4,10 @@ import { z } from 'zod';
 import { requireAdmin } from '@/lib/admin-auth';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { normalizeTeamName } from '@/validations';
-import { APPLICATION_STATUSES, INDUSTRIES, PARTICIPATION_TYPES } from '@/types';
+import { INDUSTRIES, PARTICIPATION_TYPES } from '@/types';
 import { jsonError } from '@/lib/http';
 const headers = [
   '접수번호',
-  '접수상태',
   '팀명',
   '참가유형',
   '참가분야',
@@ -26,7 +25,6 @@ const headers = [
 ];
 const rowSchema = z.object({
   접수번호: z.string().min(1),
-  접수상태: z.enum(APPLICATION_STATUSES),
   팀명: z.string().trim().min(1).max(100),
   참가유형: z.enum(PARTICIPATION_TYPES),
   참가분야: z.enum(INDUSTRIES),
@@ -100,7 +98,6 @@ export async function POST(request: NextRequest) {
         errors: ['계산 열은 변경할 수 없습니다.'],
       };
     const next = {
-      status: parsed.data.접수상태,
       team_name: parsed.data.팀명,
       normalized_team_name: normalizeTeamName(parsed.data.팀명),
       participation_type: parsed.data.참가유형,

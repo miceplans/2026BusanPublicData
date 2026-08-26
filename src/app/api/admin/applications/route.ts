@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin-auth';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { APPLICATION_STATUSES } from '@/types';
 import { jsonError } from '@/lib/http';
 export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
@@ -13,7 +12,7 @@ export async function GET(request: NextRequest) {
   let query = createAdminClient()
     .from('applications')
     .select(
-      'id,receipt_number,team_name,leader_name,leader_email,leader_phone,participation_type,industry,item_name,status,created_at,updated_at,application_files(count)',
+      'id,receipt_number,team_name,leader_name,leader_email,leader_phone,participation_type,industry,item_name,created_at,updated_at,application_files(count)',
       { count: 'exact' },
     );
   const search = p.get('search')?.trim();
@@ -21,9 +20,6 @@ export async function GET(request: NextRequest) {
     query = query.or(
       `team_name.ilike.%${search.replace(/[%(),]/g, '')}%,leader_name.ilike.%${search.replace(/[%(),]/g, '')}%,leader_phone.ilike.%${search.replace(/[%(),]/g, '')}%`,
     );
-  const status = p.get('status');
-  if (status && APPLICATION_STATUSES.includes(status as never))
-    query = query.eq('status', status);
   const from = p.get('from');
   const to = p.get('to');
   if (from) query = query.gte('created_at', from);

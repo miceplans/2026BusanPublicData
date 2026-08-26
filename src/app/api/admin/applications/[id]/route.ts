@@ -32,19 +32,17 @@ export async function PATCH(
   if (!parsed.success) return validationError(parsed.error);
   const db = createAdminClient();
   const changes: Record<string, unknown> = {};
-  if (parsed.data.status) changes.status = parsed.data.status;
   if (parsed.data.password)
     changes.password_hash = await hash(parsed.data.password, 12);
   const { error } = await db.from('applications').update(changes).eq('id', id);
   if (error) return jsonError('신청 정보를 변경할 수 없습니다.', 500);
   await db.from('admin_audit_logs').insert({
     admin_user_id: admin.user.id,
-    action: parsed.data.password ? 'password_reset' : 'application_update',
+    action: 'password_reset',
     target_type: 'application',
     target_id: id,
     change_summary: {
-      status: parsed.data.status,
-      passwordReset: !!parsed.data.password,
+      passwordReset: true,
     },
   });
   return NextResponse.json({ ok: true });

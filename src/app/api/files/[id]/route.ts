@@ -4,7 +4,7 @@ import { requireAdmin } from '@/lib/admin-auth';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { jsonError } from '@/lib/http';
 export async function GET(
-  _: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
@@ -15,14 +15,29 @@ export async function GET(
   const db = createAdminClient();
   let query = db
     .from('application_files')
-    .select('application_id,object_key')
+    .select('application_id,object_key,original_name,mime_type')
     .eq('id', id);
   if (!admin) query = query.eq('application_id', applicationId!);
   const { data } = await query.maybeSingle();
   if (!data) return jsonError('파일을 찾을 수 없습니다.', 404);
-  const { data: signed, error } = await db.storage
+  const { data: file, error } = await db.storage
     .from('application-files')
-    .createSignedUrl(data.object_key, 600);
-  if (error) return jsonError('다운로드 주소를 만들 수 없습니다.', 500);
-  return NextResponse.redirect(signed.signedUrl);
+    .download(data.object_key);
+  if (error || !file) return jsonError('파일을 불러올 수 없습니다.', 500);
+
+  const download = request.nextUrl.searchParams.get('download') === '1';
+  const headers = new Headers({
+    'Cache-Control': 'private, no-store',
+    'Content-Type': data.mime_type,
+    'X-Content-Type-Options': 'nosniff',
+  });
+  if (download) {
+    const encodedName = encodeURIComponent(data.original_name);
+    headers.set(
+      'Content-Disposition',
+      `attachment; filename*=UTF-8''${encodedName}`,
+    );
+  }
+
+  return new NextResponse(await file.arrayBuffer(), { headers });
 }

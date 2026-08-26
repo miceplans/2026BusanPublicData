@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
@@ -15,7 +16,6 @@ type Detail = Record<string, unknown> & {
   item_name: string;
   item_summary: string;
   requests: string | null;
-  status: string;
   created_at: string;
   updated_at: string;
   application_members: {
@@ -58,7 +58,9 @@ export default function Page() {
         return v;
       })
       .then((v) => v && setApp(v.application))
-      .catch(() => showToast('네트워크 오류로 신청 정보를 불러오지 못했습니다.'));
+      .catch(() =>
+        showToast('네트워크 오류로 신청 정보를 불러오지 못했습니다.'),
+      );
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -86,9 +88,7 @@ export default function Page() {
       <ContestHeader actionLabel="신청 목록" actionHref="/admin/applications" />
       <main className="mx-auto max-w-[900px] px-5 py-8">
         <h1 className="text-3xl font-bold">{app.team_name}</h1>
-        <p className="mt-2">
-          {app.receipt_number} · {app.status}
-        </p>
+        <p className="mt-2">{app.receipt_number}</p>
         <dl className="mt-8 grid gap-4 rounded-xl border p-5 sm:grid-cols-2">
           {[
             ['대표자', app.leader_name],
@@ -117,15 +117,39 @@ export default function Page() {
         </ul>
         <h2 className="mt-8 text-xl font-bold">증빙자료</h2>
         {app.application_files.length ? (
-          app.application_files.map((f) => (
-            <a
-              className="mt-2 block underline"
-              key={f.id}
-              href={`/api/files/${f.id}`}
-            >
-              {f.original_name} ({Math.ceil(f.size_bytes / 1024)}KB)
-            </a>
-          ))
+          <ul className="mt-3 grid gap-4 sm:grid-cols-2">
+            {app.application_files.map((f) => (
+              <li className="overflow-hidden rounded-xl border" key={f.id}>
+                <a
+                  className="flex min-h-52 items-center justify-center bg-[#f5f5f5] p-2"
+                  href={`/api/files/${f.id}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Image
+                    alt={`${f.original_name} 미리보기`}
+                    className="h-auto max-h-96 w-auto object-contain"
+                    height={400}
+                    loading="lazy"
+                    src={`/api/files/${f.id}`}
+                    unoptimized
+                    width={640}
+                  />
+                </a>
+                <div className="flex items-center justify-between gap-3 p-3 text-sm">
+                  <span className="min-w-0 truncate" title={f.original_name}>
+                    {f.original_name} ({Math.ceil(f.size_bytes / 1024)}KB)
+                  </span>
+                  <a
+                    className="shrink-0 underline"
+                    href={`/api/files/${f.id}?download=1`}
+                  >
+                    다운로드
+                  </a>
+                </div>
+              </li>
+            ))}
+          </ul>
         ) : (
           <p className="mt-2 text-sm text-[#666]">
             제출된 증빙자료가 없습니다.

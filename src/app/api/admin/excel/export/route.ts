@@ -6,7 +6,6 @@ import { jsonError } from '@/lib/http';
 import { escapeSpreadsheetFormula } from '@/lib/output-safety';
 const headers = [
   '접수번호',
-  '접수상태',
   '팀명',
   '참가유형',
   '참가분야',
@@ -24,7 +23,6 @@ const headers = [
 ];
 type ExportRow = {
   receipt_number: string;
-  status: string;
   team_name: string;
   participation_type: string;
   industry: string;
@@ -50,7 +48,7 @@ export async function GET(request: NextRequest) {
   let q = createAdminClient()
     .from('applications')
     .select(
-      'id,receipt_number,status,team_name,participation_type,industry,item_name,item_summary,leader_name,leader_email,leader_phone,is_busan_based,requests,created_at,updated_at,application_members(count),application_files(count)',
+      'id,receipt_number,team_name,participation_type,industry,item_name,item_summary,leader_name,leader_email,leader_phone,is_busan_based,requests,created_at,updated_at,application_members(count),application_files(count)',
     )
     .order('created_at', { ascending: false });
   if (ids?.length) q = q.in('id', ids);
@@ -58,7 +56,6 @@ export async function GET(request: NextRequest) {
   if (error) return jsonError('엑셀 데이터를 만들 수 없습니다.', 500);
   const rows = ((data ?? []) as ExportRow[]).map((v) => [
     v.receipt_number,
-    v.status,
     v.team_name,
     v.participation_type,
     v.industry,

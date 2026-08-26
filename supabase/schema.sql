@@ -1,5 +1,4 @@
 create extension if not exists "pgcrypto";
-do $$ begin create type public.application_status as enum ('접수완료','검토중','보완요청','예선통과','예선탈락','본선수상','최종탈락','접수취소'); exception when duplicate_object then null; end $$;
 do $$ begin create type public.email_delivery_status as enum ('pending','sent','retrying','failed','configuration_missing'); exception when duplicate_object then null; end $$;
 
 create table if not exists public.applications (
@@ -10,7 +9,7 @@ create table if not exists public.applications (
  industry text not null check (industry in ('해양','에너지테크','미래모빌리티','융합부품·소재','라이프스타일','디지털테크','금융','문화관광','바이오헬스')),
  item_name text not null, item_summary text not null, is_busan_based boolean not null,
  eligibility_confirmed boolean not null check (eligibility_confirmed), exclusion_confirmed boolean not null check (exclusion_confirmed),
- privacy_agreed_at timestamptz not null, requests text, status public.application_status not null default '접수완료',
+ privacy_agreed_at timestamptz not null, requests text,
  idempotency_key uuid not null unique,
  created_at timestamptz not null default now(), updated_at timestamptz not null default now()
 );
@@ -82,6 +81,5 @@ insert into storage.buckets(id, name, public) values ('application-files','appli
 drop policy if exists "deny direct application file access" on storage.objects;
 create policy "deny direct application file access" on storage.objects for all using (false) with check (false);
 create index if not exists applications_created_at_idx on public.applications(created_at desc);
-create index if not exists applications_status_idx on public.applications(status);
 create index if not exists email_retry_idx on public.email_logs(status,next_retry_at);
 create index if not exists audit_created_idx on public.admin_audit_logs(created_at desc);
