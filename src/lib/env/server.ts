@@ -10,7 +10,6 @@ const serverEnvSchema = z.object({
   SMTP_PASS: z.string().min(1).optional(),
   SMTP_FROM_EMAIL: z.email().optional(),
   APPLICATION_SESSION_SECRET: z.string().min(32),
-  CRON_SECRET: z.string().min(16).optional(),
 });
 
 export function getServerEnv() {
@@ -22,7 +21,6 @@ export function getServerEnv() {
     SMTP_PASS: process.env.SMTP_PASS,
     SMTP_FROM_EMAIL: process.env.SMTP_FROM_EMAIL,
     APPLICATION_SESSION_SECRET: process.env.APPLICATION_SESSION_SECRET,
-    CRON_SECRET: process.env.CRON_SECRET,
   });
 
   if (!result.success) {

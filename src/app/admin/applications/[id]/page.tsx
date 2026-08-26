@@ -40,7 +40,8 @@ type Detail = Record<string, unknown> & {
 export default function Page() {
   const { id } = useParams<{ id: string }>();
   const [app, setApp] = useState<Detail | null>(null);
-  useEffect(() => {
+  const [resending, setResending] = useState(false);
+  const load = () =>
     fetch(`/api/admin/applications/${id}`)
       .then(async (r) => {
         if (r.status === 401) {
@@ -50,7 +51,22 @@ export default function Page() {
         return r.json();
       })
       .then((v) => v && setApp(v.application));
+  useEffect(() => {
+    load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+  const resend = async () => {
+    setResending(true);
+    const r = await fetch(`/api/admin/applications/${id}/resend-email`, {
+      method: 'POST',
+    });
+    setResending(false);
+    if (!r.ok) {
+      alert('재발송 요청에 실패했습니다.');
+      return;
+    }
+    await load();
+  };
   if (!app) return <p className="p-8">불러오는 중…</p>;
   return (
     <div>
@@ -105,10 +121,25 @@ export default function Page() {
         <h2 className="mt-8 text-xl font-bold">이메일 발송 결과</h2>
         {app.email_logs.length ? (
           app.email_logs.map((e) => (
-            <p className="mt-2 rounded-lg border p-3 text-sm" key={e.id}>
-              {e.status} · 시도 {e.attempt_count}회{' '}
-              {e.sent_at && `· ${new Date(e.sent_at).toLocaleString('ko-KR')}`}{' '}
-              {e.error_summary && `· ${e.error_summary}`}
+            <p
+              className="mt-2 flex flex-wrap items-center gap-3 rounded-lg border p-3 text-sm"
+              key={e.id}
+            >
+              <span>
+                {e.status} · 시도 {e.attempt_count}회{' '}
+                {e.sent_at &&
+                  `· ${new Date(e.sent_at).toLocaleString('ko-KR')}`}{' '}
+                {e.error_summary && `· ${e.error_summary}`}
+              </span>
+              {e.status !== 'sent' && (
+                <button
+                  className="motion-control rounded-lg border px-3 py-1 hover:bg-[#f5f5f5] disabled:opacity-50"
+                  disabled={resending}
+                  onClick={resend}
+                >
+                  {resending ? '재발송 중…' : '재시도'}
+                </button>
+              )}
             </p>
           ))
         ) : (
