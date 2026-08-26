@@ -98,7 +98,7 @@ export default function HomePage() {
             className="flex min-h-11 items-center text-lg font-extrabold tracking-[-0.045em] sm:text-xl"
             href="/"
           >
-            BUSAN AI 2026
+            2026 부산 AI 창업 경진대회
           </Link>
           <nav
             aria-label="주요 메뉴"
@@ -140,8 +140,8 @@ export default function HomePage() {
                 2026 부산 AI 창업 경진대회
               </h1>
               <p className="mt-8 max-w-[680px] text-lg leading-[1.7] text-[#5b5b66] sm:text-xl">
-                부산 9대 전략산업 기반 AI 스타트업을 발굴하고,<br/> 예비·초기
-                창업기업의 사업화까지 연결합니다.
+                부산 9대 전략산업 기반 AI 스타트업을 발굴하고,
+                <br /> 예비·초기 창업기업의 사업화까지 연결합니다.
               </p>
               <div className="mt-10 flex flex-wrap gap-3">
                 <Link

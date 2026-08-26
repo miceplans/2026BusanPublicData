@@ -219,10 +219,7 @@ export default function PrivacyPage() {
       <header className="border-b border-black/8 bg-white px-5 sm:px-8">
         <div className="mx-auto flex min-h-[72px] max-w-[1000px] items-center justify-between gap-4">
           <Link className="font-extrabold tracking-[-0.035em]" href="/">
-            BUSAN AI 2026
-          </Link>
-          <Link className="text-sm font-bold text-[#0053b9]" href="/">
-            홈으로
+            2026 부산 AI 창업 경진대회
           </Link>
         </div>
       </header>
