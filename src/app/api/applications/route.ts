@@ -7,7 +7,6 @@ import { uploadFiles, validateFiles } from '@/lib/files';
 import { sendCompletionEmail } from '@/lib/email';
 import { jsonError, validationError } from '@/lib/http';
 import { consumeRateLimit, requestClientKey } from '@/lib/rate-limit';
-import { isVerifiedEmailToken } from '@/lib/email-verification';
 
 export async function POST(request: NextRequest) {
   const rateLimit = await consumeRateLimit(
@@ -39,13 +38,6 @@ export async function POST(request: NextRequest) {
     }
     const parsed = applicationSchema.safeParse(json);
     if (!parsed.success) return validationError(parsed.error);
-    if (
-      !isVerifiedEmailToken(
-        parsed.data.emailVerificationToken,
-        parsed.data.leaderEmail.toLowerCase(),
-      )
-    )
-      return jsonError('대표자 이메일 인증이 필요합니다.', 403);
     const settings = await getSettings();
     if (
       settings.item_summary_max_length &&

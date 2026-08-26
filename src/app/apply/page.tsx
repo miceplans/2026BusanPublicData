@@ -13,11 +13,6 @@ export default function ApplyPage() {
   ]);
   const [message, setMessage] = useState('');
   const [busy, setBusy] = useState(false);
-  const [leaderEmail, setLeaderEmail] = useState('');
-  const [emailChallenge, setEmailChallenge] = useState('');
-  const [emailCode, setEmailCode] = useState('');
-  const [emailVerificationToken, setEmailVerificationToken] = useState('');
-  const [emailBusy, setEmailBusy] = useState(false);
   useEffect(() => {
     fetch('/api/settings')
       .then((r) => r.json())
@@ -33,41 +28,6 @@ export default function ApplyPage() {
     setMembers((v) =>
       v.map((m, i) => (i === index ? { ...m, [key]: value } : m)),
     );
-  }
-  async function requestEmailCode() {
-    setEmailBusy(true);
-    setMessage('');
-    const response = await fetch('/api/applications/email-verification', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ email: leaderEmail }),
-    });
-    const result = await response.json();
-    setEmailBusy(false);
-    if (!response.ok)
-      return setMessage(result.error ?? '인증 메일을 보내지 못했습니다.');
-    setEmailChallenge(result.challenge);
-    setEmailVerificationToken('');
-    setMessage('인증번호를 보냈습니다. 10분 안에 입력해 주세요.');
-  }
-  async function verifyEmailCode() {
-    setEmailBusy(true);
-    setMessage('');
-    const response = await fetch('/api/applications/email-verification', {
-      method: 'PUT',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        email: leaderEmail,
-        code: emailCode,
-        challenge: emailChallenge,
-      }),
-    });
-    const result = await response.json();
-    setEmailBusy(false);
-    if (!response.ok)
-      return setMessage(result.error ?? '인증번호를 확인하지 못했습니다.');
-    setEmailVerificationToken(result.token);
-    setMessage('대표자 이메일이 인증되었습니다.');
   }
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -88,7 +48,6 @@ export default function ApplyPage() {
       passwordConfirm: fd.get('passwordConfirm'),
       leaderName,
       leaderEmail: fd.get('leaderEmail'),
-      emailVerificationToken,
       leaderPhone: fd.get('leaderPhone'),
       participationType: fd.get('participationType') || '',
       industry: fd.get('industry') || '',
@@ -158,54 +117,7 @@ export default function ApplyPage() {
               value={leaderName}
               onChange={(e) => setLeaderName(e.target.value)}
             />
-            <Label text="대표자 이메일">
-              <div className="flex gap-2">
-                <input
-                  className={fieldClass}
-                  name="leaderEmail"
-                  type="email"
-                  required
-                  value={leaderEmail}
-                  readOnly={!!emailVerificationToken}
-                  onChange={(event) => {
-                    setLeaderEmail(event.target.value);
-                    setEmailChallenge('');
-                    setEmailVerificationToken('');
-                  }}
-                />
-                <button
-                  type="button"
-                  disabled={
-                    emailBusy || !leaderEmail || !!emailVerificationToken
-                  }
-                  onClick={requestEmailCode}
-                  className="motion-control rounded-lg border px-3 whitespace-nowrap disabled:opacity-50"
-                >
-                  인증번호 발송
-                </button>
-              </div>
-            </Label>
-            {emailChallenge && !emailVerificationToken && (
-              <Label text="이메일 인증번호">
-                <div className="flex gap-2">
-                  <input
-                    className={fieldClass}
-                    inputMode="numeric"
-                    maxLength={6}
-                    value={emailCode}
-                    onChange={(event) => setEmailCode(event.target.value)}
-                  />
-                  <button
-                    type="button"
-                    disabled={emailBusy || emailCode.length !== 6}
-                    onClick={verifyEmailCode}
-                    className="motion-control rounded-lg border px-3 whitespace-nowrap disabled:opacity-50"
-                  >
-                    인증 확인
-                  </button>
-                </div>
-              </Label>
-            )}
+            <Field name="leaderEmail" label="대표자 이메일" type="email" />
             <Field
               name="leaderPhone"
               label="대표자 연락처"

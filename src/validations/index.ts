@@ -58,9 +58,8 @@ function validateLeader(
       message: '대표자를 팀원 목록에 한 번 포함해 주세요.',
     });
 }
-export const applicationSchema = applicationBaseSchema
-  .extend({ emailVerificationToken: z.string().min(20).max(2000) })
-  .superRefine((data, context) => {
+export const applicationSchema = applicationBaseSchema.superRefine(
+  (data, context) => {
     if (data.password !== data.passwordConfirm)
       context.addIssue({
         code: 'custom',
@@ -68,7 +67,8 @@ export const applicationSchema = applicationBaseSchema
         message: '비밀번호가 일치하지 않습니다.',
       });
     validateLeader(data, context);
-  });
+  },
+);
 export const applicationUpdateSchema = applicationBaseSchema
   .omit({
     idempotencyKey: true,
