@@ -1,33 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-const organizations = [
-  {
-    role: '주최',
-    name: '부산광역시',
-    src: '/organization-logos/busan-metropolitan-city.png',
-    width: 3509,
-    height: 922,
-    panel: true,
-  },
-  {
-    role: '주관',
-    name: '부산정보산업진흥원',
-    src: '/organization-logos/busan-it-industry-promotion-agency.png',
-    width: 226,
-    height: 37,
-    panel: false,
-  },
-  {
-    role: '참여',
-    name: '부산창조경제혁신센터',
-    src: '/organization-logos/busan-center-for-creative-economy-innovation.png',
-    width: 249,
-    height: 53,
-    panel: false,
-  },
-] as const;
-
 export function SiteFooter() {
   return (
     <footer className="bg-[#0a0a0b] px-5 py-12 text-white sm:px-8 sm:py-16">
@@ -44,30 +17,19 @@ export function SiteFooter() {
             </a>
           </div>
 
-          <ul
-            className="grid gap-3 sm:grid-cols-3"
+          <div
+            className="flex h-20 items-center rounded-xl  px-4"
             aria-label="주최·주관·참여 기관"
           >
-            {organizations.map((organization) => (
-              <li key={organization.role} className="min-w-0">
-                <p className="mb-2 text-xs font-bold text-white/50">
-                  {organization.role}
-                </p>
-                <div
-                  className={`flex h-20 items-center rounded-xl px-4 ${organization.panel ? 'bg-white' : 'bg-white/6'}`}
-                >
-                  <Image
-                    alt={`${organization.name} 로고`}
-                    className="max-h-11 w-auto object-contain"
-                    src={organization.src}
-                    width={organization.width}
-                    height={organization.height}
-                    sizes="(max-width: 639px) 220px, 180px"
-                  />
-                </div>
-              </li>
-            ))}
-          </ul>
+            <Image
+              alt="주최·주관·참여 기관 로고"
+              className="max-h-11 w-auto object-contain"
+              src="/assets/organizations.png"
+              width={1183}
+              height={82}
+              sizes="(max-width: 639px) 320px, 480px"
+            />
+          </div>
         </div>
 
         <div className="flex flex-col gap-4 pt-8 text-xs leading-6 text-white/55 sm:flex-row sm:items-center sm:justify-between">

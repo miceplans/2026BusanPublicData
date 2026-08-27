@@ -49,7 +49,7 @@ export default function Page() {
           <button
             disabled={busy}
             aria-busy={busy}
-            className="motion-control min-h-14 rounded-[8px] bg-[#3182f6] p-4 font-bold text-white hover:bg-[#1b64da] disabled:bg-[#b0b8c1]"
+            className="brand-gradient motion-control min-h-14 rounded-[8px] p-4 font-bold text-white disabled:bg-[#b0b8c1]"
           >
             {busy ? '확인 중…' : '접수 내용 확인'}
           </button>

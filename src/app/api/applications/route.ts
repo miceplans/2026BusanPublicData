@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     const files = form
       .getAll('files')
       .filter((value): value is File => value instanceof File);
-    validateFiles(files, settings);
+    validateFiles(files);
     const { data: duplicate } = await db
       .from('applications')
       .select('id,receipt_number')

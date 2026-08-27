@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { SiteFooter } from '@/components/site-footer';
 
@@ -83,7 +84,7 @@ const agreement = [
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="max-w-[760px] text-[clamp(2rem,5vw,3.5rem)] leading-[1.12] font-bold tracking-[-0.055em]">
+    <h2 className="max-w-[760px] text-[clamp(1.5rem,4.5vw,3rem)] leading-[1.12] font-semibold tracking-[0.055em]">
       {children}
     </h2>
   );
@@ -91,11 +92,11 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-white text-[#111111]">
-      <header className="sticky top-0 z-20 border-b border-black/5 bg-white/90 backdrop-blur-xl">
+    <div className="min-h-screen bg-[#05070f] bg-[url('/assets/bg.png')] bg-cover bg-center bg-fixed text-white">
+      <header className="sticky top-0 z-20 border-b border-white/10 bg-black/40 backdrop-blur-xl">
         <div className="mx-auto flex min-h-[76px] max-w-[1280px] items-center justify-between gap-4 px-5 sm:px-8">
           <Link
-            className="flex min-h-11 items-center text-lg font-extrabold tracking-[-0.045em] sm:text-xl"
+            className="flex min-h-11 items-center text-lg font-semibold tracking-[-0.045em] sm:text-xl"
             href="/"
           >
             2026 부산 AI 창업 경진대회
@@ -105,25 +106,25 @@ export default function HomePage() {
             className="flex items-center gap-1 text-sm font-bold"
           >
             <a
-              className="hidden min-h-11 items-center rounded-full px-4 hover:bg-[#f5f5f7] sm:flex"
+              className="hidden min-h-11 items-center rounded-full px-4 hover:bg-white/10 sm:flex"
               href="#overview"
             >
               대회개요
             </a>
             <a
-              className="hidden min-h-11 items-center rounded-full px-4 hover:bg-[#f5f5f7] sm:flex"
+              className="hidden min-h-11 items-center rounded-full px-4 hover:bg-white/10 sm:flex"
               href="#support"
             >
               지원내용
             </a>
             <a
-              className="hidden min-h-11 items-center rounded-full px-4 hover:bg-[#f5f5f7] md:flex"
+              className="hidden min-h-11 items-center rounded-full px-4 hover:bg-white/10 md:flex"
               href="#schedule"
             >
               추진절차
             </a>
             <Link
-              className="flex min-h-11 items-center rounded-full bg-[#0053b9] px-5 text-white hover:bg-[#00489f]"
+              className="brand-gradient flex min-h-11 items-center rounded-full px-5 text-white"
               href="/apply"
             >
               참가 신청
@@ -133,45 +134,66 @@ export default function HomePage() {
       </header>
 
       <main>
-        <section className="overflow-hidden bg-[linear-gradient(145deg,#f3f7fc_0%,#ffffff_55%,#eef6ff_100%)] px-5 py-20 sm:px-8 sm:py-28 lg:py-32">
-          <div className="mx-auto max-w-[1280px]">
-            <div className="hero-copy max-w-[960px]">
-              <h1 className="mt-6 text-[clamp(2.65rem,5.5vw,4.5rem)] leading-[1.08] font-extrabold tracking-[0.04em]">
-                2026 부산 AI 창업 경진대회
+        <section className="relative overflow-hidden px-5 py-20 sm:px-8 sm:py-28 lg:py-32">
+          <div
+            aria-hidden="true"
+            className="hero-ai-art pointer-events-none absolute top-1/2 right-[-7vw] hidden w-[clamp(520px,48vw,780px)] -translate-y-1/2 lg:block"
+          >
+            <Image
+              alt=""
+              className="h-auto w-full brightness-[0.48]"
+              src="/assets/ai.svg"
+              width={1134}
+              height={749}
+              unoptimized
+            />
+          </div>
+          <div className="relative z-1 mx-auto max-w-[1280px]">
+            <div className="hero-copy max-w-[760px]">
+              <h1 className="mt-6">
+                <Image
+                  alt="2026 부산 AI 창업 경진대회"
+                  className="h-auto w-full max-w-[560px]"
+                  src="/assets/title.svg"
+                  width={352}
+                  height={98}
+                  unoptimized
+                  priority
+                />
               </h1>
-              <p className="mt-8 max-w-[680px] text-lg leading-[1.7] text-[#5b5b66] sm:text-xl">
+              <p className="mt-8 max-w-[680px] text-lg leading-[1.7] text-white/70 sm:text-xl">
                 부산 9대 전략산업 기반 AI 스타트업을 발굴하고,
                 <br /> 예비·초기 창업기업의 사업화까지 연결합니다.
               </p>
               <div className="mt-10 flex flex-wrap gap-3">
                 <Link
-                  className="inline-flex min-h-14 items-center justify-center rounded-full bg-[#0053b9] px-7 text-base font-bold text-white hover:bg-[#00489f]"
+                  className="brand-gradient inline-flex min-h-14 items-center justify-center rounded-full px-7 text-base font-bold text-white"
                   href="/apply"
                 >
                   참가 신청하기
                 </Link>
                 <Link
-                  className="inline-flex min-h-14 items-center justify-center rounded-full border border-[#d8d8e2] bg-white px-7 text-base font-bold hover:bg-[#f7f7fa]"
+                  className="inline-flex min-h-14 items-center justify-center rounded-full border border-white/20 bg-white/10 px-7 text-base font-bold text-white hover:bg-white/20"
                   href="/application/login"
                 >
                   신청 확인·수정
                 </Link>
               </div>
             </div>
-            <div className="hero-stats mt-20 grid border-t border-black/10 pt-8 sm:grid-cols-3 sm:gap-8">
+            <div className="hero-stats mt-20 grid border-t border-white/15 pt-8 sm:grid-cols-3 sm:gap-8">
               {[
                 ['9개', '부산 전략산업 분야'],
                 ['2~4인', '팀 단위 참가'],
                 ['107백만원', '시상·사업화 지원'],
               ].map(([value, label]) => (
                 <div
-                  className="border-b border-black/10 py-5 sm:border-0 sm:py-0"
+                  className="border-b border-white/15 py-5 sm:border-0 sm:py-0"
                   key={label}
                 >
-                  <strong className="block text-3xl font-extrabold tracking-[-0.05em] sm:text-4xl">
+                  <strong className="block text-3xl font-semibold tracking-[-0.05em] text-white sm:text-4xl">
                     {value}
                   </strong>
-                  <span className="mt-2 block text-sm text-[#696975]">
+                  <span className="mt-2 block text-sm text-white/60">
                     {label}
                   </span>
                 </div>
@@ -186,10 +208,10 @@ export default function HomePage() {
             <dl className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {overview.map(([term, detail]) => (
                 <div
-                  className="min-h-44 rounded-[28px] bg-[#f6f6f8] p-7 sm:p-8"
+                  className="interactive-card min-h-44 rounded-[28px] bg-white/8 p-7 sm:p-8"
                   key={term}
                 >
-                  <dt className="text-sm font-bold text-[#777784]">{term}</dt>
+                  <dt className="text-sm font-bold text-white/55">{term}</dt>
                   <dd className="mt-5 text-xl leading-[1.45] font-bold tracking-[-0.035em]">
                     {detail}
                   </dd>
@@ -201,39 +223,42 @@ export default function HomePage() {
           <section id="support" className="scroll-mt-28">
             <SectionTitle>단계별 지원내용</SectionTitle>
             <div className="mt-12 grid gap-5 lg:grid-cols-2">
-              <article className="rounded-[32px] bg-[#f5f5f7] p-7 sm:p-10">
-                <span className="text-sm font-extrabold text-[#0053b9]">
+              <article className="interactive-card rounded-[32px] bg-white/8 p-7 sm:p-10">
+                <span className="text-sm font-semibold text-[#ed68ad]">
                   경진대회
                 </span>
-                <h3 className="mt-4 text-3xl font-extrabold tracking-[-0.05em] sm:text-4xl">
+                <h3 className="mt-4 text-3xl font-semibold tracking-[-0.05em] sm:text-4xl">
                   총 7백만원 상당 생성형 AI 이용권
                 </h3>
                 <div className="mt-10 grid gap-3">
                   {awards.map(([name, count, title, prize]) => (
-                    <div className="rounded-2xl bg-white p-5" key={name}>
+                    <div
+                      className="interactive-card rounded-2xl bg-white/10 p-5"
+                      key={name}
+                    >
                       <div className="flex items-center justify-between gap-3">
                         <strong>{name}</strong>
-                        <span className="rounded-full bg-[#eef4fb] px-3 py-1 text-xs font-bold text-[#0053b9]">
+                        <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-bold text-[#ed68ad]">
                           {count}
                         </span>
                       </div>
-                      <p className="mt-3 text-sm text-[#777784]">{title}</p>
+                      <p className="mt-3 text-sm text-white/55">{title}</p>
                       <p className="mt-1 font-bold">{prize}</p>
                     </div>
                   ))}
                 </div>
               </article>
-              <article className="rounded-[32px] bg-[#0053b9] p-7 text-white sm:p-10">
-                <span className="text-sm font-extrabold text-white/70">
+              <article className="interactive-card brand-gradient rounded-[32px] p-7 text-white sm:p-10">
+                <span className="text-sm font-semibold text-white/70">
                   사업화 지원
                 </span>
-                <h3 className="mt-4 text-3xl font-extrabold tracking-[-0.05em] sm:text-4xl">
+                <h3 className="mt-4 text-3xl font-semibold tracking-[-0.05em] sm:text-4xl">
                   총 100백만원 · 본선 상위 6개 팀 지원
                 </h3>
                 <div className="mt-10 grid gap-3">
                   {support.map(([name, count, amount]) => (
                     <div
-                      className="flex items-center justify-between gap-4 rounded-2xl bg-white/10 p-5"
+                      className="interactive-card flex items-center justify-between gap-4 rounded-2xl bg-white/10 p-5"
                       key={name}
                     >
                       <div>
@@ -259,22 +284,22 @@ export default function HomePage() {
             <div className="min-w-0">
               <section id="schedule" className="scroll-mt-28">
                 <SectionTitle>추진절차</SectionTitle>
-                <p className="mt-5 text-sm text-[#777784]">
+                <p className="mt-5 text-sm text-white/55">
                   일정 및 세부내용은 운영 상황에 따라 변동될 수 있습니다.
                 </p>
                 <ol className="mt-12 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                   {schedule.map(([date, label], index) => (
                     <li
-                      className="min-h-44 rounded-[28px] border border-[#e5e5ec] p-6"
+                      className="interactive-card min-h-44 rounded-[28px] border border-white/15 p-6"
                       key={label}
                     >
-                      <span className="text-sm font-extrabold text-[#0053b9]">
+                      <span className="text-sm font-semibold text-[#ed68ad]">
                         {String(index + 1).padStart(2, '0')}
                       </span>
                       <strong className="mt-7 block text-xl tracking-[-0.035em]">
                         {label}
                       </strong>
-                      <span className="mt-3 block text-sm text-[#777784]">
+                      <span className="mt-3 block text-sm text-white/55">
                         {date}
                       </span>
                     </li>
@@ -286,13 +311,13 @@ export default function HomePage() {
                 <div className="mt-12 grid gap-5 lg:grid-cols-3">
                   {operationPlan.map((item, index) => (
                     <article
-                      className="rounded-[28px] bg-[#f6f6f8] p-7"
+                      className="interactive-card rounded-[28px] bg-white/8 p-7"
                       key={item.stage}
                     >
-                      <span className="text-sm font-extrabold text-[#0053b9]">
-                        STEP {index + 1}
+                      <span className="text-sm font-semibold text-[#ed68ad]">
+                        {index + 1}단계
                       </span>
-                      <h3 className="mt-4 text-2xl font-extrabold tracking-[-0.04em]">
+                      <h3 className="mt-4 text-2xl font-semibold tracking-[-0.04em]">
                         {item.stage}
                       </h3>
                       <dl className="mt-8 grid gap-5">
@@ -302,10 +327,10 @@ export default function HomePage() {
                           ['내용', item.description],
                         ].map(([label, value]) => (
                           <div
-                            className="border-t border-black/10 pt-4"
+                            className="border-t border-white/15 pt-4"
                             key={label}
                           >
-                            <dt className="text-xs font-bold text-[#777784]">
+                            <dt className="text-xs font-bold text-white/55">
                               {label}
                             </dt>
                             <dd className="mt-2 text-sm leading-[1.6]">
@@ -323,8 +348,8 @@ export default function HomePage() {
               <section>
                 <SectionTitle>참가 및 협약 핵심요건</SectionTitle>
                 <div className="mt-12 grid gap-5 lg:grid-cols-2">
-                  <div className="rounded-[32px] bg-[#111111] p-7 text-white sm:p-10">
-                    <h3 className="text-2xl font-extrabold tracking-[-0.04em]">
+                  <div className="interactive-card rounded-[32px] bg-white/14 p-7 text-white sm:p-10">
+                    <h3 className="text-2xl font-semibold tracking-[-0.04em]">
                       참가요건
                     </h3>
                     <ul className="mt-8 grid gap-5 text-sm leading-[1.65] text-white/75">
@@ -332,23 +357,23 @@ export default function HomePage() {
                         <li className="flex items-start gap-2.5" key={item}>
                           <span
                             aria-hidden="true"
-                            className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-[#78aee8]"
+                            className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-[#ed68ad]"
                           />
                           <span>{item}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
-                  <div className="rounded-[32px] bg-[#eef4fb] p-7 sm:p-10">
-                    <h3 className="text-2xl font-extrabold tracking-[-0.04em]">
+                  <div className="interactive-card rounded-[32px] bg-white/8 p-7 sm:p-10">
+                    <h3 className="text-2xl font-semibold tracking-[-0.04em]">
                       협약요건
                     </h3>
-                    <ul className="mt-8 grid gap-5 text-sm leading-[1.65] text-[#4f4f61]">
+                    <ul className="mt-8 grid gap-5 text-sm leading-[1.65] text-white/70">
                       {agreement.map((item) => (
                         <li className="flex items-start gap-2.5" key={item}>
                           <span
                             aria-hidden="true"
-                            className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-[#0053b9]"
+                            className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-[#ed68ad]"
                           />
                           <span>{item}</span>
                         </li>
@@ -363,15 +388,30 @@ export default function HomePage() {
 
         <section className="bg-[#111111] px-5 py-24 text-white sm:px-8 sm:py-32">
           <div className="mx-auto flex max-w-[1280px] flex-col items-start justify-between gap-10 lg:flex-row lg:items-end">
-            <h2 className="max-w-[800px] text-[clamp(1.5rem,2vw,5rem)] leading-[1.02] font-extrabold tracking-[0.065em]">
+            <h2 className="max-w-[800px] text-[clamp(1.5rem,2vw,5rem)] leading-[1.02] font-semibold tracking-[0.065em]">
               2026 부산 AI 창업 경진대회
             </h2>
-            <Link
-              className="inline-flex min-h-14 shrink-0 items-center justify-center rounded-full bg-[#0053b9] px-8 font-bold hover:bg-[#176bc9]"
-              href="/apply"
-            >
-              참가 신청하기
-            </Link>
+            <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
+              <Link
+                className="brand-gradient inline-flex min-h-14 shrink-0 items-center justify-center rounded-full px-8 font-bold"
+                href="/apply"
+              >
+                참가 신청하기
+              </Link>
+              <div className="flex shrink-0 flex-col items-center gap-2 sm:flex-row sm:gap-3">
+                <Image
+                  alt="참가 신청 QR 코드"
+                  className="size-16 rounded-lg bg-white p-1.5"
+                  src="/assets/qr.svg"
+                  width={87}
+                  height={87}
+                  unoptimized
+                />
+                <span className="text-sm font-bold text-white/80">
+                  바로 접수하기
+                </span>
+              </div>
+            </div>
           </div>
         </section>
       </main>

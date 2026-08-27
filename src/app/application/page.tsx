@@ -205,7 +205,7 @@ export default function Page() {
             <textarea
               name="itemSummary"
               defaultValue={app.item_summary}
-              className="mt-2 min-h-32 w-full border border-[#dfe3e8] bg-white p-3 outline-none focus:border-[#3182f6] focus:ring-3 focus:ring-[#3182f6]/10"
+              className="mt-2 min-h-32 w-full border border-[#dfe3e8] bg-white p-3 outline-none focus:border-[#e4007f] focus:ring-3 focus:ring-[#e4007f]/10"
             />
           </label>
           {app.application_members
@@ -221,7 +221,7 @@ export default function Page() {
             <textarea
               name="requests"
               defaultValue={app.requests ?? ''}
-              className="mt-2 min-h-24 w-full border border-[#dfe3e8] bg-white p-3 outline-none focus:border-[#3182f6] focus:ring-3 focus:ring-[#3182f6]/10"
+              className="mt-2 min-h-24 w-full border border-[#dfe3e8] bg-white p-3 outline-none focus:border-[#e4007f] focus:ring-3 focus:ring-[#e4007f]/10"
             />
           </label>
         </fieldset>
@@ -270,7 +270,7 @@ export default function Page() {
           </p>
         )}
         {editable && (
-          <button className="motion-control min-h-14 rounded-[8px] bg-[#3182f6] p-4 font-bold text-white hover:bg-[#1b64da]">
+          <button className="brand-gradient motion-control min-h-14 rounded-[8px] p-4 font-bold text-white">
             수정 내용 저장
           </button>
         )}

@@ -50,7 +50,7 @@ export default function Page() {
           type="password"
           className={fieldClass}
         />
-        <button className="motion-control min-h-14 rounded-[8px] bg-[#3182f6] p-4 font-bold text-white hover:bg-[#1b64da]">
+        <button className="brand-gradient motion-control min-h-14 rounded-[8px] p-4 font-bold text-white">
           로그인
         </button>
       </form>

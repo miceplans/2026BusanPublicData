@@ -86,13 +86,7 @@ export default function Page() {
             />
           </label>
         ))}
-        {(
-          [
-            'item_summary_max_length',
-            'evidence_max_files',
-            'evidence_max_bytes',
-          ] as const
-        ).map((k) => (
+        {(['item_summary_max_length'] as const).map((k) => (
           <label key={k} className="text-sm font-bold">
             {k}
             <input
@@ -109,7 +103,7 @@ export default function Page() {
           </label>
         ))}
         {msg && <p className="motion-feedback">{msg}</p>}
-        <button className="motion-control rounded-lg bg-[#1b4292] p-4 font-bold text-white hover:bg-[#153675]">
+        <button className="brand-gradient motion-control rounded-lg p-4 font-bold text-white">
           설정 저장
         </button>
       </form>

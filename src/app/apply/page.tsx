@@ -24,11 +24,7 @@ export default function ApplyPage() {
       .catch(() => showToast('운영 설정을 불러올 수 없습니다.'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const uploadEnabled = !!(
-    settings?.evidence_label &&
-    settings.evidence_max_files &&
-    settings.evidence_max_bytes
-  );
+  const uploadEnabled = !!settings?.evidence_label;
   function updateMember(index: number, key: 'name' | 'role', value: string) {
     setMembers((v) =>
       v.map((m, i) => (i === index ? { ...m, [key]: value } : m)),
@@ -38,15 +34,7 @@ export default function ApplyPage() {
     const selected = Array.from(event.target.files ?? []);
     event.target.value = '';
     if (!selected.length) return;
-    setFiles((v) => {
-      const merged = [...v, ...selected];
-      const max = settings?.evidence_max_files;
-      if (max && merged.length > max) {
-        showToast(`증빙자료는 최대 ${max}개까지 첨부할 수 있습니다.`);
-        return merged.slice(0, max);
-      }
-      return merged;
-    });
+    setFiles((v) => [...v, ...selected]);
   }
   function removeFile(index: number) {
     setFiles((v) => v.filter((_, i) => i !== index));
@@ -123,7 +111,7 @@ export default function ApplyPage() {
         className="motion-page mx-auto flex max-w-[800px] flex-col gap-5 px-5 py-10 sm:py-14"
       >
         <div className="mb-2">
-          <p className="text-sm font-bold text-[#3182f6]">
+          <p className="text-sm font-bold text-[#e4007f]">
             2026 부산 AI 창업 경진대회
           </p>
           <h1 className="mt-2 text-3xl font-extrabold tracking-[-0.04em] sm:text-4xl">
@@ -179,7 +167,7 @@ export default function ApplyPage() {
               name="itemSummary"
               required
               maxLength={settings?.item_summary_max_length ?? 10000}
-              className="min-h-32 border border-[#dfe3e8] bg-white p-4 outline-none hover:border-[#c9d0d8] focus:border-[#3182f6] focus:ring-3 focus:ring-[#3182f6]/10"
+              className="min-h-32 border border-[#dfe3e8] bg-white p-4 outline-none hover:border-[#c9d0d8] focus:border-[#e4007f] focus:ring-3 focus:ring-[#e4007f]/10"
             />
           </Label>
         </Section>
@@ -218,7 +206,7 @@ export default function ApplyPage() {
           {members.length < 4 && (
             <button
               type="button"
-              className="motion-control w-fit rounded-lg border border-[#cddcf0] bg-[#eef4fb] px-4 py-2 font-bold text-[#0053b9] hover:bg-[#e1ecf8]"
+              className="motion-control w-fit rounded-lg border border-[#efc5db] bg-[#fff0f7] px-4 py-2 font-bold text-[#b50065] hover:bg-[#ffe2f1]"
               onClick={() =>
                 setMembers((v) => [
                   ...v,
@@ -232,11 +220,11 @@ export default function ApplyPage() {
         </Section>
         {uploadEnabled && (
           <Section title={settings!.evidence_label!}>
-            <p className="text-sm text-[#666]">
-              {settings?.evidence_purpose} · 최대 {settings?.evidence_max_files}
-              개, 파일당{' '}
-              {Math.round((settings?.evidence_max_bytes ?? 0) / 1048576)}MB
-            </p>
+            {settings?.evidence_purpose && (
+              <p className="text-sm text-[#666]">
+                {settings.evidence_purpose}
+              </p>
+            )}
             <div className="flex flex-col gap-2 rounded-[10px] border border-[#e5e5e5] px-4 py-2">
               {files.map((file, i) => (
                 <div
@@ -248,7 +236,7 @@ export default function ApplyPage() {
                   <p className="truncate text-sm text-[#111]">{file.name}</p>
                   <button
                     type="button"
-                    className="motion-control shrink-0 text-[13px] font-semibold text-[#0053b9] hover:underline"
+                    className="motion-control shrink-0 text-[13px] font-semibold text-[#b50065] hover:underline"
                     onClick={() => removeFile(i)}
                   >
                     삭제
@@ -266,7 +254,7 @@ export default function ApplyPage() {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="motion-control rounded-[10px] bg-[#0053b9] px-3 py-2 text-sm font-bold text-white hover:bg-[#004494]"
+                  className="brand-gradient motion-control rounded-[10px] px-3 py-2 text-sm font-bold text-white"
                 >
                   파일 추가
                 </button>
@@ -293,7 +281,7 @@ export default function ApplyPage() {
           />
           <Check name="privacyAgreed">
             <Link
-              className="font-bold text-[#0053b9] underline underline-offset-4"
+              className="font-bold text-[#b50065] underline underline-offset-4"
               href="/privacy"
               target="_blank"
             >
@@ -315,7 +303,7 @@ export default function ApplyPage() {
         <button
           disabled={busy}
           aria-busy={busy}
-          className="motion-control mt-2 min-h-14 rounded-[8px] bg-[#3182f6] px-5 py-4 font-bold text-white hover:bg-[#1b64da] disabled:bg-[#b0b8c1] disabled:hover:bg-[#b0b8c1]"
+          className="brand-gradient motion-control mt-2 min-h-14 rounded-[8px] px-5 py-4 font-bold text-white disabled:bg-[#b0b8c1] disabled:hover:bg-[#b0b8c1]"
         >
           {busy ? '제출 중…' : '참가 신청 제출'}
         </button>
@@ -424,7 +412,7 @@ function Dropdown({
           </span>
           <span
             aria-hidden
-            className={`ml-2 text-[#1b4292] transition-transform ${open ? 'rotate-180' : ''}`}
+            className={`ml-2 text-[#702b89] transition-transform ${open ? 'rotate-180' : ''}`}
           >
             ▼
           </span>
@@ -450,7 +438,7 @@ function Dropdown({
                   }}
                   className={`h-10 truncate rounded-[8px] px-3 text-left text-sm ${
                     selected
-                      ? 'bg-[#1b4292]/10 font-medium text-[#1b4292]'
+                      ? 'bg-[#702b89]/10 font-medium text-[#702b89]'
                       : 'text-[#111] hover:bg-[#f5f5f5]'
                   }`}
                 >

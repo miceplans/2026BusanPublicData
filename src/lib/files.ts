@@ -2,7 +2,6 @@ import 'server-only';
 import { randomUUID } from 'node:crypto';
 import sharp from 'sharp';
 import { createAdminClient } from '@/lib/supabase/admin';
-import type { SiteSettings } from '@/types';
 
 const MAX_DIMENSION = 2000;
 
@@ -29,24 +28,13 @@ const types: Record<string, string[]> = {
   'image/png': ['png'],
   'image/webp': ['webp'],
 };
-export function validateFiles(files: File[], settings: SiteSettings) {
+export function validateFiles(files: File[]) {
   if (!files.length) return;
-  if (
-    !settings.evidence_max_files ||
-    !settings.evidence_max_bytes ||
-    !settings.evidence_label
-  )
-    throw new Error('현재 증빙자료 업로드를 받지 않습니다.');
-  if (files.length > settings.evidence_max_files)
-    throw new Error(
-      `증빙자료는 최대 ${settings.evidence_max_files}개까지 첨부할 수 있습니다.`,
-    );
   for (const file of files) {
     const ext = file.name.split('.').pop()?.toLowerCase() ?? '';
     if (!types[file.type]?.includes(ext))
       throw new Error('JPG, JPEG, PNG, WEBP 이미지만 첨부할 수 있습니다.');
-    if (file.size <= 0 || file.size > settings.evidence_max_bytes)
-      throw new Error('파일 용량 제한을 확인해 주세요.');
+    if (file.size <= 0) throw new Error('빈 파일은 첨부할 수 없습니다.');
   }
 }
 export async function uploadFiles(applicationId: string, files: File[]) {

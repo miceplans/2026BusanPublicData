@@ -138,7 +138,7 @@ export default function Page() {
             placeholder="팀명, 대표자, 연락처 검색"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="h-11 min-w-64 flex-1 rounded-[10px] border border-[#e5e5e5] bg-white px-4 text-sm text-[#111] outline-none placeholder:text-[#b9b9b9] focus:border-[#0053b9] focus:ring-2 focus:ring-[#0053b9]/10"
+            className="h-11 min-w-64 flex-1 rounded-[10px] border border-[#e5e5e5] bg-white px-4 text-sm text-[#111] outline-none placeholder:text-[#b9b9b9] focus:border-[#e4007f] focus:ring-2 focus:ring-[#e4007f]/10"
           />
           <a
             href="/api/admin/excel/export"
@@ -171,7 +171,7 @@ export default function Page() {
         {previewReady && (
           <button
             onClick={applyExcel}
-            className="motion-control mt-3 rounded-[10px] bg-[#1b4292] px-4 py-3 text-sm font-bold text-white hover:bg-[#153675]"
+            className="brand-gradient motion-control mt-3 rounded-[10px] px-4 py-3 text-sm font-bold text-white"
           >
             확인 후 엑셀 반영
           </button>
@@ -182,7 +182,7 @@ export default function Page() {
         <div className="mt-6 overflow-x-auto rounded-2xl border border-[#e5e5e5] bg-white shadow-sm">
           <table className="w-full min-w-[1050px] text-left text-sm">
             <thead>
-              <tr className="bg-[#1b4292] text-white">
+              <tr className="brand-gradient text-white">
                 {[
                   '접수번호',
                   '팀명/대표자',
@@ -219,7 +219,7 @@ export default function Page() {
                 >
                   <td className="p-3 pl-4 font-mono text-xs whitespace-nowrap text-[#666]">
                     <Link
-                      className="font-bold text-[#0053b9] underline decoration-[#0053b9]/30 underline-offset-2 hover:decoration-[#0053b9]"
+                      className="font-bold text-[#b50065] underline decoration-[#e4007f]/30 underline-offset-2 hover:decoration-[#e4007f]"
                       href={`/admin/applications/${x.id}`}
                     >
                       {x.receipt_number}

@@ -39,4 +39,4 @@ export function ContestHeader({
 }
 
 export const fieldClass =
-  'h-[52px] w-full min-w-0 rounded-[6px] border border-[#dfe3e8] bg-white px-4 text-base text-[#191f28] outline-none transition-[border-color,box-shadow,background-color] placeholder:text-[#b0b8c1] hover:border-[#c9d0d8] focus:border-[#3182f6] focus:ring-3 focus:ring-[#3182f6]/10 disabled:bg-[#f2f4f6] disabled:text-[#8b95a1] sm:text-sm';
+  'h-[52px] w-full min-w-0 rounded-[6px] border border-[#dfe3e8] bg-white px-4 text-base text-[#191f28] outline-none transition-[border-color,box-shadow,background-color] placeholder:text-[#b0b8c1] hover:border-[#c9d0d8] focus:border-[#e4007f] focus:ring-3 focus:ring-[#e4007f]/10 disabled:bg-[#f2f4f6] disabled:text-[#8b95a1] sm:text-sm';

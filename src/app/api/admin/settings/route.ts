@@ -13,8 +13,6 @@ const schema = z.object({
   item_summary_max_length: z.number().int().min(1).max(10000).nullable(),
   evidence_label: z.string().max(200).nullable(),
   evidence_purpose: z.string().max(500).nullable(),
-  evidence_max_files: z.number().int().min(1).max(20).nullable(),
-  evidence_max_bytes: z.number().int().min(1).max(52428800).nullable(),
   privacy_retention_policy: z.string().max(2000).nullable(),
 });
 export async function GET() {

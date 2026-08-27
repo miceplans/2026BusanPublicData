@@ -43,7 +43,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
             key={t.id}
             role="alert"
             className={`motion-feedback pointer-events-auto w-full max-w-sm rounded-[10px] px-4 py-3 text-sm font-bold text-white shadow-[0_8px_24px_rgba(0,0,0,0.16)] ${
-              t.variant === 'error' ? 'bg-red-700' : 'bg-[#1b4292]'
+              t.variant === 'error' ? 'bg-red-700' : 'brand-gradient'
             }`}
           >
             {t.message}

@@ -225,7 +225,7 @@ export default function PrivacyPage() {
       </header>
 
       <main className="mx-auto max-w-[1000px] px-5 py-14 sm:px-8 sm:py-20">
-        <p className="text-sm font-extrabold text-[#0053b9]">
+        <p className="text-sm font-extrabold text-[#b50065]">
           2026 부산 AI 창업 경진대회
         </p>
         <h1 className="mt-3 text-[clamp(2.25rem,5vw,3.75rem)] font-bold tracking-[0.055em]">

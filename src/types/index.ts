@@ -24,7 +24,5 @@ export type SiteSettings = {
   item_summary_max_length: number | null;
   evidence_label: string | null;
   evidence_purpose: string | null;
-  evidence_max_files: number | null;
-  evidence_max_bytes: number | null;
   privacy_retention_policy: string | null;
 };

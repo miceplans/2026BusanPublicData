@@ -64,7 +64,6 @@ create table if not exists public.site_settings (
  editing_enabled boolean not null default false,
  completion_message text not null default '참가 신청이 정상적으로 접수되었습니다.', contact text, completion_email_body text,
  item_summary_max_length integer check (item_summary_max_length between 1 and 10000), evidence_label text, evidence_purpose text,
- evidence_max_files smallint check (evidence_max_files between 1 and 20), evidence_max_bytes bigint check (evidence_max_bytes between 1 and 52428800),
  privacy_retention_policy text, updated_at timestamptz not null default now()
 );
 insert into public.site_settings(id) values (true) on conflict (id) do nothing;
