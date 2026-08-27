@@ -137,7 +137,7 @@ export default function HomePage() {
         <section className="relative overflow-hidden px-5 py-20 sm:px-8 sm:py-28 lg:py-32">
           <div
             aria-hidden="true"
-            className="hero-ai-art pointer-events-none absolute top-1/2 right-[-7vw] hidden w-[clamp(520px,48vw,780px)] -translate-y-1/2 lg:block"
+            className="hero-ai-art pointer-events-none absolute top-[calc(48%+150px)] right-[-0.8vw] hidden w-[clamp(520px,48vw,780px)] -translate-y-1/2 lg:block"
           >
             <Image
               alt=""
