@@ -4,6 +4,7 @@ import { getApplicationId } from '@/lib/application-session';
 import { applicationUpdateSchema, normalizeTeamName } from '@/validations';
 import { getSettings, applicationEditable } from '@/lib/settings';
 import { jsonError, validationError } from '@/lib/http';
+import { invalidateApplicationList } from '@/lib/admin-application-list';
 
 export async function GET() {
   const id = await getApplicationId();
@@ -81,5 +82,6 @@ export async function PATCH(request: NextRequest) {
     })),
   );
   if (memberError) return jsonError('팀원 정보를 저장할 수 없습니다.', 500);
+  invalidateApplicationList();
   return NextResponse.json({ ok: true });
 }

@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import { adminPatchSchema } from '@/validations';
 import { jsonError, validationError } from '@/lib/http';
 import { sendPasswordResetEmail } from '@/lib/email';
+import { invalidateApplicationList } from '@/lib/admin-application-list';
 export async function GET(
   _: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -62,6 +63,7 @@ export async function PATCH(
       });
     }
   }
+  invalidateApplicationList();
   return NextResponse.json({ ok: true });
 }
 export async function DELETE(
@@ -89,5 +91,6 @@ export async function DELETE(
   });
   const { error } = await db.from('applications').delete().eq('id', id);
   if (error) return jsonError('신청을 삭제할 수 없습니다.', 500);
+  invalidateApplicationList();
   return NextResponse.json({ ok: true });
 }

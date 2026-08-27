@@ -100,7 +100,7 @@ export default function ApplyPage() {
     }
   }
   return (
-    <div className="service-page">
+    <div className="apply-page service-page">
       <ContestHeader
         helper="참가 신청"
         actionLabel="신청 확인·수정"
@@ -111,9 +111,6 @@ export default function ApplyPage() {
         className="motion-page mx-auto flex max-w-[800px] flex-col gap-5 px-5 py-10 sm:py-14"
       >
         <div className="mb-2">
-          <p className="text-sm font-bold text-[#e4007f]">
-            2026 부산 AI 창업 경진대회
-          </p>
           <h1 className="mt-2 text-3xl font-extrabold tracking-[-0.04em] sm:text-4xl">
             참가 신청
           </h1>

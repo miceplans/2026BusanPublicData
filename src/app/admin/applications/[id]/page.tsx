@@ -89,7 +89,7 @@ export default function Page() {
       <main className="mx-auto max-w-[900px] px-5 py-8">
         <h1 className="text-3xl font-bold">{app.team_name}</h1>
         <p className="mt-2">{app.receipt_number}</p>
-        <dl className="mt-8 grid gap-4 rounded-xl border p-5 sm:grid-cols-2">
+        <dl className="mt-8 grid gap-4 rounded-xl border border-[#e5e5e5] p-5 sm:grid-cols-2">
           {[
             ['대표자', app.leader_name],
             ['이메일', app.leader_email],
@@ -107,19 +107,51 @@ export default function Page() {
           ))}
         </dl>
         <h2 className="mt-8 text-xl font-bold">팀원</h2>
-        <ul className="mt-3">
-          {app.application_members.map((m) => (
-            <li className="border-t py-3" key={m.id}>
-              {m.name} · {m.role}
-              {m.is_leader ? ' (대표자)' : ''}
-            </li>
-          ))}
-        </ul>
+        <div className="mt-3 overflow-x-auto rounded-2xl border border-[#e5e5e5] bg-white shadow-sm">
+          <table className="w-full text-left text-sm">
+            <thead>
+              <tr className="brand-gradient text-white">
+                {['이름', '역할', '구분'].map((x) => (
+                  <th
+                    className="p-3 text-xs font-bold tracking-wide whitespace-nowrap first:pl-4 last:pr-4"
+                    key={x}
+                  >
+                    {x}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {app.application_members.length === 0 && (
+                <tr>
+                  <td colSpan={3} className="p-6 text-center text-sm text-[#999]">
+                    팀원 정보가 없습니다.
+                  </td>
+                </tr>
+              )}
+              {app.application_members.map((m) => (
+                <tr
+                  className="border-b border-[#eee] last:border-b-0"
+                  key={m.id}
+                >
+                  <td className="p-3 pl-4 font-bold text-[#111]">{m.name}</td>
+                  <td className="p-3 text-[#333]">{m.role}</td>
+                  <td className="p-3 pr-4 text-[#666]">
+                    {m.is_leader ? '대표자' : '팀원'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <h2 className="mt-8 text-xl font-bold">증빙자료</h2>
         {app.application_files.length ? (
           <ul className="mt-3 grid gap-4 sm:grid-cols-2">
             {app.application_files.map((f) => (
-              <li className="overflow-hidden rounded-xl border" key={f.id}>
+              <li
+                className="overflow-hidden rounded-xl border border-[#e5e5e5]"
+                key={f.id}
+              >
                 <a
                   className="flex min-h-52 items-center justify-center bg-[#f5f5f5] p-2"
                   href={`/api/admin/files/${f.id}`}
@@ -160,7 +192,7 @@ export default function Page() {
         {app.email_logs.length ? (
           app.email_logs.map((e) => (
             <p
-              className="mt-2 flex flex-wrap items-center gap-3 rounded-lg border p-3 text-sm"
+              className="mt-2 flex flex-wrap items-center gap-3 rounded-lg border border-[#e5e5e5] p-3 text-sm"
               key={e.id}
             >
               <span>
@@ -171,7 +203,7 @@ export default function Page() {
               </span>
               {e.status !== 'sent' && (
                 <button
-                  className="motion-control rounded-lg border px-3 py-1 hover:bg-[#f5f5f5] disabled:opacity-50"
+                  className="motion-control rounded-lg border border-[#e5e5e5] px-3 py-1 hover:bg-[#f5f5f5] disabled:opacity-50"
                   disabled={resending}
                   onClick={resend}
                 >

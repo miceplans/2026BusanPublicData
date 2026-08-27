@@ -80,7 +80,7 @@ export default function Page() {
           <label key={k} className="text-sm font-bold">
             {k}
             <textarea
-              className="mt-2 min-h-20 w-full rounded-lg border p-3 font-normal"
+              className="mt-2 min-h-20 w-full rounded-lg border border-[#e5e5e5] p-3 font-normal"
               value={s[k] ?? ''}
               onChange={(e) => setS({ ...s, [k]: e.target.value || null })}
             />

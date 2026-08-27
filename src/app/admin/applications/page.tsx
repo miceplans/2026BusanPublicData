@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
-import { FormEvent, useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
 import { ContestHeader } from '@/components/contest-header';
 import { useToast } from '@/components/toast';
 type Row = {
@@ -16,13 +17,12 @@ type Row = {
   application_files: { count: number }[];
 };
 export default function Page() {
+  const router = useRouter();
   const { showToast } = useToast();
   const [items, setItems] = useState<Row[]>([]);
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState('');
   const [message, setMessage] = useState('');
-  const [excelFile, setExcelFile] = useState<File | null>(null);
-  const [previewReady, setPreviewReady] = useState(false);
   const load = useCallback(() => {
     const q = new URLSearchParams({ search });
     fetch(`/api/admin/applications?${q}`)
@@ -66,61 +66,6 @@ export default function Page() {
       showToast('네트워크 오류로 변경하지 못했습니다. 다시 시도해주세요.');
     }
   }
-  async function upload(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const f = new FormData(e.currentTarget);
-    const file = f.get('file');
-    if (!(file instanceof File)) return;
-    setExcelFile(file);
-    f.set('mode', 'preview');
-    try {
-      const r = await fetch('/api/admin/excel/import', {
-        method: 'POST',
-        body: f,
-      });
-      const v = await r.json();
-      if (!r.ok) {
-        showToast(v.error ?? '엑셀 검증에 실패했습니다.');
-        setPreviewReady(false);
-        return;
-      }
-      setMessage(
-        `미리보기: ${v.preview.map((x: { row: number; type: string }) => `${x.row}행 ${x.type}`).join(', ')}`,
-      );
-      setPreviewReady(
-        !v.preview.some((x: { type: string }) => x.type === '오류'),
-      );
-    } catch {
-      showToast('네트워크 오류로 엑셀 검증에 실패했습니다. 다시 시도해주세요.');
-      setPreviewReady(false);
-    }
-  }
-  async function applyExcel() {
-    if (
-      !excelFile ||
-      !confirm('미리보기의 변경사항을 실제 신청 데이터에 반영하시겠습니까?')
-    )
-      return;
-    const body = new FormData();
-    body.set('file', excelFile);
-    body.set('mode', 'apply');
-    try {
-      const r = await fetch('/api/admin/excel/import', {
-        method: 'POST',
-        body,
-      });
-      const v = await r.json();
-      if (!r.ok) {
-        showToast(v.error ?? '엑셀 반영에 실패했습니다.');
-        return;
-      }
-      setMessage(`${v.result.updated}건을 반영했습니다.`);
-      setPreviewReady(false);
-      load();
-    } catch {
-      showToast('네트워크 오류로 엑셀 반영에 실패했습니다. 다시 시도해주세요.');
-    }
-  }
   return (
     <div>
       <ContestHeader
@@ -153,29 +98,6 @@ export default function Page() {
             작업 이력
           </Link>
         </div>
-        <form
-          onSubmit={upload}
-          className="mt-4 flex flex-wrap items-center gap-2 rounded-[10px] border border-[#e5e5e5] bg-[#f7f8fa] p-3"
-        >
-          <input
-            required
-            name="file"
-            type="file"
-            accept=".xlsx"
-            className="text-sm"
-          />
-          <button className="motion-control h-11 rounded-[10px] border border-[#e5e5e5] bg-white px-3 text-sm font-bold text-[#111] hover:bg-[#f5f5f5]">
-            엑셀 검증·미리보기
-          </button>
-        </form>
-        {previewReady && (
-          <button
-            onClick={applyExcel}
-            className="brand-gradient motion-control mt-3 rounded-[10px] px-4 py-3 text-sm font-bold text-white"
-          >
-            확인 후 엑셀 반영
-          </button>
-        )}
         {message && (
           <p className="motion-feedback mt-4 text-sm text-[#666]">{message}</p>
         )}
@@ -214,13 +136,15 @@ export default function Page() {
               )}
               {items.map((x) => (
                 <tr
-                  className="motion-row border-b border-[#eee] last:border-b-0"
+                  className="motion-row cursor-pointer border-b border-[#eee] last:border-b-0 hover:bg-[#f7f8fa]"
                   key={x.id}
+                  onClick={() => router.push(`/admin/applications/${x.id}`)}
                 >
                   <td className="p-3 pl-4 font-mono text-xs whitespace-nowrap text-[#666]">
                     <Link
                       className="font-bold text-[#b50065] underline decoration-[#e4007f]/30 underline-offset-2 hover:decoration-[#e4007f]"
                       href={`/admin/applications/${x.id}`}
+                      onClick={(e) => e.stopPropagation()}
                     >
                       {x.receipt_number}
                     </Link>
@@ -246,7 +170,8 @@ export default function Page() {
                   <td className="p-3 pr-4">
                     <button
                       className="motion-control rounded-[10px] border border-[#e5e5e5] px-3 py-2 text-xs font-bold whitespace-nowrap text-[#111] hover:bg-[#eef4fb]"
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation();
                         const p = prompt(
                           '새 비밀번호를 입력하세요. 비우면 자동 생성합니다.',
                         );

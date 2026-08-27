@@ -3,6 +3,7 @@ import { getApplicationId } from '@/lib/application-session';
 import { getSettings, applicationEditable } from '@/lib/settings';
 import { uploadFiles, validateFiles } from '@/lib/files';
 import { jsonError } from '@/lib/http';
+import { invalidateApplicationList } from '@/lib/admin-application-list';
 
 export async function POST(request: NextRequest) {
   const applicationId = await getApplicationId();
@@ -23,6 +24,7 @@ export async function POST(request: NextRequest) {
   }
   try {
     await uploadFiles(applicationId, files);
+    invalidateApplicationList();
     return NextResponse.json({ ok: true });
   } catch {
     return jsonError('증빙자료를 저장할 수 없습니다.', 500);

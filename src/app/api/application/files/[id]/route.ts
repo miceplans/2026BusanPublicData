@@ -3,6 +3,7 @@ import { getApplicationId } from '@/lib/application-session';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { getSettings, applicationEditable } from '@/lib/settings';
 import { jsonError } from '@/lib/http';
+import { invalidateApplicationList } from '@/lib/admin-application-list';
 export async function DELETE(
   _: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -30,5 +31,6 @@ export async function DELETE(
     .delete()
     .eq('id', id)
     .eq('application_id', applicationId);
+  invalidateApplicationList();
   return NextResponse.json({ ok: true });
 }

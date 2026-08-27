@@ -36,9 +36,19 @@ body {
   min-height: 100vh;
   background: #ffffff;
   color: var(--color-text);
+  letter-spacing: 0.012em;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: clip;
+}
+
+.font-bold,
+.font-extrabold {
+  font-weight: 600;
+}
+
+[class*='tracking-[-'] {
+  letter-spacing: 0.01em !important;
 }
 
 img,
@@ -192,7 +202,7 @@ html {
 }
 .official-landing {
   word-break: keep-all;
-  letter-spacing: -0.018em;
+  letter-spacing: 0.012em;
 }
 .landing-section-block {
   scroll-margin-top: 2rem;
@@ -205,15 +215,15 @@ html {
 .landing-section-block > h2 {
   font-size: 30px;
   line-height: 1.35;
-  font-weight: 700;
-  letter-spacing: -0.045em;
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 .subheading {
   margin-top: 2.4rem;
   font-size: 19px;
   line-height: 1.45;
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 .award-flow {
   display: grid;
@@ -242,15 +252,15 @@ html {
 .award-card h3 {
   font-size: 20px;
   line-height: 1.4;
-  font-weight: 700;
-  letter-spacing: -0.035em;
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 .award-arrow {
   display: grid;
   place-items: center;
   color: var(--color-primary-deep);
   font-size: 25px;
-  font-weight: 800;
+  font-weight: 600;
   height: 42px;
 }
 .award-arrow span {
@@ -275,7 +285,7 @@ html {
   padding: 15px 14px;
 }
 .info-list dt {
-  font-weight: 700;
+  font-weight: 600;
 }
 .data-row {
   display: grid;
@@ -296,7 +306,7 @@ html {
   overflow-wrap: anywhere;
   font-size: 14px;
   line-height: 1.5;
-  letter-spacing: -0.025em;
+  letter-spacing: 0.01em;
 }
 .data-row > *:last-child {
   border-right: 0;
@@ -305,7 +315,7 @@ html {
   min-height: 54px;
   background: var(--gradient-primary);
   color: white;
-  font-weight: 700;
+  font-weight: 600;
 }
 .data-head > * {
   border-color: #fff;
@@ -313,7 +323,7 @@ html {
 .prose-box {
   font-size: 15px;
   line-height: 1.8;
-  letter-spacing: -0.018em;
+  letter-spacing: 0.012em;
 }
 .prose-box h3 {
   margin-top: 2rem;
@@ -322,8 +332,8 @@ html {
   border-left: 3px solid var(--color-primary);
   font-size: 18px;
   line-height: 1.5;
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 .prose-box ul,
 .prose-box ol {
@@ -425,7 +435,28 @@ html {
   }
 }
 .github-landing {
-  letter-spacing: -0.02em;
+  letter-spacing: 0.012em;
+}
+
+.apply-page *,
+.apply-page *::before,
+.apply-page *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .apply-page .service-card:hover,
+  .apply-page .service-card:focus-within {
+    z-index: auto;
+    transform: none;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  }
+
+  .apply-page .brand-gradient:not(:disabled):hover {
+    background-position: left center;
+    box-shadow: 0 8px 22px rgba(228, 0, 127, 0.2);
+  }
 }
 .github-landing .hero-glow {
   background: radial-gradient(
@@ -468,7 +499,7 @@ html {
 }
 .github-landing .eyebrow {
   font-size: 0.875rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 .github-landing .feature-title {
   margin-top: 1.25rem;
@@ -476,7 +507,7 @@ html {
   font-size: clamp(2.25rem, 5vw, 4.5rem);
   line-height: 1.08;
   font-weight: 600;
-  letter-spacing: -0.05em;
+  letter-spacing: 0.01em;
 }
 @media (min-width: 1024px) {
   .github-landing .section-inner {

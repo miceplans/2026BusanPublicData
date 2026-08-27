@@ -7,6 +7,7 @@ import { uploadFiles, validateFiles } from '@/lib/files';
 import { sendCompletionEmail } from '@/lib/email';
 import { jsonError, validationError } from '@/lib/http';
 import { consumeRateLimit, requestClientKey } from '@/lib/rate-limit';
+import { invalidateApplicationList } from '@/lib/admin-application-list';
 
 export async function POST(request: NextRequest) {
   const rateLimit = await consumeRateLimit(
@@ -117,6 +118,7 @@ export async function POST(request: NextRequest) {
       body: settings.completion_email_body,
       contact: settings.contact,
     });
+    invalidateApplicationList();
     return NextResponse.json({ ok: true, receiptNumber }, { status: 201 });
   } catch {
     if (uploaded.length)

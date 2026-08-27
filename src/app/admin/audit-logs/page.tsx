@@ -40,14 +40,14 @@ export default function Page() {
             <tbody>
               {logs.map((v) => (
                 <tr className="motion-row" key={v.id}>
-                  <td className="border-t p-3">
+                  <td className="border-t border-[#eee] p-3">
                     {new Date(v.created_at).toLocaleString('ko-KR')}
                   </td>
-                  <td className="border-t p-3">{v.action}</td>
-                  <td className="border-t p-3">
+                  <td className="border-t border-[#eee] p-3">{v.action}</td>
+                  <td className="border-t border-[#eee] p-3">
                     {v.target_type} {v.target_id}
                   </td>
-                  <td className="border-t p-3">
+                  <td className="border-t border-[#eee] p-3">
                     <code>{JSON.stringify(v.change_summary)}</code>
                   </td>
                 </tr>
