@@ -2,7 +2,7 @@ import 'server-only';
 import { getServerEnv } from '@/lib/env/server';
 
 const GLM_CHAT_COMPLETIONS_URL =
-  'https://open.bigmodel.cn/api/paas/v4/chat/completions';
+  'https://open.bigmodel.cn/api/coding/paas/v4/chat/completions';
 
 export async function generatePasswordResetEmailBody(input: {
   teamName: string;
@@ -19,7 +19,7 @@ export async function generatePasswordResetEmailBody(input: {
         Authorization: `Bearer ${env.GLM_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'glm-4-flash',
+        model: 'glm-5.2',
         temperature: 0.3,
         messages: [
           {
