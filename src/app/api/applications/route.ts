@@ -10,24 +10,9 @@ import { getSettings } from '@/lib/settings';
 import { uploadFiles, validateFiles } from '@/lib/files';
 import { sendCompletionEmail } from '@/lib/email';
 import { jsonError, validationError } from '@/lib/http';
-import { consumeRateLimit, requestClientKey } from '@/lib/rate-limit';
 import { invalidateApplicationList } from '@/lib/admin-application-list';
 
 export async function POST(request: NextRequest) {
-  const rateLimit = await consumeRateLimit(
-    'application_submit_ip',
-    requestClientKey(request),
-    5,
-    60 * 60,
-  );
-  if (!rateLimit.allowed)
-    return NextResponse.json(
-      {
-        ok: false,
-        error: '신청 요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.',
-      },
-      { status: 429, headers: { 'Retry-After': String(rateLimit.retryAfter) } },
-    );
   const db = createAdminClient();
   let applicationId: string | null = null;
   let uploaded: string[] = [];
