@@ -10,6 +10,18 @@ export function normalizeTeamName(value: string) {
     .replace(/\s+/g, ' ')
     .toLocaleLowerCase('ko-KR');
 }
+export function phoneDigits(value: string) {
+  return value.replace(/\D/g, '');
+}
+export function formatPhoneNumber(value: string) {
+  const digits = phoneDigits(value).slice(0, 11);
+  if (digits.length <= 3) return digits;
+  if (digits.length <= 7) return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+  return `${digits.slice(0, 3)}-${digits.slice(3, digits.length - 4)}-${digits.slice(-4)}`;
+}
+export function phoneLastFour(value: string) {
+  return phoneDigits(value).slice(-4);
+}
 export const passwordSchema = z
   .string()
   .min(8, '비밀번호는 8자 이상이어야 합니다.')
@@ -28,8 +40,6 @@ export const memberSchema = z.object({
 const applicationBaseSchema = z.object({
   idempotencyKey: z.uuid(),
   teamName: requiredText('팀명', 100),
-  password: passwordSchema,
-  passwordConfirm: z.string(),
   leaderName: requiredText('팀장 이름', 50),
   leaderEmail: z.email('올바른 이메일 주소를 입력해 주세요.').max(254),
   leaderPhone: z
@@ -61,20 +71,12 @@ function validateLeader(
 }
 export const applicationSchema = applicationBaseSchema.superRefine(
   (data, context) => {
-    if (data.password !== data.passwordConfirm)
-      context.addIssue({
-        code: 'custom',
-        path: ['passwordConfirm'],
-        message: '비밀번호가 일치하지 않습니다.',
-      });
     validateLeader(data, context);
   },
 );
 export const applicationUpdateSchema = applicationBaseSchema
   .omit({
     idempotencyKey: true,
-    password: true,
-    passwordConfirm: true,
     privacyAgreed: true,
   })
   .partial()
@@ -96,7 +98,7 @@ export const applicationUpdateSchema = applicationBaseSchema
   .superRefine(validateLeader);
 export const applicationLoginSchema = z.object({
   teamName: requiredText('팀명', 100),
-  password: z.string().min(1).max(64),
+  password: z.string().regex(/^\d{4}$/, '연락처 뒤 4자리를 입력해 주세요.'),
 });
 export const adminLoginSchema = z.object({
   email: z.email(),

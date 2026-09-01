@@ -1,6 +1,7 @@
 'use client';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { ContestHeader, fieldClass } from '@/components/contest-header';
+import { formatPhoneNumber } from '@/validations';
 import { INDUSTRIES, PARTICIPATION_TYPES } from '@/types';
 import { useToast } from '@/components/toast';
 type App = {
@@ -198,6 +199,7 @@ export default function Page() {
             l="팀장 연락처"
             v={app.leader_phone}
             autoComplete="tel"
+            phone
           />
           <F
             n="leaderRegion"
@@ -298,12 +300,14 @@ function F({
   v,
   type = 'text',
   autoComplete,
+  phone = false,
 }: {
   n: string;
   l: string;
   v: string;
   type?: string;
   autoComplete?: React.HTMLInputAutoCompleteAttribute;
+  phone?: boolean;
 }) {
   return (
     <label className="text-sm font-bold">
@@ -314,6 +318,17 @@ function F({
         type={type}
         defaultValue={v}
         autoComplete={autoComplete}
+        inputMode={phone ? 'numeric' : undefined}
+        maxLength={phone ? 13 : undefined}
+        onInput={
+          phone
+            ? (e) => {
+                e.currentTarget.value = formatPhoneNumber(
+                  e.currentTarget.value,
+                );
+              }
+            : undefined
+        }
         className={`${fieldClass} mt-2 font-normal`}
       />
     </label>

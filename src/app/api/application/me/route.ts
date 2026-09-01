@@ -5,6 +5,8 @@ import { applicationUpdateSchema, normalizeTeamName } from '@/validations';
 import { getSettings, applicationEditable } from '@/lib/settings';
 import { jsonError, validationError } from '@/lib/http';
 import { invalidateApplicationList } from '@/lib/admin-application-list';
+import { hash } from 'bcryptjs';
+import { phoneLastFour } from '@/validations';
 
 export async function GET() {
   const id = await getApplicationId();
@@ -54,6 +56,8 @@ export async function PATCH(request: NextRequest) {
       leader_name: parsed.data.leaderName,
       leader_email: parsed.data.leaderEmail.toLowerCase(),
       leader_phone: parsed.data.leaderPhone,
+      password_hash: await hash(phoneLastFour(parsed.data.leaderPhone), 12),
+      credential_type: 'phone_last_four',
       leader_region: parsed.data.leaderRegion,
       participation_type: parsed.data.participationType,
       industry: parsed.data.industry,

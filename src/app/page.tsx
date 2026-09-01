@@ -33,10 +33,12 @@ const strategicIndustries = [
 ];
 
 const schedule = [
-  ['2026. 10. 1.(목) ~ 10. 7.(수)', '예선 서류심사'],
-  ['2026. 10. 8.(목)', '예선 결과 발표'],
-  ['2026. 10. 15.(목)', '온라인 오리엔테이션'],
-  ['2026. 10. 31.(토) 10:00 ~ 16:30', '본선 발표'],
+  ['9월', '참가팀 모집'],
+  ['10월', '서면 심사'],
+  ['10월 31일', '발표심사 및 시상식'],
+  ['11월', '창업·사업화 지원 협약'],
+  ['11월 ~ 12월', '창업·사업화 교육 및 컨설팅 (3주)'],
+  ['12월', '창업·사업화 지원금 수여'],
 ];
 
 const operationPlan = [
@@ -59,12 +61,12 @@ const operationPlan = [
 ];
 
 const participation = [
-  '공고일 기준 AI 관련 우수 아이템을 보유한 예비창업자(팀) 또는 업력 2년 이내 신규 창업기업',
+  '공고일 기준 AI 관련 우수 아이템을 보유한 예비창업자(팀) \n 또는 업력 2년 이내 신규 창업기업',
   '예비창업자는 공고일 기준 신청자 명의의 개인·법인 사업자등록이 없어야 함',
-  '신규창업자는 공고일 기준 개업일(법인은 법인설립등기일)로부터 2년이 경과하지 않아야 함',
+  '신규창업자는 공고일 기준 개업일(법인은 법인설립등기일)로부터\n 2년이 경과하지 않아야 함',
   '2~4인으로 구성된 팀',
   '팀원 전원이 지원대상 요건을 충족해야 함',
-  '부산 소재 예비·신규 창업자에게 평가 전형별 우대 가점(예비창업자는 대표자 주소지, 신규창업자는 사업장 소재지 기준)',
+  '부산 소재 예비·신규 창업자에게 평가 전형별 우대 가점\n(예비창업자는 대표자 주소지, 신규창업자는 사업장 소재지 기준)',
 ];
 
 const agreementTargets = [
@@ -73,7 +75,7 @@ const agreementTargets = [
 ];
 
 const agreementRequirements = [
-  '상위 수상팀이 협약요건을 충족하지 못하거나 협약을 포기하면 차순위 수상팀에 사업화 지원 자격이 순차 승계됨',
+  '상위 수상팀이 협약요건을 충족하지 못하거나 협약을 포기하면\n 차순위 수상팀에 사업화 지원 자격이 순차 승계됨',
 ];
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
@@ -128,33 +130,55 @@ export default function HomePage() {
       </header>
 
       <main>
-        <section className="relative overflow-hidden px-5 py-20 sm:px-8 sm:py-28 lg:py-32">
+        <section className="relative overflow-hidden px-5 py-20 text-center sm:px-8 sm:py-28 lg:py-32">
+          <div
+            className="pointer-events-none absolute z-0 opacity-20"
+            style={{
+              top: '50%',
+              left: 'calc(50% + 350px)',
+              width: 4200,
+              maxWidth: 'none',
+              transform: 'translate(-50%, -58%)',
+            }}
+            aria-hidden="true"
+          >
+            <Image
+              alt=""
+              className="hero-ai-art block h-auto max-w-none drop-shadow-[0_0_80px_rgba(69,196,222,0.22)]"
+              style={{ width: 4200, maxWidth: 'none' }}
+              src="/assets/ai.svg"
+              width={1118}
+              height={931}
+              unoptimized
+            />
+          </div>
           <div className="relative z-1 mx-auto max-w-[1280px]">
-            <div className="hero-copy max-w-[760px]">
-              <h1 className="mt-6 max-w-[760px] text-[clamp(2.5rem,6vw,5.5rem)] leading-[1.02] font-black tracking-[-0.065em]">
+            <div className="hero-copy mx-auto flex max-w-[980px] flex-col items-center">
+              <h1 className="mt-6 flex w-full flex-col items-center text-[clamp(3rem,7vw,6.5rem)] leading-[0.98] font-black tracking-[-0.065em]">
                 <Image
                   alt="2026 AI 창업 경진대회"
-                  className="h-auto w-full max-w-[560px]"
+                  className="h-auto w-full max-w-[760px]"
                   src="/assets/title.svg"
                   width={1234}
                   height={296}
                   priority
                   unoptimized
                 />
-                <span className="mt-5 block max-w-[700px] text-[clamp(1.15rem,2.2vw,2rem)] leading-[1.3] font-bold tracking-[-0.035em] text-white/75">
+                <span className="mt-6 block max-w-[820px] text-[clamp(1.2rem,2.4vw,2.15rem)] leading-[1.3] font-bold tracking-[-0.035em] text-white/75">
                   부산의 전략산업 분야 우수 AI 창업 아이디어 발굴·육성
                 </span>
               </h1>
-              <p className="mt-6 text-2xl font-bold tracking-[-0.02em] text-white sm:text-3xl">
-                부산 9대 전략산업 <span className="text-[#45C4DE]">×</span> AI,
-                <br />
-                도전에서 사업화까지
+              <p className="mt-10 text-3xl font-black tracking-[-0.035em] text-white sm:text-5xl">
+                <span className="text-[#45C4DE]">
+                  {' '}
+                  AI 스타트업의 새로운 항구, 부산
+                </span>
               </p>
-              <p className="mt-6 max-w-[680px] text-lg leading-[1.7] text-white/70 sm:text-xl">
+              <p className="mt-6 max-w-[760px] text-lg leading-[1.7] text-white/70 sm:text-xl">
                 부산의 전략산업 분야 우수 AI 창업 아이디어를 발굴·육성하고,
                 <br /> 예비·초기 창업기업의 사업화를 지원합니다.
               </p>
-              <div className="mt-10 flex flex-wrap gap-3">
+              <div className="mt-10 flex flex-wrap justify-center gap-3">
                 <Link
                   className="brand-gradient inline-flex min-h-14 items-center justify-center rounded-full px-7 text-base font-bold text-white"
                   href="/apply"
@@ -169,7 +193,7 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-            <div className="hero-stats mt-20 grid border-t border-[#45C4DE]/55 pt-8 sm:grid-cols-3 sm:gap-8">
+            <div className="hero-stats mx-auto mt-20 grid max-w-[980px] border-t border-[#45C4DE]/55 pt-8 text-center sm:grid-cols-3 sm:gap-8">
               {[
                 ['9개', '부산 전략산업 분야'],
                 ['2~4인', '팀 단위 참가'],
@@ -262,25 +286,35 @@ export default function HomePage() {
           <div className="grid gap-20">
             <div className="min-w-0">
               <section id="schedule" className="scroll-mt-28">
-                <SectionTitle>추진절차</SectionTitle>
-                <p className="mt-5 text-sm text-white/55">
+                <div className="flex justify-center text-center">
+                  <SectionTitle>6단계 추진절차</SectionTitle>
+                </div>
+                <p className="mt-5 text-center text-sm text-white/55">
                   상기 일정은 진행 상황에 따라 변경될 수 있습니다.
                 </p>
-                <ol className="mt-12 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+                <ol className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
                   {schedule.map(([date, label], index) => (
                     <li
-                      className="landing-panel interactive-card min-h-36 rounded-[28px] border border-[#45C4DE]/55 p-6"
+                      className="landing-panel interactive-card relative flex min-h-48 flex-col items-center justify-between rounded-[24px] border border-[#45C4DE]/55 p-5 text-center"
                       key={`${date}-${label}`}
                     >
-                      <span className="text-sm font-semibold text-[#45C4DE]">
-                        {String(index + 1).padStart(2, '0')}
+                      <span className="text-sm font-bold text-[#45C4DE]">
+                        {index + 1}단계
                       </span>
-                      <strong className="mt-7 block text-xl tracking-[-0.035em]">
+                      <strong className="my-5 flex min-h-14 items-center text-lg leading-[1.4] tracking-[-0.035em]">
                         {label}
                       </strong>
-                      <span className="mt-3 block text-sm text-white/55">
+                      <span className="block w-full border-t border-[#45C4DE]/35 pt-4 text-base font-bold text-white/75">
                         {date}
                       </span>
+                      {index < schedule.length - 1 && (
+                        <span
+                          aria-hidden="true"
+                          className="absolute top-1/2 -right-3.5 z-2 hidden -translate-y-1/2 text-xl text-[#45C4DE] xl:block"
+                        >
+                          →
+                        </span>
+                      )}
                     </li>
                   ))}
                 </ol>
@@ -337,7 +371,7 @@ export default function HomePage() {
                             aria-hidden="true"
                             className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-[#45C4DE]"
                           />
-                          <span>{item}</span>
+                          <span className="whitespace-pre-line">{item}</span>
                         </li>
                       ))}
                     </ul>
@@ -371,7 +405,9 @@ export default function HomePage() {
                                   aria-hidden="true"
                                   className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-[#45C4DE]"
                                 />
-                                <span>{item}</span>
+                                <span className="whitespace-pre-line">
+                                  {item}
+                                </span>
                               </li>
                             ))}
                           </ul>

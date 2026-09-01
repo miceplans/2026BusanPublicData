@@ -1,7 +1,11 @@
 import { hash } from 'bcryptjs';
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { applicationSchema, normalizeTeamName } from '@/validations';
+import {
+  applicationSchema,
+  normalizeTeamName,
+  phoneLastFour,
+} from '@/validations';
 import { getSettings } from '@/lib/settings';
 import { uploadFiles, validateFiles } from '@/lib/files';
 import { sendCompletionEmail } from '@/lib/email';
@@ -79,7 +83,7 @@ export async function POST(request: NextRequest) {
     const receiptNumber = `BSAI-2026-${crypto.randomUUID().replace(/-/g, '').slice(0, 8).toUpperCase()}`;
     const now = new Date().toISOString();
     stage = 'hash_password';
-    const passwordHash = await hash(parsed.data.password, 12);
+    const passwordHash = await hash(phoneLastFour(parsed.data.leaderPhone), 12);
     stage = 'save_application';
     const { data: application, error } = await db
       .from('applications')
@@ -88,6 +92,7 @@ export async function POST(request: NextRequest) {
         team_name: parsed.data.teamName.trim(),
         normalized_team_name: normalized,
         password_hash: passwordHash,
+        credential_type: 'phone_last_four',
         leader_name: parsed.data.leaderName,
         leader_email: parsed.data.leaderEmail.toLowerCase(),
         leader_phone: parsed.data.leaderPhone,

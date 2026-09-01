@@ -4,6 +4,7 @@ import { ContestHeader, fieldClass } from '@/components/contest-header';
 import { INDUSTRIES, PARTICIPATION_TYPES, type SiteSettings } from '@/types';
 import { useToast } from '@/components/toast';
 import Link from 'next/link';
+import { formatPhoneNumber } from '@/validations';
 type Member = { name: string; role: string; isLeader: boolean };
 export default function ApplyPage() {
   const { showToast } = useToast();
@@ -53,8 +54,6 @@ export default function ApplyPage() {
     const data = {
       idempotencyKey,
       teamName: fd.get('teamName'),
-      password: fd.get('password'),
-      passwordConfirm: fd.get('passwordConfirm'),
       leaderName,
       leaderEmail: fd.get('leaderEmail'),
       leaderPhone: fd.get('leaderPhone'),
@@ -123,21 +122,10 @@ export default function ApplyPage() {
         <Section title="기본 정보">
           <Grid>
             <Field name="teamName" label="팀명" autoComplete="username" />
-            <Field
-              name="password"
-              label="신청 비밀번호"
-              type="password"
-              autoComplete="new-password"
-            />
-            <Field
-              name="passwordConfirm"
-              label="비밀번호 확인"
-              type="password"
-              autoComplete="new-password"
-            />
           </Grid>
           <p className="text-xs text-[#666]">
-            8~64자, 영문·숫자·특수문자 중 2종류 이상
+            신청 확인 비밀번호는 아래에 입력하는 팀장 연락처의 뒤 4자리로 자동
+            설정됩니다.
           </p>
         </Section>
         <Section title="팀장 정보">
@@ -160,6 +148,13 @@ export default function ApplyPage() {
               label="팀장 연락처"
               placeholder="010-0000-0000"
               autoComplete="tel"
+              inputMode="numeric"
+              maxLength={13}
+              onChange={(e) => {
+                e.currentTarget.value = formatPhoneNumber(
+                  e.currentTarget.value,
+                );
+              }}
             />
             <Field
               name="leaderRegion"
@@ -382,6 +377,8 @@ function Field({
   value,
   onChange,
   autoComplete,
+  inputMode,
+  maxLength,
 }: {
   name: string;
   label: string;
@@ -390,6 +387,8 @@ function Field({
   value?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   autoComplete?: React.HTMLInputAutoCompleteAttribute;
+  inputMode?: React.HTMLAttributes<HTMLInputElement>['inputMode'];
+  maxLength?: number;
 }) {
   return (
     <Label text={label}>
@@ -401,6 +400,8 @@ function Field({
         value={value}
         onChange={onChange}
         autoComplete={autoComplete}
+        inputMode={inputMode}
+        maxLength={maxLength}
         className={fieldClass}
       />
     </Label>

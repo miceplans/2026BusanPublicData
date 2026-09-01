@@ -38,7 +38,7 @@ export default function Page() {
           신청 확인·수정
         </h1>
         <p className="mt-3 text-[15px] text-[#6b7684]">
-          신청할 때 입력한 팀명과 비밀번호를 입력해 주세요.
+          신청할 때 입력한 팀명과 팀장 연락처 뒤 4자리를 입력해 주세요.
         </p>
         <form
           onSubmit={submit}
@@ -48,9 +48,11 @@ export default function Page() {
           <Field name="teamName" label="팀명" autoComplete="username" />
           <Field
             name="password"
-            label="신청 비밀번호"
+            label="팀장 연락처 뒤 4자리"
             type="password"
             autoComplete="current-password"
+            inputMode="numeric"
+            maxLength={4}
           />
           <button
             disabled={busy}
@@ -60,7 +62,7 @@ export default function Page() {
             {busy ? '확인 중…' : '접수 내용 확인'}
           </button>
           <p className="text-sm text-[#666]">
-            비밀번호를 분실한 경우 운영사무국에 문의해 주세요.
+            신청 당시 등록한 팀장 연락처의 숫자 뒤 4자리입니다.
           </p>
         </form>
       </div>
@@ -72,11 +74,15 @@ function Field({
   label,
   type = 'text',
   autoComplete,
+  inputMode,
+  maxLength,
 }: {
   name: string;
   label: string;
   type?: string;
   autoComplete?: React.HTMLInputAutoCompleteAttribute;
+  inputMode?: React.HTMLAttributes<HTMLInputElement>['inputMode'];
+  maxLength?: number;
 }) {
   return (
     <label className="flex flex-col gap-2">
@@ -86,6 +92,8 @@ function Field({
         name={name}
         type={type}
         autoComplete={autoComplete}
+        inputMode={inputMode}
+        maxLength={maxLength}
         className={fieldClass}
       />
     </label>
