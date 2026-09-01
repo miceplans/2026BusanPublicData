@@ -134,8 +134,8 @@ export default function HomePage() {
           <div
             className="pointer-events-none absolute z-0 opacity-20"
             style={{
-              top: '50%',
-              left: 'calc(50% + 350px)',
+              top: '40%',
+              left: 'calc(50%)',
               width: 4200,
               maxWidth: 'none',
               transform: 'translate(-50%, -58%)',
@@ -145,7 +145,7 @@ export default function HomePage() {
             <Image
               alt=""
               className="hero-ai-art block h-auto max-w-none drop-shadow-[0_0_80px_rgba(69,196,222,0.22)]"
-              style={{ width: 4200, maxWidth: 'none' }}
+              style={{ width: 3000, maxWidth: 'none' }}
               src="/assets/ai.svg"
               width={1118}
               height={931}
