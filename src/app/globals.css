@@ -1,5 +1,68 @@
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'SUIT';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Thin.woff2') format('woff2');
+  font-weight: 100;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SUIT';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-ExtraLight.woff2') format('woff2');
+  font-weight: 200;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SUIT';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SUIT';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SUIT';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SUIT';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SUIT';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SUIT';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SUIT';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Heavy.woff2') format('woff2');
+  font-weight: 900;
+  font-display: swap;
+}
+
 :root {
   color-scheme: light;
   --color-primary: #35c1de;
@@ -40,6 +103,11 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: clip;
+}
+
+:where(h1, h2, h3),
+.font-suit {
+  font-family: 'SUIT', Pretendard, sans-serif;
 }
 
 .font-bold,
@@ -95,6 +163,20 @@ video {
   transform-origin: center;
 }
 
+.landing-panel {
+  background-color: rgba(0, 0, 0, 0.3);
+  background-image: radial-gradient(
+    ellipse 75% 115% at 50% 50%,
+    rgba(25, 80, 174, 0.7) 0%,
+    rgba(13, 30, 94, 0.58) 58%,
+    rgba(3, 11, 45, 0.34) 100%
+  );
+  backdrop-filter: blur(2px);
+  box-shadow:
+    inset 0 0 34px rgba(69, 196, 222, 0.12),
+    0 12px 32px rgba(0, 0, 0, 0.22);
+}
+
 @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
   .interactive-card:hover,
   .interactive-card:focus-within,
@@ -146,10 +228,10 @@ html {
 @keyframes hero-ai-float {
   0%,
   100% {
-    transform: translateY(-50%) translate3d(0, -10px, 0) rotate(-2deg);
+    transform: translate3d(-50%, -10px, 0);
   }
   50% {
-    transform: translateY(-50%) translate3d(-18px, 14px, 0) rotate(1.5deg);
+    transform: translate3d(-50%, 14px, 0);
   }
 }
 .hero-copy {
@@ -159,7 +241,7 @@ html {
   animation: hero-enter 420ms 90ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .hero-ai-art {
-  animation: hero-ai-float 8s ease-in-out infinite;
+  animation: hero-ai-float 3.6s ease-in-out infinite;
   transform-origin: center;
   will-change: transform;
 }

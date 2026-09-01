@@ -4,8 +4,9 @@ import './globals.css';
 import { ToastProvider } from '@/components/toast';
 
 export const metadata: Metadata = {
-  title: '2026 해양수도 부산 AI 창업 경진대회',
-  description: '부산 9대 전략산업 AI 스타트업 발굴 프로젝트 참가 신청 사이트',
+  title: '2026 AI 창업 경진대회',
+  description:
+    '부산의 전략산업 분야 우수 AI 창업 아이디어를 발굴·육성하고 예비·초기 창업기업의 사업화를 지원하는 경진대회',
 };
 
 export default function RootLayout({

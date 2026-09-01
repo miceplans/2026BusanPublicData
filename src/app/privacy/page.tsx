@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { SiteFooter } from '@/components/site-footer';
 
 export const metadata: Metadata = {
-  title: '개인정보처리방침 | 2026 해양수도 부산 AI 창업 경진대회',
-  description: '2026 해양수도 부산 AI 창업 경진대회 개인정보처리방침',
+  title: '개인정보처리방침 | 2026 AI 창업 경진대회',
+  description: '2026 AI 창업 경진대회 개인정보처리방침',
 };
 
 const policySections = [
@@ -13,7 +13,7 @@ const policySections = [
     title: '1. 개인정보의 처리 목적',
     content: (
       <p>
-        부산정보산업진흥원은 2026 해양수도 부산 AI 창업 경진대회 참가 신청의
+        부산정보산업진흥원은 2026 AI 창업 경진대회 참가 신청의
         접수, 신청자 본인 확인, 참가 자격 확인, 신청 내용의 조회·수정, 심사 및
         대회 운영, 신청 완료 안내, 민원·문의 처리와 분쟁 대응을 위해 개인정보를
         처리합니다. 수집한 개인정보는 이 목적 이외의 용도로 이용하지 않으며,
@@ -219,14 +219,14 @@ export default function PrivacyPage() {
       <header className="border-b border-black/8 bg-white px-5 sm:px-8">
         <div className="mx-auto flex min-h-[72px] max-w-[1000px] items-center justify-between gap-4">
           <Link className="font-extrabold tracking-[-0.035em]" href="/">
-            2026 해양수도 부산 AI 창업 경진대회
+            2026 AI 창업 경진대회
           </Link>
         </div>
       </header>
 
       <main className="mx-auto max-w-[1000px] px-5 py-14 sm:px-8 sm:py-20">
         <p className="text-sm font-extrabold text-[#176f9f]">
-          2026 해양수도 부산 AI 창업 경진대회
+          2026 AI 창업 경진대회
         </p>
         <h1 className="mt-3 text-[clamp(2.25rem,5vw,3.75rem)] font-bold tracking-[0.055em]">
           개인정보처리방침

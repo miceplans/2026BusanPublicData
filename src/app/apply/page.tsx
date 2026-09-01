@@ -329,16 +329,6 @@ export default function ApplyPage() {
             </Link>
             을 확인했으며 개인정보 수집·이용에 동의합니다.
           </Check>
-          <ol className="list-decimal space-y-1.5 pl-5 text-xs leading-[1.6] text-[#9ca3af]">
-            <li>
-              타 대회 수상 또는 사업화 지원금 수혜 이력이 확인된 동일·유사
-              아이템은 수상 자격 박탈
-            </li>
-            <li>
-              사업화지원금 수혜 시 부산 소재지 등록 및 1년 유지 의무, 기간 내
-              폐업 시 지원금 환수
-            </li>
-          </ol>
         </Section>
         <button
           disabled={busy}
