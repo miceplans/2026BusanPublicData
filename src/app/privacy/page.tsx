@@ -190,7 +190,10 @@ const policySections = [
               className="underline underline-offset-4"
               href="mailto:office1170@naver.com"
             >
-              office1170@naver.com
+              office1170@naver.com <br />
+            </a>
+            <a className="underline underline-offset-4" href="tel:07046181703">
+              070.4618.1703
             </a>
           </dd>
         </dl>
