@@ -27,6 +27,7 @@ export async function POST(request: NextRequest) {
   const db = createAdminClient();
   let applicationId: string | null = null;
   let uploaded: string[] = [];
+  let stage = 'parse_request';
   try {
     const form = await request.formData();
     const raw = form.get('data');
@@ -37,8 +38,10 @@ export async function POST(request: NextRequest) {
     } catch {
       return jsonError('신청 데이터 형식이 올바르지 않습니다.');
     }
+    stage = 'validate_application';
     const parsed = applicationSchema.safeParse(json);
     if (!parsed.success) return validationError(parsed.error);
+    stage = 'load_settings';
     const settings = await getSettings();
     if (
       settings.item_summary_max_length &&
@@ -51,7 +54,9 @@ export async function POST(request: NextRequest) {
     const files = form
       .getAll('files')
       .filter((value): value is File => value instanceof File);
+    stage = 'validate_files';
     validateFiles(files);
+    stage = 'check_idempotency';
     const { data: duplicate } = await db
       .from('applications')
       .select('id,receipt_number')
@@ -63,6 +68,7 @@ export async function POST(request: NextRequest) {
         receiptNumber: duplicate.receipt_number,
         duplicate: true,
       });
+    stage = 'check_team_name';
     const normalized = normalizeTeamName(parsed.data.teamName);
     const { data: team } = await db
       .from('applications')
@@ -72,7 +78,9 @@ export async function POST(request: NextRequest) {
     if (team) return jsonError('이미 사용 중인 팀명입니다.', 409);
     const receiptNumber = `BSAI-2026-${crypto.randomUUID().replace(/-/g, '').slice(0, 8).toUpperCase()}`;
     const now = new Date().toISOString();
+    stage = 'hash_password';
     const passwordHash = await hash(parsed.data.password, 12);
+    stage = 'save_application';
     const { data: application, error } = await db
       .from('applications')
       .insert({
@@ -99,6 +107,7 @@ export async function POST(request: NextRequest) {
       .single();
     if (error || !application) throw error ?? new Error('신청 저장 실패');
     applicationId = application.id;
+    stage = 'save_members';
     const { error: memberError } = await db.from('application_members').insert(
       parsed.data.members.map((member, index) => ({
         application_id: application.id,
@@ -109,7 +118,9 @@ export async function POST(request: NextRequest) {
       })),
     );
     if (memberError) throw memberError;
+    stage = 'upload_files';
     uploaded = await uploadFiles(application.id, files);
+    stage = 'send_email';
     await sendCompletionEmail({
       applicationId: application.id,
       receiptNumber,
@@ -121,11 +132,36 @@ export async function POST(request: NextRequest) {
     });
     invalidateApplicationList();
     return NextResponse.json({ ok: true, receiptNumber }, { status: 201 });
-  } catch {
+  } catch (error) {
+    const safeError = error as {
+      name?: unknown;
+      code?: unknown;
+      status?: unknown;
+      message?: unknown;
+    };
+    console.error('application_submission_failed', {
+      stage,
+      name: typeof safeError?.name === 'string' ? safeError.name : undefined,
+      code: typeof safeError?.code === 'string' ? safeError.code : undefined,
+      status:
+        typeof safeError?.status === 'number' ? safeError.status : undefined,
+      message:
+        typeof safeError?.message === 'string'
+          ? safeError.message.slice(0, 300)
+          : undefined,
+    });
     if (uploaded.length)
       await db.storage.from('application-files').remove(uploaded);
     if (applicationId)
       await db.from('applications').delete().eq('id', applicationId);
+    if (
+      stage === 'upload_files' &&
+      (safeError?.code === 'EntityTooLarge' || safeError?.status === 413)
+    )
+      return jsonError(
+        '파일이 Supabase 프로젝트의 전역 업로드 한도를 초과했습니다. 더 작은 파일을 선택하거나 운영사무국에 문의해 주세요.',
+        413,
+      );
     return jsonError(
       '신청 처리 중 오류가 발생했습니다. 다시 시도해 주세요.',
       500,
