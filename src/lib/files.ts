@@ -51,7 +51,7 @@ export async function uploadFiles(applicationId: string, files: File[]) {
     const { error: metaError } = await client.from('application_files').insert({
       application_id: applicationId,
       object_key: objectKey,
-      original_name: file.name.slice(0, 255),
+      original_name: file.name,
       extension: ext,
       mime_type: file.type || 'application/octet-stream',
       size_bytes: compressed.byteLength,

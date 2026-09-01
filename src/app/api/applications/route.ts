@@ -59,11 +59,12 @@ export async function POST(request: NextRequest) {
       });
     stage = 'check_team_name';
     const normalized = normalizeTeamName(parsed.data.teamName);
-    const { data: team } = await db
+    const { data: team, error: teamLookupError } = await db
       .from('applications')
       .select('id')
       .eq('normalized_team_name', normalized)
       .maybeSingle();
+    if (teamLookupError) throw teamLookupError;
     if (team) return jsonError('이미 사용 중인 팀명입니다.', 409);
     const receiptNumber = `BSAI-2026-${crypto.randomUUID().replace(/-/g, '').slice(0, 8).toUpperCase()}`;
     const now = new Date().toISOString();
@@ -152,6 +153,13 @@ export async function POST(request: NextRequest) {
         '파일이 Supabase 프로젝트의 전역 업로드 한도를 초과했습니다. 더 작은 파일을 선택하거나 운영사무국에 문의해 주세요.',
         413,
       );
+    if (
+      stage === 'save_application' &&
+      safeError?.code === '23505' &&
+      typeof safeError.message === 'string' &&
+      safeError.message.includes('normalized_team_name')
+    )
+      return jsonError('이미 사용 중인 팀명입니다.', 409);
     return jsonError(
       '신청 처리 중 오류가 발생했습니다. 다시 시도해 주세요.',
       500,
