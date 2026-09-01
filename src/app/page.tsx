@@ -3,83 +3,84 @@ import Link from 'next/link';
 import { SiteFooter } from '@/components/site-footer';
 
 const overview = [
-  ['대회명', '2026 부산 AI 창업 경진대회'],
+  [
+    '대회명',
+    '2026 해양수도 부산 AI 창업 경진대회 : 부산 9대 전략산업 AI 스타트업 발굴 프로젝트',
+  ],
   ['주최', '부산광역시'],
   ['주관', '부산정보산업진흥원'],
   ['개최장소', '벡스코 컨벤션홀 205호'],
   ['참여기관', '부산창조경제혁신센터'],
   [
     '추진목적',
-    '우수 AI 스타트업 발굴, 창업 활성화 및 지역 AI 창업 생태계 조성',
+    '우수 AI 스타트업 발굴과 창업 사업화 지원을 통한 지역 AI 창업 생태계 조성',
   ],
+  [
+    '대회내용',
+    'AI 관련 예비·신규 창업팀의 예선·본선 시상 및 수상팀의 AI 시제품·서비스 제작을 위한 창업 사업화 비용 지원',
+  ],
+  [
+    '추진방식',
+    '공모전을 통한 우수 아이디어 발굴, 창업 컨설팅 및 창업·사업화 지원금 제공',
+  ],
+  ['참가대상', '전국 AI 관련 예비·신규 창업팀(2~4인 구성)'],
+  ['추진예산', '총 190백만원(총 지원규모 107백만원)'],
 ];
 
-const awards = [
-  ['대상', '1개 팀', '부산광역시장상', '200만원 상당 생성형 AI 이용권'],
-  [
-    '최우수',
-    '2개 팀',
-    '부산정보산업진흥원장상',
-    '100만원 상당 생성형 AI 이용권',
-  ],
-  ['우수', '3개 팀', '부산정보산업진흥원장상', '50만원 상당 생성형 AI 이용권'],
-  [
-    '장려',
-    '5개 팀',
-    '부산창조경제혁신센터장상',
-    '30만원 상당 생성형 AI 이용권',
-  ],
-];
-
-const support = [
-  ['대상', '1팀', '30,000,000원'],
-  ['최우수', '2팀', '팀당 20,000,000원'],
-  ['우수', '3팀', '팀당 10,000,000원'],
+const strategicIndustries = [
+  '해양',
+  '에너지테크',
+  '미래모빌리티',
+  '융합부품 소재',
+  '라이프스타일',
+  '디지털테크',
+  '금융',
+  '문화관광',
+  '바이오헬스',
 ];
 
 const schedule = [
-  ['9월', '신청접수 · 참가팀 모집'],
-  ['10월', '예선 서면심사'],
-  ['10월 31일', '본선 발표심사 및 시상식'],
-  ['11월', '창업·사업화 지원 협약'],
-  ['11월~12월', '창업사업화 교육 및 컨설팅'],
-  ['12월', '창업·사업화 지원금 수여'],
+  ['세부 일정 추후 안내', '참가팀 공모·접수'],
+  ['세부 일정 추후 안내', '예선 심사'],
+  ['세부 일정 추후 안내', '본선 심사 및 시상'],
+  ['세부 일정 추후 안내', '창업 컨설팅'],
+  ['세부 일정 추후 안내', '창업·사업화 지원'],
 ];
 
 const operationPlan = [
   {
     stage: '예선',
-    qualification: 'AI 관련 예비창업팀·신규창업팀',
-    selection: '제한 없음 / 20개 팀',
+    qualification: 'AI 관련 예비창업팀·업력 2년 이내 신규 창업기업',
     description: '창업 및 사업화 계획 서면평가',
   },
   {
     stage: '본선',
     qualification: '예선 서류평가 통과팀',
-    selection: '20개 팀 / 11개 팀',
     description: '아이디어 발표평가 및 시상식',
   },
   {
     stage: '사업화 지원',
-    qualification: '본선 상위 6개 팀',
-    selection: '6개 팀',
-    description: '전문가 매칭 및 컨설팅',
+    qualification: '창업 경진대회 입상팀 중 협약요건을 충족한 팀',
+    description: 'AI 시제품·서비스 제작을 위한 사업화 비용 지원',
   },
 ];
 
 const participation = [
-  '예비창업자 또는 업력 2년 이내 신규 창업기업',
+  '공고일 기준 AI 관련 우수 아이템을 보유한 예비창업자(팀) 또는 업력 2년 이내 신규 창업기업',
+  '예비창업자는 공고일 기준 신청자 명의의 개인·법인 사업자등록이 없어야 함',
+  '신규창업자는 공고일 기준 개업일(법인은 법인설립등기일)로부터 2년이 경과하지 않아야 함',
   '2~4인으로 구성된 팀',
   '팀원 전원이 지원대상 요건을 충족해야 함',
-  '부산 소재 예비·신규 창업자에게 평가 전형별 우대 가점',
+  '부산 소재 예비·신규 창업자에게 평가 전형별 우대 가점(예비창업자는 대표자 주소지, 신규창업자는 사업장 소재지 기준)',
 ];
 
-const agreement = [
+const agreementTargets = [
   '창업 경진대회 입상팀',
-  '협약일로부터 1년 이상 부산광역시 관내 소재 창업기업 유지',
-  '예비창업자는 협약일로부터 2개월 이내 부산광역시 관내 사업자등록 완료',
-  '신규창업자는 부산 소재 기업이거나 2개월 이내 부산광역시 관내로 소재지 이전',
-  '지점은 인정하지 않음',
+  '지원제외 대상에 해당하지 않고 창업·사업화 지원 협약요건을 성실히 이행할 수 있는 팀',
+];
+
+const agreementRequirements = [
+  '상위 수상팀이 협약요건을 충족하지 못하거나 협약을 포기하면 차순위 수상팀에 사업화 지원 자격이 순차 승계됨',
 ];
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
@@ -92,14 +93,14 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-[#05070f] bg-[url('/assets/bg.png')] bg-cover bg-center bg-fixed text-white">
+    <div className="min-h-screen bg-[#05070f] bg-[url('/assets/bg.png')] bg-cover bg-fixed bg-center text-white">
       <header className="sticky top-0 z-20 border-b border-white/10 bg-black/40 backdrop-blur-xl">
         <div className="mx-auto flex min-h-[76px] max-w-[1280px] items-center justify-between gap-4 px-5 sm:px-8">
           <Link
             className="flex min-h-11 items-center text-lg font-semibold tracking-[-0.045em] sm:text-xl"
             href="/"
           >
-            2026 부산 AI 창업 경진대회
+            2026 해양수도 부산 AI 창업 경진대회
           </Link>
           <nav
             aria-label="주요 메뉴"
@@ -150,20 +151,28 @@ export default function HomePage() {
           </div>
           <div className="relative z-1 mx-auto max-w-[1280px]">
             <div className="hero-copy max-w-[760px]">
-              <h1 className="mt-6">
-                <Image
-                  alt="2026 부산 AI 창업 경진대회"
-                  className="h-auto w-full max-w-[560px]"
-                  src="/assets/title.svg"
-                  width={352}
-                  height={98}
-                  unoptimized
-                  priority
+              <p className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-bold text-white/80">
+                <span
+                  aria-hidden="true"
+                  className="block size-1.5 rounded-full bg-[#ed68ad]"
                 />
+                주최 부산광역시 · 주관 부산정보산업진흥원
+              </p>
+              <h1 className="mt-6 max-w-[760px] text-[clamp(2.5rem,6vw,5.5rem)] leading-[1.02] font-black tracking-[-0.065em]">
+                <span className="block">2026 해양수도 부산</span>
+                <span className="mt-2 block">AI 창업 경진대회</span>
+                <span className="mt-5 block max-w-[700px] text-[clamp(1.15rem,2.2vw,2rem)] leading-[1.3] font-bold tracking-[-0.035em] text-white/75">
+                  부산 9대 전략산업 AI 스타트업 발굴 프로젝트
+                </span>
               </h1>
-              <p className="mt-8 max-w-[680px] text-lg leading-[1.7] text-white/70 sm:text-xl">
+              <p className="mt-6 text-2xl font-bold tracking-[-0.02em] text-white sm:text-3xl">
+                부산 9대 전략산업 <span className="text-[#ed68ad]">×</span> AI,
+                <br />
+                도전에서 사업화까지
+              </p>
+              <p className="mt-6 max-w-[680px] text-lg leading-[1.7] text-white/70 sm:text-xl">
                 부산 9대 전략산업 기반 AI 스타트업을 발굴하고,
-                <br /> 예비·초기 창업기업의 사업화까지 연결합니다.
+                <br /> 예비·신규 창업기업의 사업화까지 연결합니다.
               </p>
               <div className="mt-10 flex flex-wrap gap-3">
                 <Link
@@ -184,7 +193,7 @@ export default function HomePage() {
               {[
                 ['9개', '부산 전략산업 분야'],
                 ['2~4인', '팀 단위 참가'],
-                ['107백만원', '시상·사업화 지원'],
+                ['1억 7백만원', '시상·사업화 지원'],
               ].map(([value, label]) => (
                 <div
                   className="border-b border-white/15 py-5 sm:border-0 sm:py-0"
@@ -228,55 +237,40 @@ export default function HomePage() {
                   경진대회
                 </span>
                 <h3 className="mt-4 text-3xl font-semibold tracking-[-0.05em] sm:text-4xl">
-                  총 7백만원 상당 생성형 AI 이용권
+                  총 7백만원 지원
                 </h3>
-                <div className="mt-10 grid gap-3">
-                  {awards.map(([name, count, title, prize]) => (
-                    <div
-                      className="interactive-card rounded-2xl bg-white/10 p-5"
-                      key={name}
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <strong>{name}</strong>
-                        <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-bold text-[#ed68ad]">
-                          {count}
-                        </span>
-                      </div>
-                      <p className="mt-3 text-sm text-white/55">{title}</p>
-                      <p className="mt-1 font-bold">{prize}</p>
-                    </div>
-                  ))}
-                </div>
+                <p className="mt-8 leading-[1.7] text-white/70">
+                  AI 관련 예비·신규 창업팀을 대상으로 예선과 본선을 거쳐 우수
+                  아이디어를 시상합니다.
+                </p>
               </article>
               <article className="interactive-card brand-gradient rounded-[32px] p-7 text-white sm:p-10">
                 <span className="text-sm font-semibold text-white/70">
                   사업화 지원
                 </span>
                 <h3 className="mt-4 text-3xl font-semibold tracking-[-0.05em] sm:text-4xl">
-                  총 100백만원 · 본선 상위 6개 팀 지원
+                  총 1억원 지원
                 </h3>
-                <div className="mt-10 grid gap-3">
-                  {support.map(([name, count, amount]) => (
-                    <div
-                      className="interactive-card flex items-center justify-between gap-4 rounded-2xl bg-white/10 p-5"
-                      key={name}
-                    >
-                      <div>
-                        <strong>{name}</strong>
-                        <span className="mt-1 block text-xs text-white/65">
-                          {count}
-                        </span>
-                      </div>
-                      <strong className="text-right text-sm sm:text-base">
-                        {amount}
-                      </strong>
-                    </div>
-                  ))}
-                </div>
-                <p className="mt-8 text-sm leading-[1.6] text-white/70">
-                  교육·컨설팅, 공간, 시제품 제작비 등 창업 역량 강화 지원
+                <p className="mt-8 leading-[1.7] text-white/80">
+                  입상팀의 AI 시제품·서비스 제작을 위한 창업·사업화 비용을
+                  지원합니다.
                 </p>
               </article>
+            </div>
+            <div className="mt-5 rounded-[32px] border border-white/15 p-7 sm:p-10">
+              <h3 className="text-xl font-semibold">
+                부산 9대 전략산업 모집분야
+              </h3>
+              <ul className="mt-6 flex flex-wrap gap-2" aria-label="모집분야">
+                {strategicIndustries.map((industry) => (
+                  <li
+                    className="rounded-full bg-white/10 px-4 py-2 text-sm font-bold text-white/75"
+                    key={industry}
+                  >
+                    {industry}
+                  </li>
+                ))}
+              </ul>
             </div>
           </section>
 
@@ -285,13 +279,13 @@ export default function HomePage() {
               <section id="schedule" className="scroll-mt-28">
                 <SectionTitle>추진절차</SectionTitle>
                 <p className="mt-5 text-sm text-white/55">
-                  일정 및 세부내용은 운영 상황에 따라 변동될 수 있습니다.
+                  세부 일정은 공고 확정 후 안내합니다.
                 </p>
                 <ol className="mt-12 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                   {schedule.map(([date, label], index) => (
                     <li
-                      className="interactive-card min-h-44 rounded-[28px] border border-white/15 p-6"
-                      key={label}
+                      className="interactive-card min-h-36 rounded-[28px] border border-white/15 p-6"
+                      key={`${date}-${label}`}
                     >
                       <span className="text-sm font-semibold text-[#ed68ad]">
                         {String(index + 1).padStart(2, '0')}
@@ -323,7 +317,6 @@ export default function HomePage() {
                       <dl className="mt-8 grid gap-5">
                         {[
                           ['자격', item.qualification],
-                          ['참가·선발', item.selection],
                           ['내용', item.description],
                         ].map(([label, value]) => (
                           <div
@@ -350,7 +343,7 @@ export default function HomePage() {
                 <div className="mt-12 grid gap-5 lg:grid-cols-2">
                   <div className="interactive-card rounded-[32px] bg-white/14 p-7 text-white sm:p-10">
                     <h3 className="text-2xl font-semibold tracking-[-0.04em]">
-                      참가요건
+                      창업 경진대회 참가요건
                     </h3>
                     <ul className="mt-8 grid gap-5 text-sm leading-[1.65] text-white/75">
                       {participation.map((item) => (
@@ -366,19 +359,40 @@ export default function HomePage() {
                   </div>
                   <div className="interactive-card rounded-[32px] bg-white/8 p-7 sm:p-10">
                     <h3 className="text-2xl font-semibold tracking-[-0.04em]">
-                      협약요건
+                      창업·사업화 지원 협약요건
                     </h3>
-                    <ul className="mt-8 grid gap-5 text-sm leading-[1.65] text-white/70">
-                      {agreement.map((item) => (
-                        <li className="flex items-start gap-2.5" key={item}>
-                          <span
-                            aria-hidden="true"
-                            className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-[#ed68ad]"
-                          />
-                          <span>{item}</span>
-                        </li>
+                    <div className="mt-8 grid gap-7">
+                      {[
+                        {
+                          title: '협약대상 요건',
+                          items: agreementTargets,
+                        },
+                        {
+                          title: '필수 협약요건',
+                          items: agreementRequirements,
+                        },
+                      ].map((group) => (
+                        <div key={group.title}>
+                          <h4 className="text-xs font-bold tracking-[0.04em] text-white/55 uppercase">
+                            {group.title}
+                          </h4>
+                          <ul className="mt-3 grid gap-3 text-sm leading-[1.65] text-white/70">
+                            {group.items.map((item) => (
+                              <li
+                                className="flex items-start gap-2.5"
+                                key={item}
+                              >
+                                <span
+                                  aria-hidden="true"
+                                  className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-[#ed68ad]"
+                                />
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       ))}
-                    </ul>
+                    </div>
                   </div>
                 </div>
               </section>
@@ -389,7 +403,7 @@ export default function HomePage() {
         <section className="bg-[#111111] px-5 py-24 text-white sm:px-8 sm:py-32">
           <div className="mx-auto flex max-w-[1280px] flex-col items-start justify-between gap-10 lg:flex-row lg:items-end">
             <h2 className="max-w-[800px] text-[clamp(1.5rem,2vw,5rem)] leading-[1.02] font-semibold tracking-[0.065em]">
-              2026 부산 AI 창업 경진대회
+              2026 해양수도 부산 AI 창업 경진대회
             </h2>
             <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
               <Link

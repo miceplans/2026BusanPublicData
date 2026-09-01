@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { SiteFooter } from '@/components/site-footer';
 
 export const metadata: Metadata = {
-  title: '개인정보처리방침 | 2026 부산 AI 창업 경진대회',
-  description: '2026 부산 AI 창업 경진대회 개인정보처리방침',
+  title: '개인정보처리방침 | 2026 해양수도 부산 AI 창업 경진대회',
+  description: '2026 해양수도 부산 AI 창업 경진대회 개인정보처리방침',
 };
 
 const policySections = [
@@ -13,12 +13,12 @@ const policySections = [
     title: '1. 개인정보의 처리 목적',
     content: (
       <p>
-        부산정보산업진흥원은 2026 부산 AI 창업 경진대회 참가 신청의 접수, 신청자
-        본인 확인, 참가 자격 확인, 신청 내용의 조회·수정, 심사 및 대회 운영,
-        신청 완료 안내, 민원·문의 처리와 분쟁 대응을 위해 개인정보를 처리합니다.
-        수집한 개인정보는 이 목적 이외의 용도로 이용하지 않으며, 이용 목적이
-        변경되는 경우 관계 법령에 따라 별도의 동의를 받는 등 필요한 조치를
-        합니다.
+        부산정보산업진흥원은 2026 해양수도 부산 AI 창업 경진대회 참가 신청의
+        접수, 신청자 본인 확인, 참가 자격 확인, 신청 내용의 조회·수정, 심사 및
+        대회 운영, 신청 완료 안내, 민원·문의 처리와 분쟁 대응을 위해 개인정보를
+        처리합니다. 수집한 개인정보는 이 목적 이외의 용도로 이용하지 않으며,
+        이용 목적이 변경되는 경우 관계 법령에 따라 별도의 동의를 받는 등 필요한
+        조치를 합니다.
       </p>
     ),
   },
@@ -37,9 +37,9 @@ const policySections = [
             <tr className="border-b border-black/10 align-top">
               <td className="px-4 py-4 font-bold">필수 입력 정보</td>
               <td className="px-4 py-4">
-                팀명, 대표자 이름·이메일·연락처, 참가 유형, 참가 분야, 아이템명,
-                아이템 요약, 팀원 이름·역할, 부산 소재 여부, 지원대상 및
-                제외사유 확인 결과, 개인정보 수집·이용 동의 일시
+                팀명, 팀장 이름·이메일·연락처·지역, 참가 유형, 참가 분야,
+                아이템명, 아이템 요약, 팀원 이름·역할, 부산 소재 여부, 지원대상
+                및 제외사유 확인 결과, 개인정보 수집·이용 동의 일시
               </td>
             </tr>
             <tr className="border-b border-black/10 align-top">
@@ -219,14 +219,14 @@ export default function PrivacyPage() {
       <header className="border-b border-black/8 bg-white px-5 sm:px-8">
         <div className="mx-auto flex min-h-[72px] max-w-[1000px] items-center justify-between gap-4">
           <Link className="font-extrabold tracking-[-0.035em]" href="/">
-            2026 부산 AI 창업 경진대회
+            2026 해양수도 부산 AI 창업 경진대회
           </Link>
         </div>
       </header>
 
       <main className="mx-auto max-w-[1000px] px-5 py-14 sm:px-8 sm:py-20">
         <p className="text-sm font-extrabold text-[#b50065]">
-          2026 부산 AI 창업 경진대회
+          2026 해양수도 부산 AI 창업 경진대회
         </p>
         <h1 className="mt-3 text-[clamp(2.25rem,5vw,3.75rem)] font-bold tracking-[0.055em]">
           개인정보처리방침
