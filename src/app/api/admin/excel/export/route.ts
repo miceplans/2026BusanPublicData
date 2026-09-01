@@ -11,9 +11,10 @@ const headers = [
   '참가분야',
   '아이템명',
   '아이템요약',
-  '대표자이름',
-  '대표자이메일',
-  '대표자연락처',
+  '팀장이름',
+  '팀장이메일',
+  '팀장연락처',
+  '지역',
   '팀원수',
   '부산소재여부',
   '증빙자료수',
@@ -31,6 +32,7 @@ type ExportRow = {
   leader_name: string;
   leader_email: string;
   leader_phone: string;
+  leader_region: string;
   is_busan_based: boolean;
   requests: string | null;
   created_at: string;
@@ -48,7 +50,7 @@ export async function GET(request: NextRequest) {
   let q = createAdminClient()
     .from('applications')
     .select(
-      'id,receipt_number,team_name,participation_type,industry,item_name,item_summary,leader_name,leader_email,leader_phone,is_busan_based,requests,created_at,updated_at,application_members(count),application_files(count)',
+      'id,receipt_number,team_name,participation_type,industry,item_name,item_summary,leader_name,leader_email,leader_phone,leader_region,is_busan_based,requests,created_at,updated_at,application_members(count),application_files(count)',
     )
     .order('created_at', { ascending: false });
   if (ids?.length) q = q.in('id', ids);
@@ -64,6 +66,7 @@ export async function GET(request: NextRequest) {
     v.leader_name,
     v.leader_email,
     v.leader_phone,
+    v.leader_region,
     v.application_members?.[0]?.count ?? 0,
     v.is_busan_based ? '예' : '아니오',
     v.application_files?.[0]?.count ?? 0,

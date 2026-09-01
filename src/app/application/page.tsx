@@ -9,6 +9,7 @@ type App = {
   leader_name: string;
   leader_email: string;
   leader_phone: string;
+  leader_region: string;
   participation_type: string;
   industry: string;
   item_name: string;
@@ -78,6 +79,7 @@ export default function Page() {
       leaderName: f.get('leaderName'),
       leaderEmail: f.get('leaderEmail'),
       leaderPhone: f.get('leaderPhone'),
+      leaderRegion: f.get('leaderRegion'),
       participationType: f.get('participationType'),
       industry: f.get('industry'),
       itemName: f.get('itemName'),
@@ -177,14 +179,15 @@ export default function Page() {
           className="service-card grid gap-5 rounded-2xl p-5 sm:grid-cols-2 sm:p-7"
         >
           <F n="teamName" l="팀명" v={app.team_name} />
-          <F n="leaderName" l="대표자 이름" v={app.leader_name} />
+          <F n="leaderName" l="팀장 이름" v={app.leader_name} />
           <F
             n="leaderEmail"
-            l="대표자 이메일"
+            l="팀장 이메일"
             v={app.leader_email}
             type="email"
           />
-          <F n="leaderPhone" l="대표자 연락처" v={app.leader_phone} />
+          <F n="leaderPhone" l="팀장 연락처" v={app.leader_phone} />
+          <F n="leaderRegion" l="지역" v={app.leader_region} />
           <S
             n="participationType"
             l="참가 유형"

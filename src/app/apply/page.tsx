@@ -11,7 +11,7 @@ export default function ApplyPage() {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [leaderName, setLeaderName] = useState('');
   const [members, setMembers] = useState<Member[]>([
-    { name: '', role: '대표자', isLeader: true },
+    { name: '', role: '팀장', isLeader: true },
     { name: '', role: '', isLeader: false },
   ]);
   const [busy, setBusy] = useState(false);
@@ -58,6 +58,7 @@ export default function ApplyPage() {
       leaderName,
       leaderEmail: fd.get('leaderEmail'),
       leaderPhone: fd.get('leaderPhone'),
+      leaderRegion: fd.get('leaderRegion'),
       participationType: fd.get('participationType') || '',
       industry: fd.get('industry') || '',
       itemName: fd.get('itemName'),
@@ -132,21 +133,47 @@ export default function ApplyPage() {
             8~64자, 영문·숫자·특수문자 중 2종류 이상
           </p>
         </Section>
-        <Section title="대표자 정보">
+        <Section title="팀장 정보">
           <Grid>
             <Field
               name="leaderName"
-              label="대표자 이름"
+              label="팀장 이름"
               value={leaderName}
               onChange={(e) => setLeaderName(e.target.value)}
             />
-            <Field name="leaderEmail" label="대표자 이메일" type="email" />
+            <Field name="leaderEmail" label="팀장 이메일" type="email" />
             <Field
               name="leaderPhone"
-              label="대표자 연락처"
+              label="팀장 연락처"
               placeholder="010-0000-0000"
             />
+            <Field name="leaderRegion" label="지역" placeholder="예: 부산" />
           </Grid>
+          <fieldset className="flex flex-col gap-2">
+            <legend className="text-sm font-bold text-[#333d4b]">
+              부산 소재 여부
+            </legend>
+            <div className="flex gap-4">
+              {[
+                ['yes', '예'],
+                ['no', '아니오'],
+              ].map(([value, label], index) => (
+                <label className="flex items-center gap-2 text-sm" key={value}>
+                  <input
+                    type="radio"
+                    name="isBusanBased"
+                    value={value}
+                    defaultChecked={index === 1}
+                    className="size-4"
+                  />
+                  {label}
+                </label>
+              ))}
+            </div>
+            <p className="text-xs text-[#666]">
+              부산 소재 예비·신규 창업자에게 평가 전형별 우대 가점이 부여됩니다.
+            </p>
+          </fieldset>
         </Section>
         <Section title="대회 참가 정보">
           <Grid>
@@ -168,7 +195,7 @@ export default function ApplyPage() {
             />
           </Label>
         </Section>
-        <Section title="팀원 정보 (대표자 포함 2~4명)">
+        <Section title="팀원 정보 (팀장 포함 2~4명)">
           {members.map((m, i) => (
             <div
               className="motion-list-item grid gap-3 sm:grid-cols-[1fr_1fr_auto]"
@@ -177,7 +204,7 @@ export default function ApplyPage() {
               <input
                 className={fieldClass}
                 aria-label={`${i + 1}번째 팀원 이름`}
-                placeholder={i === 0 ? '대표자 이름과 자동으로 일치' : '이름'}
+                placeholder={i === 0 ? '팀장 이름과 자동으로 일치' : '이름'}
                 value={i === 0 ? leaderName : m.name}
                 disabled={i === 0}
                 onChange={(e) => updateMember(i, 'name', e.target.value)}

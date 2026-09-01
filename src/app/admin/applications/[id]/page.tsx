@@ -11,6 +11,7 @@ type Detail = Record<string, unknown> & {
   leader_name: string;
   leader_email: string;
   leader_phone: string;
+  leader_region: string;
   participation_type: string;
   industry: string;
   item_name: string;
@@ -91,9 +92,10 @@ export default function Page() {
         <p className="mt-2">{app.receipt_number}</p>
         <dl className="mt-8 grid gap-4 rounded-xl border border-[#e5e5e5] p-5 sm:grid-cols-2">
           {[
-            ['대표자', app.leader_name],
+            ['팀장', app.leader_name],
             ['이메일', app.leader_email],
             ['연락처', app.leader_phone],
+            ['지역', app.leader_region],
             ['참가유형', app.participation_type],
             ['참가분야', app.industry],
             ['아이템명', app.item_name],
@@ -137,7 +139,7 @@ export default function Page() {
                   <td className="p-3 pl-4 font-bold text-[#111]">{m.name}</td>
                   <td className="p-3 text-[#333]">{m.role}</td>
                   <td className="p-3 pr-4 text-[#666]">
-                    {m.is_leader ? '대표자' : '팀원'}
+                    {m.is_leader ? '팀장' : '팀원'}
                   </td>
                 </tr>
               ))}

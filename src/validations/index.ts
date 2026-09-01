@@ -30,11 +30,12 @@ const applicationBaseSchema = z.object({
   teamName: requiredText('팀명', 100),
   password: passwordSchema,
   passwordConfirm: z.string(),
-  leaderName: requiredText('대표자 이름', 50),
+  leaderName: requiredText('팀장 이름', 50),
   leaderEmail: z.email('올바른 이메일 주소를 입력해 주세요.').max(254),
   leaderPhone: z
     .string()
     .regex(/^01[016789]-?\d{3,4}-?\d{4}$/, '올바른 연락처를 입력해 주세요.'),
+  leaderRegion: requiredText('지역', 100),
   participationType: z.enum(PARTICIPATION_TYPES),
   industry: z.enum(INDUSTRIES),
   itemName: requiredText('아이템명', 200),
@@ -55,7 +56,7 @@ function validateLeader(
     context.addIssue({
       code: 'custom',
       path: ['members'],
-      message: '대표자를 팀원 목록에 한 번 포함해 주세요.',
+      message: '팀장을 팀원 목록에 한 번 포함해 주세요.',
     });
 }
 export const applicationSchema = applicationBaseSchema.superRefine(
@@ -82,6 +83,7 @@ export const applicationUpdateSchema = applicationBaseSchema
     leaderName: true,
     leaderEmail: true,
     leaderPhone: true,
+    leaderRegion: true,
     participationType: true,
     industry: true,
     itemName: true,

@@ -13,7 +13,7 @@ export async function GET() {
   const { data, error } = await db
     .from('applications')
     .select(
-      'id,receipt_number,team_name,leader_name,leader_email,leader_phone,participation_type,industry,item_name,item_summary,is_busan_based,eligibility_confirmed,exclusion_confirmed,requests,created_at,updated_at,application_members(id,name,role,is_leader,display_order),application_files(id,original_name,mime_type,size_bytes,created_at)',
+      'id,receipt_number,team_name,leader_name,leader_email,leader_phone,leader_region,participation_type,industry,item_name,item_summary,is_busan_based,eligibility_confirmed,exclusion_confirmed,requests,created_at,updated_at,application_members(id,name,role,is_leader,display_order),application_files(id,original_name,mime_type,size_bytes,created_at)',
     )
     .eq('id', id)
     .single();
@@ -54,6 +54,7 @@ export async function PATCH(request: NextRequest) {
       leader_name: parsed.data.leaderName,
       leader_email: parsed.data.leaderEmail.toLowerCase(),
       leader_phone: parsed.data.leaderPhone,
+      leader_region: parsed.data.leaderRegion,
       participation_type: parsed.data.participationType,
       industry: parsed.data.industry,
       item_name: parsed.data.itemName,

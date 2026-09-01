@@ -80,7 +80,7 @@ export default function Page() {
         <div className="mt-5 flex flex-wrap items-center gap-3">
           <input
             aria-label="검색"
-            placeholder="팀명, 대표자, 연락처 검색"
+            placeholder="팀명, 팀장, 연락처 검색"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="h-11 min-w-64 flex-1 rounded-[10px] border border-[#e5e5e5] bg-white px-4 text-sm text-[#111] outline-none placeholder:text-[#b9b9b9] focus:border-[#e4007f] focus:ring-2 focus:ring-[#e4007f]/10"
@@ -107,7 +107,7 @@ export default function Page() {
               <tr className="brand-gradient text-white">
                 {[
                   '접수번호',
-                  '팀명/대표자',
+                  '팀명/팀장',
                   '참가유형',
                   '분야',
                   '신청일',

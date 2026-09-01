@@ -83,6 +83,7 @@ export async function POST(request: NextRequest) {
         leader_name: parsed.data.leaderName,
         leader_email: parsed.data.leaderEmail.toLowerCase(),
         leader_phone: parsed.data.leaderPhone,
+        leader_region: parsed.data.leaderRegion,
         participation_type: parsed.data.participationType,
         industry: parsed.data.industry,
         item_name: parsed.data.itemName,
