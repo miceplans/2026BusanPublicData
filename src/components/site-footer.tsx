@@ -15,10 +15,16 @@ export function SiteFooter() {
             >
               office1170@naver.com
             </a>
+            <a
+              className="mt-2 block w-fit text-lg font-bold underline decoration-white/30 underline-offset-4 hover:decoration-white"
+              href="tel:07046181703"
+            >
+              070.4618.1703
+            </a>
           </div>
 
           <div
-            className="flex h-20 items-center rounded-xl  px-4"
+            className="flex h-20 items-center rounded-xl px-4"
             aria-label="주최·주관·참여 기관"
           >
             <Image

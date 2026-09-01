@@ -132,7 +132,7 @@ export default function HomePage() {
       <main>
         <section className="relative overflow-hidden px-5 py-20 text-center sm:px-8 sm:py-28 lg:py-32">
           <div
-            className="pointer-events-none absolute z-0 opacity-20"
+            className="pointer-events-none absolute z-0 hidden opacity-20 sm:block"
             style={{
               top: '40%',
               left: 'calc(50%)',
@@ -422,18 +422,18 @@ export default function HomePage() {
         </div>
 
         <section className="bg-[#111111] px-5 py-24 text-white sm:px-8 sm:py-32">
-          <div className="mx-auto flex max-w-[1280px] flex-col items-start justify-between gap-10 lg:flex-row lg:items-end">
+          <div className="mx-auto flex max-w-[1280px] flex-col items-center justify-between gap-10 text-center lg:flex-row lg:items-end lg:text-left">
             <h2 className="max-w-[800px]">
               <Image
                 alt="2026 AI 창업 경진대회"
-                className="h-auto w-full max-w-[420px]"
+                className="mx-auto h-auto w-full max-w-[420px] lg:mx-0"
                 src="/assets/title.svg"
                 width={1234}
                 height={296}
                 unoptimized
               />
             </h2>
-            <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
+            <div className="flex flex-col items-center gap-6 sm:flex-row">
               <Link
                 className="brand-gradient inline-flex min-h-14 shrink-0 items-center justify-center rounded-full px-8 font-bold"
                 href="/apply"
