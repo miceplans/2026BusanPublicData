@@ -15,7 +15,7 @@ export default async function Page({
         <h1 className="text-3xl font-bold">참가 신청이 접수되었습니다.</h1>
         <p className="mt-6 text-lg">
           접수번호{' '}
-          <strong className="text-[#702b89]">
+          <strong className="text-[#176f9f]">
             {receipt ?? '확인할 수 없음'}
           </strong>
         </p>

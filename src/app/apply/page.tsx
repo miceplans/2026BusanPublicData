@@ -210,7 +210,7 @@ export default function ApplyPage() {
               name="itemSummary"
               required
               maxLength={settings?.item_summary_max_length ?? 10000}
-              className="min-h-32 border border-[#dfe3e8] bg-white p-4 outline-none hover:border-[#c9d0d8] focus:border-[#e4007f] focus:ring-3 focus:ring-[#e4007f]/10"
+              className="min-h-32 border border-[#dfe3e8] bg-white p-4 outline-none hover:border-[#c9d0d8] focus:border-[#35c1de] focus:ring-3 focus:ring-[#35c1de]/10"
             />
           </Label>
         </Section>
@@ -249,7 +249,7 @@ export default function ApplyPage() {
           {members.length < 4 && (
             <button
               type="button"
-              className="motion-control w-fit rounded-lg border border-[#efc5db] bg-[#fff0f7] px-4 py-2 font-bold text-[#b50065] hover:bg-[#ffe2f1]"
+              className="motion-control w-fit rounded-lg border border-[#b7e4ee] bg-[#effbfe] px-4 py-2 font-bold text-[#176f9f] hover:bg-[#ddf5fa]"
               onClick={() =>
                 setMembers((v) => [
                   ...v,
@@ -277,7 +277,7 @@ export default function ApplyPage() {
                   <p className="truncate text-sm text-[#111]">{file.name}</p>
                   <button
                     type="button"
-                    className="motion-control shrink-0 text-[13px] font-semibold text-[#b50065] hover:underline"
+                    className="motion-control shrink-0 text-[13px] font-semibold text-[#176f9f] hover:underline"
                     onClick={() => removeFile(i)}
                   >
                     삭제
@@ -321,7 +321,7 @@ export default function ApplyPage() {
           />
           <Check name="privacyAgreed">
             <Link
-              className="font-bold text-[#b50065] underline underline-offset-4"
+              className="font-bold text-[#176f9f] underline underline-offset-4"
               href="/privacy"
               target="_blank"
             >
@@ -455,7 +455,7 @@ function Dropdown({
           </span>
           <span
             aria-hidden
-            className={`ml-2 text-[#702b89] transition-transform ${open ? 'rotate-180' : ''}`}
+            className={`ml-2 text-[#176f9f] transition-transform ${open ? 'rotate-180' : ''}`}
           >
             ▼
           </span>
@@ -481,7 +481,7 @@ function Dropdown({
                   }}
                   className={`h-10 truncate rounded-[8px] px-3 text-left text-sm ${
                     selected
-                      ? 'bg-[#702b89]/10 font-medium text-[#702b89]'
+                      ? 'bg-[#176f9f]/10 font-medium text-[#176f9f]'
                       : 'text-[#111] hover:bg-[#f5f5f5]'
                   }`}
                 >

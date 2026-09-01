@@ -225,7 +225,7 @@ export default function Page() {
             <textarea
               name="itemSummary"
               defaultValue={app.item_summary}
-              className="mt-2 min-h-32 w-full border border-[#dfe3e8] bg-white p-3 outline-none focus:border-[#e4007f] focus:ring-3 focus:ring-[#e4007f]/10"
+              className="mt-2 min-h-32 w-full border border-[#dfe3e8] bg-white p-3 outline-none focus:border-[#35c1de] focus:ring-3 focus:ring-[#35c1de]/10"
             />
           </label>
           {app.application_members
@@ -241,7 +241,7 @@ export default function Page() {
             <textarea
               name="requests"
               defaultValue={app.requests ?? ''}
-              className="mt-2 min-h-24 w-full border border-[#dfe3e8] bg-white p-3 outline-none focus:border-[#e4007f] focus:ring-3 focus:ring-[#e4007f]/10"
+              className="mt-2 min-h-24 w-full border border-[#dfe3e8] bg-white p-3 outline-none focus:border-[#35c1de] focus:ring-3 focus:ring-[#35c1de]/10"
             />
           </label>
         </fieldset>

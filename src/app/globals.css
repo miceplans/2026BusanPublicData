@@ -2,16 +2,16 @@
 
 :root {
   color-scheme: light;
-  --color-primary: #e4007f;
-  --color-primary-hover: #bd006a;
-  --color-primary-deep: #702b89;
-  --color-primary-blue: #507cba;
+  --color-primary: #35c1de;
+  --color-primary-hover: #169fbe;
+  --color-primary-deep: #176f9f;
+  --color-primary-blue: #4f9fc7;
   --gradient-primary: linear-gradient(
     115deg,
-    #e4007f 0%,
-    #e4007f 38%,
-    #9d247f 68%,
-    #507cba 100%
+    #35c1de 0%,
+    #35c1de 38%,
+    #4aaed0 68%,
+    #6bb6d3 100%
   );
   --color-text: #191f28;
   --color-muted: #6b7684;
@@ -59,7 +59,7 @@ video {
 }
 
 :focus-visible {
-  outline: 3px solid rgba(228, 0, 127, 0.28);
+  outline: 3px solid rgba(53, 193, 222, 0.32);
   outline-offset: 3px;
 }
 
@@ -180,7 +180,7 @@ html {
   background-image: var(--gradient-primary);
   background-size: 140% 100%;
   background-position: left center;
-  box-shadow: 0 8px 22px rgba(228, 0, 127, 0.2);
+  box-shadow: 0 8px 22px rgba(53, 193, 222, 0.22);
   transition:
     background-position 180ms ease-out,
     box-shadow 180ms ease-out,
@@ -188,7 +188,7 @@ html {
 }
 .brand-gradient:not(:disabled):hover {
   background-position: right center;
-  box-shadow: 0 10px 26px rgba(112, 43, 137, 0.28);
+  box-shadow: 0 10px 26px rgba(23, 111, 159, 0.3);
 }
 .brand-gradient:disabled {
   background-image: none;
@@ -455,19 +455,25 @@ html {
 
   .apply-page .brand-gradient:not(:disabled):hover {
     background-position: left center;
-    box-shadow: 0 8px 22px rgba(228, 0, 127, 0.2);
+    box-shadow: 0 8px 22px rgba(53, 193, 222, 0.22);
   }
 }
 .github-landing .hero-glow {
   background: radial-gradient(
     ellipse,
-    rgba(228, 0, 127, 0.24),
+    rgba(53, 193, 222, 0.24),
     transparent 68%
   );
   pointer-events: none;
 }
 .github-landing .hero-text {
-  background: linear-gradient(90deg, #fff 8%, #ed68ad 48%, #9d247f 72%, #507cba);
+  background: linear-gradient(
+    90deg,
+    #fff 8%,
+    #a9dce8 48%,
+    #55c5dd 72%,
+    #4f9fc7
+  );
   background-clip: text;
   color: transparent;
 }

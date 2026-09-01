@@ -83,7 +83,7 @@ export default function Page() {
             placeholder="팀명, 팀장, 연락처 검색"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="h-11 min-w-64 flex-1 rounded-[10px] border border-[#e5e5e5] bg-white px-4 text-sm text-[#111] outline-none placeholder:text-[#b9b9b9] focus:border-[#e4007f] focus:ring-2 focus:ring-[#e4007f]/10"
+            className="h-11 min-w-64 flex-1 rounded-[10px] border border-[#e5e5e5] bg-white px-4 text-sm text-[#111] outline-none placeholder:text-[#b9b9b9] focus:border-[#35c1de] focus:ring-2 focus:ring-[#35c1de]/10"
           />
           <a
             href="/api/admin/excel/export"
@@ -142,7 +142,7 @@ export default function Page() {
                 >
                   <td className="p-3 pl-4 font-mono text-xs whitespace-nowrap text-[#666]">
                     <Link
-                      className="font-bold text-[#b50065] underline decoration-[#e4007f]/30 underline-offset-2 hover:decoration-[#e4007f]"
+                      className="font-bold text-[#176f9f] underline decoration-[#35c1de]/30 underline-offset-2 hover:decoration-[#35c1de]"
                       href={`/admin/applications/${x.id}`}
                       onClick={(e) => e.stopPropagation()}
                     >
