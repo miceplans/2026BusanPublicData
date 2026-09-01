@@ -245,9 +245,7 @@ export default function ApplyPage() {
         {uploadEnabled && (
           <Section title={settings!.evidence_label!}>
             {settings?.evidence_purpose && (
-              <p className="text-sm text-[#666]">
-                {settings.evidence_purpose}
-              </p>
+              <p className="text-sm text-[#666]">{settings.evidence_purpose}</p>
             )}
             <div className="flex flex-col gap-2 rounded-[10px] border border-[#e5e5e5] px-4 py-2">
               {files.map((file, i) => (
@@ -289,7 +287,6 @@ export default function ApplyPage() {
               type="file"
               multiple
               className="hidden"
-              accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
               onChange={onFilesSelected}
             />
           </Section>

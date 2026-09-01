@@ -251,13 +251,7 @@ export default function Page() {
         )}
         {editable && (
           <div className="flex flex-wrap gap-3 rounded-lg border p-4">
-            <input
-              ref={fileInputRef}
-              name="files"
-              type="file"
-              multiple
-              accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
-            />
+            <input ref={fileInputRef} name="files" type="file" multiple />
             <button
               type="button"
               onClick={addFiles}

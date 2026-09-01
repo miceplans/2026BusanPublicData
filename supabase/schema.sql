@@ -21,8 +21,8 @@ create table if not exists public.application_members (
 create unique index if not exists application_one_leader on public.application_members(application_id) where is_leader;
 create table if not exists public.application_files (
  id uuid primary key default gen_random_uuid(), application_id uuid not null references public.applications(id) on delete cascade,
- object_key text not null unique, original_name text not null, extension text not null check (extension in ('jpg','jpeg','png','webp')),
- mime_type text not null check (mime_type in ('image/jpeg','image/png','image/webp')), size_bytes bigint not null check (size_bytes > 0), created_at timestamptz not null default now()
+ object_key text not null unique, original_name text not null, extension text not null,
+ mime_type text not null, size_bytes bigint not null check (size_bytes > 0), created_at timestamptz not null default now()
 );
 create table if not exists public.email_logs (
  id uuid primary key default gen_random_uuid(), application_id uuid not null references public.applications(id) on delete cascade,
@@ -76,7 +76,10 @@ alter table public.application_files enable row level security; alter table publ
 alter table public.admin_profiles enable row level security; alter table public.admin_audit_logs enable row level security;
 alter table public.site_settings enable row level security;
 revoke all on all tables in schema public from anon, authenticated;
-insert into storage.buckets(id, name, public) values ('application-files','application-files',false) on conflict (id) do update set public=false;
+insert into storage.buckets(id, name, public, file_size_limit, allowed_mime_types)
+values ('application-files','application-files',false,null,null)
+on conflict (id) do update
+set public=false, file_size_limit=null, allowed_mime_types=null;
 drop policy if exists "deny direct application file access" on storage.objects;
 create policy "deny direct application file access" on storage.objects for all using (false) with check (false);
 create index if not exists applications_created_at_idx on public.applications(created_at desc);
