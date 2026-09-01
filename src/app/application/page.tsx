@@ -165,6 +165,7 @@ export default function Page() {
       <ContestHeader helper={`접수번호 ${app.receipt_number}`} />
       <form
         onSubmit={submit}
+        autoComplete="on"
         className="motion-page mx-auto flex max-w-[800px] flex-col gap-6 px-5 py-10 sm:py-14"
       >
         <h1 className="text-3xl font-extrabold tracking-[-0.04em]">
@@ -178,16 +179,32 @@ export default function Page() {
           disabled={!editable}
           className="service-card grid gap-5 rounded-2xl p-5 sm:grid-cols-2 sm:p-7"
         >
-          <F n="teamName" l="팀명" v={app.team_name} />
-          <F n="leaderName" l="팀장 이름" v={app.leader_name} />
+          <F n="teamName" l="팀명" v={app.team_name} autoComplete="username" />
+          <F
+            n="leaderName"
+            l="팀장 이름"
+            v={app.leader_name}
+            autoComplete="name"
+          />
           <F
             n="leaderEmail"
             l="팀장 이메일"
             v={app.leader_email}
             type="email"
+            autoComplete="email"
           />
-          <F n="leaderPhone" l="팀장 연락처" v={app.leader_phone} />
-          <F n="leaderRegion" l="지역" v={app.leader_region} />
+          <F
+            n="leaderPhone"
+            l="팀장 연락처"
+            v={app.leader_phone}
+            autoComplete="tel"
+          />
+          <F
+            n="leaderRegion"
+            l="지역"
+            v={app.leader_region}
+            autoComplete="address-level1"
+          />
           <S
             n="participationType"
             l="참가 유형"
@@ -280,11 +297,13 @@ function F({
   l,
   v,
   type = 'text',
+  autoComplete,
 }: {
   n: string;
   l: string;
   v: string;
   type?: string;
+  autoComplete?: React.HTMLInputAutoCompleteAttribute;
 }) {
   return (
     <label className="text-sm font-bold">
@@ -294,6 +313,7 @@ function F({
         name={n}
         type={type}
         defaultValue={v}
+        autoComplete={autoComplete}
         className={`${fieldClass} mt-2 font-normal`}
       />
     </label>

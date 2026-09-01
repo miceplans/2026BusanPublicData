@@ -109,6 +109,7 @@ export default function ApplyPage() {
       />
       <form
         onSubmit={submit}
+        autoComplete="on"
         className="motion-page mx-auto flex max-w-[800px] flex-col gap-5 px-5 py-10 sm:py-14"
       >
         <div className="mb-2">
@@ -121,12 +122,18 @@ export default function ApplyPage() {
         </div>
         <Section title="기본 정보">
           <Grid>
-            <Field name="teamName" label="팀명" />
-            <Field name="password" label="신청 비밀번호" type="password" />
+            <Field name="teamName" label="팀명" autoComplete="username" />
+            <Field
+              name="password"
+              label="신청 비밀번호"
+              type="password"
+              autoComplete="new-password"
+            />
             <Field
               name="passwordConfirm"
               label="비밀번호 확인"
               type="password"
+              autoComplete="new-password"
             />
           </Grid>
           <p className="text-xs text-[#666]">
@@ -140,14 +147,26 @@ export default function ApplyPage() {
               label="팀장 이름"
               value={leaderName}
               onChange={(e) => setLeaderName(e.target.value)}
+              autoComplete="name"
             />
-            <Field name="leaderEmail" label="팀장 이메일" type="email" />
+            <Field
+              name="leaderEmail"
+              label="팀장 이메일"
+              type="email"
+              autoComplete="email"
+            />
             <Field
               name="leaderPhone"
               label="팀장 연락처"
               placeholder="010-0000-0000"
+              autoComplete="tel"
             />
-            <Field name="leaderRegion" label="지역" placeholder="예: 부산" />
+            <Field
+              name="leaderRegion"
+              label="지역"
+              placeholder="예: 부산"
+              autoComplete="address-level1"
+            />
           </Grid>
           <fieldset className="flex flex-col gap-2">
             <legend className="text-sm font-bold text-[#333d4b]">
@@ -372,6 +391,7 @@ function Field({
   placeholder,
   value,
   onChange,
+  autoComplete,
 }: {
   name: string;
   label: string;
@@ -379,6 +399,7 @@ function Field({
   placeholder?: string;
   value?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  autoComplete?: React.HTMLInputAutoCompleteAttribute;
 }) {
   return (
     <Label text={label}>
@@ -389,6 +410,7 @@ function Field({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        autoComplete={autoComplete}
         className={fieldClass}
       />
     </Label>

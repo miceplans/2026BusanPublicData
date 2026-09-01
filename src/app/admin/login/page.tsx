@@ -31,6 +31,7 @@ export default function Page() {
       <ContestHeader helper="운영 담당자 전용" />
       <form
         onSubmit={submit}
+        autoComplete="on"
         className="service-card motion-page motion-card mx-auto my-12 flex max-w-[480px] flex-col gap-5 rounded-2xl p-7 sm:my-20 sm:p-8"
       >
         <h1 className="text-3xl font-extrabold tracking-[-0.04em]">
@@ -41,6 +42,7 @@ export default function Page() {
           required
           name="email"
           type="email"
+          autoComplete="username"
           className={fieldClass}
         />
         <input
@@ -48,6 +50,7 @@ export default function Page() {
           required
           name="password"
           type="password"
+          autoComplete="current-password"
           className={fieldClass}
         />
         <button className="brand-gradient motion-control min-h-14 rounded-[8px] p-4 font-bold text-white">

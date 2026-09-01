@@ -42,10 +42,16 @@ export default function Page() {
         </p>
         <form
           onSubmit={submit}
+          autoComplete="on"
           className="service-card motion-card mt-8 flex flex-col gap-5 rounded-2xl p-6 sm:p-8"
         >
-          <Field name="teamName" label="팀명" />
-          <Field name="password" label="신청 비밀번호" type="password" />
+          <Field name="teamName" label="팀명" autoComplete="username" />
+          <Field
+            name="password"
+            label="신청 비밀번호"
+            type="password"
+            autoComplete="current-password"
+          />
           <button
             disabled={busy}
             aria-busy={busy}
@@ -65,15 +71,23 @@ function Field({
   name,
   label,
   type = 'text',
+  autoComplete,
 }: {
   name: string;
   label: string;
   type?: string;
+  autoComplete?: React.HTMLInputAutoCompleteAttribute;
 }) {
   return (
     <label className="flex flex-col gap-2">
       <span className="text-sm font-bold">{label}</span>
-      <input required name={name} type={type} className={fieldClass} />
+      <input
+        required
+        name={name}
+        type={type}
+        autoComplete={autoComplete}
+        className={fieldClass}
+      />
     </label>
   );
 }
