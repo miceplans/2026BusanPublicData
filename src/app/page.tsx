@@ -235,7 +235,7 @@ export default async function HomePage() {
               </p>
               <p className="mt-6 max-w-[760px] text-lg leading-[1.7] text-white/70 sm:text-xl">
                 부산의 전략산업 분야 우수 AI 창업 아이디어를 발굴·육성하고,
-                <br />우수 아이디어의 사업화를 지원합니다.
+                <br /> 예비·신규 창업자의 창업·사업화를 지원합니다
               </p>
               <div className="mt-10 flex flex-wrap justify-center gap-3">
                 <Link
@@ -254,7 +254,8 @@ export default async function HomePage() {
             </div>
             <div className="hero-stats mx-auto mt-20 grid max-w-[980px] border-t border-[#45C4DE]/55 pt-8 text-center sm:grid-cols-3 sm:gap-8">
               {[
-                ['9개', '부산 전략산업 분야'],
+                ['접수기간', '9.7~9.30'],
+                ['본선일정', '10.31(토)'],
                 ['2~4인', '팀 단위 참가'],
                 ['1억 7백만원', '시상·사업화 지원'],
               ].map(([value, label]) => (
