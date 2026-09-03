@@ -296,6 +296,18 @@ export default function ApplyPage() {
             {settings?.evidence_purpose && (
               <p className="text-sm text-[#666]">{settings.evidence_purpose}</p>
             )}
+            <div className="grid gap-2 sm:grid-cols-2">
+              <DocumentDownload
+                href="/downloads/privacy-consent.hwp"
+                fileName="개인정보 수집 및 이용에 관한 동의서.hwp"
+                label="개인정보 수집·이용 동의서"
+              />
+              <DocumentDownload
+                href="/downloads/participation-pledge.hwp"
+                fileName="2026 AI 창업 경진대회 참가 서약서.hwp"
+                label="참가 서약서"
+              />
+            </div>
             <div className="flex flex-col gap-2 rounded-[10px] border border-[#e5e5e5] px-4 py-2">
               {files.map((file, i) => (
                 <div
@@ -340,6 +352,30 @@ export default function ApplyPage() {
             />
           </Section>
         )}
+        <Section title="유의사항">
+          <ol className="list-decimal space-y-3 pl-5 text-sm leading-6 text-[#4e5968]">
+            <li>접수된 서류는 반환되지 않습니다.</li>
+            <li>
+              제출된 아이디어 제안서의 내용은 접수 및 심사 과정에서 비밀이
+              유지됩니다.
+            </li>
+            <li>
+              타인의 아이디어, 기술 등을 모방하여 발생하는 모든 민·형사상 책임은
+              참가자 본인에게 있습니다.
+            </li>
+            <li>
+              수상 시 상장은 팀명과 팀원명이 기재된 1부만 제공되며, 부상 및
+              지원금은 팀장 명의로 지급됩니다.
+            </li>
+            <li>
+              아이디어명, 참가분야, 팀명, 참가자 및 팀원 등 신청서에 작성한
+              내용은 접수 마감일 이후 변경할 수 없습니다.
+            </li>
+            <li>
+              부정행위가 적발되면 수상이 취소되고 상금이 회수될 수 있습니다.
+            </li>
+          </ol>
+        </Section>
         <Section title="필수 확인">
           <Check
             name="eligibilityConfirmed"
@@ -423,6 +459,28 @@ function Section({
 }
 function Grid({ children }: { children: React.ReactNode }) {
   return <div className="grid gap-4 sm:grid-cols-2">{children}</div>;
+}
+function DocumentDownload({
+  href,
+  fileName,
+  label,
+}: {
+  href: string;
+  fileName: string;
+  label: string;
+}) {
+  return (
+    <a
+      href={href}
+      download={fileName}
+      className="motion-control flex min-h-12 items-center justify-between gap-3 rounded-[10px] border border-[#b7e4ee] bg-[#effbfe] px-4 py-3 text-sm font-bold text-[#176f9f] hover:bg-[#ddf5fa]"
+    >
+      <span>{label}</span>
+      <span aria-hidden className="shrink-0">
+        ↓ 다운로드
+      </span>
+    </a>
+  );
 }
 function Label({
   text,
