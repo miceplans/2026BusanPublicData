@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { ContestHeader } from '@/components/contest-header';
+import { useToast } from '@/components/toast';
 type Log = {
   id: string;
   action: string;
@@ -10,6 +11,7 @@ type Log = {
   created_at: string;
 };
 export default function Page() {
+  const { showToast } = useToast();
   const [logs, setLogs] = useState<Log[]>([]);
   useEffect(() => {
     fetch('/api/admin/audit-logs')
@@ -18,9 +20,18 @@ export default function Page() {
           location.href = '/admin/login';
           return null;
         }
-        return r.json();
+        const value = await r.json();
+        if (!r.ok) {
+          showToast(value.error ?? '작업 이력을 불러오지 못했습니다.');
+          return null;
+        }
+        return value;
       })
-      .then((v) => v && setLogs(v.items));
+      .then((v) => v && setLogs(v.items))
+      .catch(() =>
+        showToast('네트워크 오류로 작업 이력을 불러오지 못했습니다.'),
+      );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div>

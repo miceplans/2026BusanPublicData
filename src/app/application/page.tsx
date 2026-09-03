@@ -51,14 +51,19 @@ export default function Page() {
   const { showToast } = useToast();
   const [app, setApp] = useState<App | null>(null);
   const [editable, setEditable] = useState(false);
-  const [message, setMessage] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   async function reload() {
-    const r = await fetch('/api/application/me');
-    if (r.ok) {
+    try {
+      const r = await fetch('/api/application/me');
       const v = await r.json();
+      if (!r.ok) {
+        showToast(v.error ?? '신청 정보를 새로 불러오지 못했습니다.');
+        return;
+      }
       setApp(v.application);
       setEditable(v.editable);
+    } catch {
+      showToast('네트워크 오류로 신청 정보를 새로 불러오지 못했습니다.');
     }
   }
   useEffect(() => {
@@ -133,7 +138,7 @@ export default function Page() {
         showToast(v.error ?? '저장하지 못했습니다.');
         return;
       }
-      setMessage('수정 내용을 저장했습니다.');
+      showToast('수정 내용을 저장했습니다.', 'success');
     } catch {
       showToast('네트워크 오류로 저장하지 못했습니다. 다시 시도해주세요.');
     }
@@ -149,7 +154,7 @@ export default function Page() {
         showToast(v.error ?? '삭제하지 못했습니다.');
         return;
       }
-      setMessage('증빙자료를 삭제했습니다.');
+      showToast('증빙자료를 삭제했습니다.', 'success');
       reload();
     } catch {
       showToast('네트워크 오류로 삭제하지 못했습니다. 다시 시도해주세요.');
@@ -170,7 +175,7 @@ export default function Page() {
         showToast(v.error ?? '추가하지 못했습니다.');
         return;
       }
-      setMessage('증빙자료를 추가했습니다.');
+      showToast('증빙자료를 추가했습니다.', 'success');
       if (fileInputRef.current) fileInputRef.current.value = '';
       reload();
     } catch {
@@ -350,11 +355,6 @@ export default function Page() {
               증빙자료 추가
             </button>
           </div>
-        )}
-        {message && (
-          <p role="status" className="motion-feedback">
-            {message}
-          </p>
         )}
         {editable && (
           <button className="brand-gradient motion-control min-h-14 rounded-[8px] p-4 font-bold text-white">

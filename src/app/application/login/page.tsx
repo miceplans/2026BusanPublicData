@@ -1,9 +1,11 @@
 'use client';
 import { FormEvent, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ContestHeader, fieldClass } from '@/components/contest-header';
 import { useToast } from '@/components/toast';
 export default function Page() {
   const { showToast } = useToast();
+  const router = useRouter();
   const [busy, setBusy] = useState(false);
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -23,7 +25,8 @@ export default function Page() {
         showToast(v.error ?? '확인하지 못했습니다.');
         return;
       }
-      location.href = '/application';
+      showToast('신청 정보가 확인되었습니다.', 'success');
+      router.push('/application');
     } catch {
       showToast('네트워크 오류가 발생했습니다. 다시 시도해주세요.');
     } finally {

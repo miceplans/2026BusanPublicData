@@ -84,10 +84,12 @@ export default function Page() {
         method: 'POST',
       });
       if (!r.ok) {
-        showToast('재발송 요청에 실패했습니다.');
+        const value = await r.json().catch(() => null);
+        showToast(value?.error ?? '재발송 요청에 실패했습니다.');
         return;
       }
       await load();
+      showToast('이메일 재발송 요청을 완료했습니다.', 'success');
     } catch {
       showToast('네트워크 오류로 재발송 요청에 실패했습니다.');
     } finally {

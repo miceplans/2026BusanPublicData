@@ -1,4 +1,6 @@
 import { ContestHeader } from '@/components/contest-header';
+import { SubmissionSuccessToast } from '@/components/submission-success-toast';
+
 export default async function Page({
   searchParams,
 }: {
@@ -7,6 +9,7 @@ export default async function Page({
   const { receipt } = await searchParams;
   return (
     <div>
+      <SubmissionSuccessToast />
       <ContestHeader
         actionLabel="신청 확인·수정"
         actionHref="/application/login"

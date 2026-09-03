@@ -27,6 +27,7 @@ export default function Page() {
         showToast(v.error ?? '로그인하지 못했습니다.');
         return;
       }
+      showToast('로그인했습니다.', 'success');
       router.push('/admin/applications');
     } catch {
       showToast('네트워크 오류가 발생했습니다. 다시 시도해주세요.');

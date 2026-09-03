@@ -31,7 +31,7 @@ export default function Page() {
         showToast(value.error ?? '회원가입하지 못했습니다.');
         return;
       }
-      showToast('관리자 계정이 생성되었습니다. 로그인해 주세요.');
+      showToast('관리자 계정이 생성되었습니다. 로그인해 주세요.', 'success');
       router.push('/admin/login');
     } catch {
       showToast('네트워크 오류가 발생했습니다. 다시 시도해 주세요.');

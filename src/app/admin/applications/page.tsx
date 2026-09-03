@@ -51,6 +51,7 @@ export default function Page() {
     <div>
       <ContestHeader
         helper={`관리자 신청 목록 · ${total}건`}
+        links={[{ label: '자주 묻는 질문', href: '/admin/faq' }]}
         actionLabel="운영 설정"
         actionHref="/admin/settings"
       />

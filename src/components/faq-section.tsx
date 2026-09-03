@@ -15,7 +15,7 @@ export function FaqSection({ faqs }: { faqs: FaqItem[] }) {
           등록된 자주 묻는 질문이 없습니다.
         </p>
       ) : (
-        <div className="mt-12 grid gap-5">
+        <div className="mt-12 grid gap-0">
           {faqs.map((faq, index) => {
             const open = openIndex === index;
             return (
@@ -28,7 +28,7 @@ export function FaqSection({ faqs }: { faqs: FaqItem[] }) {
                   aria-expanded={open}
                   aria-controls={`faq-answer-${index}`}
                   id={`faq-question-${index}`}
-                  className="flex min-h-16 w-full items-center justify-between gap-4 px-6 text-left sm:px-8"
+                  className="flex min-h-16 w-full items-center justify-between gap-4 px-6 text-left transition-colors duration-300 hover:bg-[#45C4DE]/10 sm:px-8"
                   onClick={() => setOpenIndex(open ? null : index)}
                 >
                   <span className="text-base leading-[1.5] font-bold tracking-[-0.02em] sm:text-lg">
@@ -45,9 +45,10 @@ export function FaqSection({ faqs }: { faqs: FaqItem[] }) {
                   id={`faq-answer-${index}`}
                   role="region"
                   aria-labelledby={`faq-question-${index}`}
-                  className={`grid transition-[grid-template-rows] duration-200 ${open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
+                  data-open={open}
+                  className="faq-answer"
                 >
-                  <div className="overflow-hidden">
+                  <div className="faq-answer-inner">
                     <p className="border-t border-[#45C4DE]/35 px-6 py-6 text-sm leading-[1.75] whitespace-pre-line text-white/75 sm:px-8 sm:text-base">
                       {faq.answer}
                     </p>
