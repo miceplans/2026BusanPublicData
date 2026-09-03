@@ -271,7 +271,7 @@ export default async function HomePage() {
                 </div>
               ))}
             </div>
-            <div className="mt-14 flex items-center justify-center gap-4 overflow-x-auto rounded-2xl bg-black/50 px-6 py-4 backdrop-blur-[2px] sm:gap-6">
+            <div className="mt-14 flex items-center justify-center gap-4 overflow-x-auto px-6 sm:gap-6">
               {partners.map((partner, index) => (
                 <div
                   className="flex shrink-0 items-center gap-4 sm:gap-6"

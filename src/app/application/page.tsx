@@ -260,11 +260,8 @@ export default function Page() {
               app.expected_effects,
             ],
           ].map(([name, label, value]) => (
-            <label
-              className="rounded-xl border border-[#cbd5df] bg-white p-4 sm:col-span-2"
-              key={name}
-            >
-              <span className="block text-base font-extrabold text-[#111827]">
+            <label className="sm:col-span-2" key={name}>
+              <span className="block text-base font-bold text-[#333d4b]">
                 {label}
               </span>
               <textarea
@@ -272,7 +269,7 @@ export default function Page() {
                 defaultValue={value}
                 required
                 maxLength={10000}
-                className="mt-3 min-h-48 w-full border-2 border-[#9ca8b5] bg-white p-4 text-base leading-7 font-medium text-[#111827] outline-none placeholder:text-[#6b7280] focus:border-[#176f9f] focus:ring-3 focus:ring-[#176f9f]/15"
+                className="mt-2 min-h-48 w-full border border-[#dfe3e8] bg-white p-4 text-base leading-7 font-medium text-[#111827] outline-none placeholder:text-[#6b7280] focus:border-[#35c1de] focus:ring-3 focus:ring-[#35c1de]/10"
               />
             </label>
           ))}

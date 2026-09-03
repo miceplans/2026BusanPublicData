@@ -417,8 +417,8 @@ function LongAnswer({
   description: string[];
 }) {
   return (
-    <label className="block rounded-xl border border-[#cbd5df] bg-white p-4 sm:p-5">
-      <span className="block text-lg font-extrabold text-[#111827]">
+    <label className="block">
+      <span className="block text-base font-bold text-[#333d4b]">
         {title}
         <span className="ml-1 text-base font-bold text-[#d92d20]" aria-hidden>
           *
@@ -436,7 +436,7 @@ function LongAnswer({
         maxLength={10000}
         aria-label={title}
         placeholder="내용을 구체적으로 작성해 주세요."
-        className="min-h-48 w-full border-2 border-[#9ca8b5] bg-white p-4 text-base leading-7 font-medium text-[#111827] outline-none placeholder:text-[#6b7280] hover:border-[#667789] focus:border-[#176f9f] focus:ring-3 focus:ring-[#176f9f]/15"
+        className="min-h-48 w-full border border-[#dfe3e8] bg-white p-4 text-base leading-7 font-medium text-[#111827] outline-none placeholder:text-[#6b7280] hover:border-[#c9d0d8] focus:border-[#35c1de] focus:ring-3 focus:ring-[#35c1de]/10"
       />
     </label>
   );
