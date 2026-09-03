@@ -235,7 +235,7 @@ export default async function HomePage() {
               </p>
               <p className="mt-6 max-w-[760px] text-lg leading-[1.7] text-white/70 sm:text-xl">
                 부산의 전략산업 분야 우수 AI 창업 아이디어를 발굴·육성하고,
-                <br /> 예비·초기 창업기업의 사업화를 지원합니다.
+                <br />우수 아이디어의 사업화를 지원합니다.
               </p>
               <div className="mt-10 flex flex-wrap justify-center gap-3">
                 <Link
