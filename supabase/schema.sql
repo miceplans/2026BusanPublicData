@@ -34,6 +34,20 @@ create table if not exists public.email_logs (
 );
 create table if not exists public.admin_profiles (user_id uuid primary key references auth.users(id) on delete cascade, role text not null default 'administrator', is_active boolean not null default true, created_at timestamptz not null default now());
 create table if not exists public.admin_audit_logs (id uuid primary key default gen_random_uuid(), admin_user_id uuid references auth.users(id) on delete set null, action text not null, target_type text not null, target_id uuid, change_summary jsonb not null default '{}'::jsonb, created_at timestamptz not null default now());
+
+create or replace function public.register_initial_admin(p_user_id uuid)
+returns void language plpgsql security definer set search_path = public, pg_temp as $$
+begin
+  perform pg_advisory_xact_lock(hashtext('register_initial_admin'));
+  if exists (select 1 from public.admin_profiles where is_active = true) then
+    raise exception 'initial administrator already registered';
+  end if;
+  insert into public.admin_profiles (user_id, role, is_active)
+  values (p_user_id, 'administrator', true);
+end;
+$$;
+revoke all on function public.register_initial_admin(uuid) from public, anon, authenticated;
+grant execute on function public.register_initial_admin(uuid) to service_role;
 create table if not exists public.request_rate_limits (
  action text not null, identifier_hash text not null,
  window_started_at timestamptz not null default now(), request_count integer not null default 0,
@@ -65,7 +79,8 @@ create table if not exists public.site_settings (
  editing_enabled boolean not null default false,
  completion_message text not null default '참가 신청이 정상적으로 접수되었습니다.', contact text, completion_email_body text,
  item_summary_max_length integer check (item_summary_max_length between 1 and 10000), evidence_label text, evidence_purpose text,
- privacy_retention_policy text, updated_at timestamptz not null default now()
+ privacy_retention_policy text, faqs jsonb not null default '[]'::jsonb,
+ updated_at timestamptz not null default now()
 );
 insert into public.site_settings(id) values (true) on conflict (id) do nothing;
 create or replace function public.set_updated_at() returns trigger language plpgsql as $$ begin new.updated_at = now(); return new; end $$;

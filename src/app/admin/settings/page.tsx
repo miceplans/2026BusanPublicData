@@ -28,6 +28,14 @@ export default function Page() {
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!s) return;
+    if (
+      (s.faqs ?? []).some(
+        (faq) => !faq.question.trim() || !faq.answer.trim(),
+      )
+    ) {
+      showToast('작성하지 않은 FAQ 항목이 있습니다. 질문과 답변을 모두 입력하거나 해당 항목을 삭제해주세요.');
+      return;
+    }
     try {
       const r = await fetch('/api/admin/settings', {
         method: 'PUT',
@@ -102,6 +110,105 @@ export default function Page() {
             />
           </label>
         ))}
+        <fieldset className="mt-4 rounded-lg border border-[#e5e5e5] p-4">
+          <legend className="px-2 text-sm font-bold">
+            자주 묻는 질문 (FAQ)
+          </legend>
+          <div className="flex flex-col gap-4">
+            {(s.faqs ?? []).map((faq, index) => (
+              <div
+                key={index}
+                className="flex flex-col gap-2 rounded-lg border border-[#e5e5e5] bg-[#fafafa] p-4"
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs font-bold text-[#666]">
+                    FAQ {index + 1}
+                  </span>
+                  <div className="flex gap-1">
+                    <button
+                      type="button"
+                      className="rounded-md border border-[#dfe3e8] bg-white px-2 py-1 text-xs font-bold disabled:opacity-40"
+                      disabled={index === 0}
+                      onClick={() =>
+                        setS({
+                          ...s,
+                          faqs: moveFaq(s.faqs ?? [], index, -1),
+                        })
+                      }
+                    >
+                      ↑
+                    </button>
+                    <button
+                      type="button"
+                      className="rounded-md border border-[#dfe3e8] bg-white px-2 py-1 text-xs font-bold disabled:opacity-40"
+                      disabled={index === (s.faqs ?? []).length - 1}
+                      onClick={() =>
+                        setS({
+                          ...s,
+                          faqs: moveFaq(s.faqs ?? [], index, 1),
+                        })
+                      }
+                    >
+                      ↓
+                    </button>
+                    <button
+                      type="button"
+                      className="rounded-md border border-[#f0c4c4] bg-white px-2 py-1 text-xs font-bold text-[#c0392b]"
+                      onClick={() =>
+                        setS({
+                          ...s,
+                          faqs: (s.faqs ?? []).filter((_, i) => i !== index),
+                        })
+                      }
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </div>
+                <input
+                  className={fieldClass}
+                  placeholder="질문"
+                  value={faq.question}
+                  onChange={(e) =>
+                    setS({
+                      ...s,
+                      faqs: (s.faqs ?? []).map((item, i) =>
+                        i === index
+                          ? { ...item, question: e.target.value }
+                          : item,
+                      ),
+                    })
+                  }
+                />
+                <textarea
+                  className="mt-1 min-h-28 w-full rounded-lg border border-[#dfe3e8] bg-white p-3 text-sm"
+                  placeholder="답변"
+                  value={faq.answer}
+                  onChange={(e) =>
+                    setS({
+                      ...s,
+                      faqs: (s.faqs ?? []).map((item, i) =>
+                        i === index ? { ...item, answer: e.target.value } : item,
+                      ),
+                    })
+                  }
+                />
+              </div>
+            ))}
+            <button
+              type="button"
+              className="rounded-lg border border-[#dfe3e8] bg-white p-3 text-sm font-bold"
+              onClick={() =>
+                setS({
+                  ...s,
+                  faqs: [...(s.faqs ?? []), { question: '', answer: '' }],
+                })
+              }
+            >
+              + FAQ 추가
+            </button>
+          </div>
+        </fieldset>
         {msg && <p className="motion-feedback">{msg}</p>}
         <button className="brand-gradient motion-control rounded-lg p-4 font-bold text-white">
           설정 저장
@@ -109,6 +216,13 @@ export default function Page() {
       </form>
     </div>
   );
+}
+function moveFaq(faqs: SiteSettings['faqs'], index: number, offset: number) {
+  const next = [...faqs];
+  const target = index + offset;
+  if (target < 0 || target >= next.length) return next;
+  [next[index], next[target]] = [next[target], next[index]];
+  return next;
 }
 function Check({
   label,

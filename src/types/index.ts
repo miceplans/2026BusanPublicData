@@ -15,6 +15,7 @@ export type ApplicationMember = {
   role: string;
   isLeader: boolean;
 };
+export type FaqItem = { question: string; answer: string };
 export type SiteSettings = {
   is_public: boolean;
   editing_enabled: boolean;
@@ -25,4 +26,5 @@ export type SiteSettings = {
   evidence_label: string | null;
   evidence_purpose: string | null;
   privacy_retention_policy: string | null;
+  faqs: FaqItem[];
 };

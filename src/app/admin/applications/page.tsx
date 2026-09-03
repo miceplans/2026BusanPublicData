@@ -97,6 +97,12 @@ export default function Page() {
           >
             작업 이력
           </Link>
+          <Link
+            href="/admin/signup"
+            className="motion-control inline-flex h-11 items-center justify-center rounded-[10px] border border-[#e5e5e5] px-4 text-sm font-bold text-[#111] hover:bg-[#f7f7f7]"
+          >
+            관리자 추가
+          </Link>
         </div>
         {message && (
           <p className="motion-feedback mt-4 text-sm text-[#666]">{message}</p>
@@ -179,7 +185,8 @@ export default function Page() {
                         const generated =
                           p || `${crypto.randomUUID().slice(0, 8)}!A1`;
                         patch(x.id, { password: generated });
-                        if (!p) showToast(`새 비밀번호: ${generated}`, 'success');
+                        if (!p)
+                          showToast(`새 비밀번호: ${generated}`, 'success');
                       }}
                     >
                       초기화

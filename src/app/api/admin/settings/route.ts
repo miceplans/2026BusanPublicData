@@ -14,6 +14,14 @@ const schema = z.object({
   evidence_label: z.string().max(200).nullable(),
   evidence_purpose: z.string().max(500).nullable(),
   privacy_retention_policy: z.string().max(2000).nullable(),
+  faqs: z
+    .array(
+      z.object({
+        question: z.string().trim().min(1).max(500),
+        answer: z.string().trim().min(1).max(5000),
+      }),
+    )
+    .max(50),
 });
 export async function GET() {
   if (!(await requireAdmin()))

@@ -1,6 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { SiteFooter } from '@/components/site-footer';
+import { FaqSection } from '@/components/faq-section';
+import { getSettings } from '@/lib/settings';
+import type { FaqItem } from '@/types';
+
+export const dynamic = 'force-dynamic';
 
 const overview = [
   ['대회명', '2026 AI 창업 경진대회'],
@@ -15,7 +20,7 @@ const overview = [
   ],
   [
     '주최·주관',
-    '주최 부산광역시 · 주관 부산정보산업진흥원 · 참여 부산창조경제혁신센터',
+    '주최 부산광역시 · 주관 부산정보산업진흥원 · 참여 부산창조경제혁신대표이사',
   ],
   ['참가대상', '전국 AI 관련 예비·신규 창업팀(2~4인 구성)'],
 ];
@@ -86,7 +91,14 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  let faqs: FaqItem[] = [];
+  try {
+    faqs = (await getSettings()).faqs ?? [];
+  } catch {
+    faqs = [];
+  }
+
   return (
     <div className="min-h-screen bg-[#05070f] bg-[url('/assets/bg.webp')] bg-cover bg-fixed bg-center text-white">
       <header className="sticky top-0 z-20 border-b border-[#45C4DE]/35 bg-[#0D1E5E]/80 backdrop-blur-xl">
@@ -419,6 +431,8 @@ export default function HomePage() {
               </section>
             </div>
           </div>
+
+          <FaqSection faqs={faqs} />
         </div>
 
         <section className="bg-[#111111] px-5 py-24 text-white sm:px-8 sm:py-32">
