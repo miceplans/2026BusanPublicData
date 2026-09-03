@@ -180,6 +180,7 @@ export async function POST(request: NextRequest) {
     return jsonError(
       '신청 처리 중 오류가 발생했습니다. 다시 시도해 주세요.',
       500,
+      process.env.NODE_ENV === 'development' ? { stage } : undefined,
     );
   }
 }
