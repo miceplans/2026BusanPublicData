@@ -203,7 +203,7 @@ export default async function HomePage() {
           >
             <Image
               alt=""
-              className="hero-ai-art block h-auto max-w-none drop-shadow-[0_0_80px_rgba(69,196,222,0.22)]"
+              className="hero-ai-art block h-auto max-w-none drop-shadow-[0_0_40px_rgba(69,196,222,0.12)]"
               style={{ width: 3000, maxWidth: 'none' }}
               src="/assets/ai.svg"
               width={1118}

@@ -15,13 +15,13 @@ export function FaqSection({ faqs }: { faqs: FaqItem[] }) {
           등록된 자주 묻는 질문이 없습니다.
         </p>
       ) : (
-        <div className="mt-12 grid gap-3">
+        <div className="mt-12 grid gap-5">
           {faqs.map((faq, index) => {
             const open = openIndex === index;
             return (
               <div
                 key={index}
-                className="landing-panel overflow-hidden rounded-[20px] border border-[#45C4DE]/45"
+                className="landing-panel overflow-hidden rounded-[20px] border-x-0 border-y border-[#45C4DE]/45"
               >
                 <button
                   type="button"
