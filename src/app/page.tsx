@@ -410,7 +410,7 @@ export default async function HomePage() {
               >
                 {strategicIndustries.map(({ icon, label }) => (
                   <li
-                    className="interactive-card flex flex-col items-center gap-2 rounded-2xl border border-[#45C4DE]/35 bg-[#0D1E5E] px-2 py-4 text-center sm:gap-3 sm:py-5"
+                    className="interactive-card flex flex-col items-center gap-2 rounded-2xl px-2 py-4 text-center sm:gap-3 sm:py-5"
                     key={label}
                   >
                     <span className="relative h-14 w-full sm:h-16">
