@@ -15,7 +15,7 @@ export async function GET() {
   const { data, error } = await db
     .from('applications')
     .select(
-      'id,receipt_number,team_name,leader_name,leader_email,leader_phone,leader_region,participation_type,industry,item_name,item_summary,is_busan_based,eligibility_confirmed,exclusion_confirmed,requests,created_at,updated_at,application_members(id,name,role,is_leader,display_order),application_files(id,original_name,mime_type,size_bytes,created_at)',
+      'id,receipt_number,team_name,leader_name,leader_email,leader_phone,leader_region,participation_type,industry,item_name,item_summary,proposal_background,introduction_and_differentiation,feasibility_and_business_viability,expected_effects,is_busan_based,eligibility_confirmed,exclusion_confirmed,requests,created_at,updated_at,application_members(id,name,role,is_leader,display_order),application_files(id,original_name,mime_type,size_bytes,created_at)',
     )
     .eq('id', id)
     .single();
@@ -63,6 +63,12 @@ export async function PATCH(request: NextRequest) {
       industry: parsed.data.industry,
       item_name: parsed.data.itemName,
       item_summary: parsed.data.itemSummary,
+      proposal_background: parsed.data.proposalBackground,
+      introduction_and_differentiation:
+        parsed.data.introductionAndDifferentiation,
+      feasibility_and_business_viability:
+        parsed.data.feasibilityAndBusinessViability,
+      expected_effects: parsed.data.expectedEffects,
       is_busan_based: parsed.data.isBusanBased,
       eligibility_confirmed: true,
       exclusion_confirmed: true,

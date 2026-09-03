@@ -62,6 +62,12 @@ export default function ApplyPage() {
       industry: fd.get('industry') || '',
       itemName: fd.get('itemName'),
       itemSummary: fd.get('itemSummary'),
+      proposalBackground: fd.get('proposalBackground'),
+      introductionAndDifferentiation: fd.get('introductionAndDifferentiation'),
+      feasibilityAndBusinessViability: fd.get(
+        'feasibilityAndBusinessViability',
+      ),
+      expectedEffects: fd.get('expectedEffects'),
       members: synced,
       isBusanBased: fd.get('isBusanBased') === 'yes',
       eligibilityConfirmed: fd.get('eligibilityConfirmed') === 'on',
@@ -208,6 +214,38 @@ export default function ApplyPage() {
               className="min-h-32 border border-[#dfe3e8] bg-white p-4 outline-none hover:border-[#c9d0d8] focus:border-[#35c1de] focus:ring-3 focus:ring-[#35c1de]/10"
             />
           </Label>
+          <LongAnswer
+            name="proposalBackground"
+            title="1. 아이디어의 제안 배경"
+            description={[
+              'AI 창업 아이디어가 진입하고자 하는 시장에서 해당 아이디어의 부재로 인한 불편한 점',
+              '국내외 시장(사회·경제·기술)의 문제점 또는 아이디어 출현으로 인한 이점과 사회적 의미',
+            ]}
+          />
+          <LongAnswer
+            name="introductionAndDifferentiation"
+            title="2. 아이디어의 소개 및 차별점"
+            description={[
+              '아이디어의 핵심 기능(AI를 활용해 고객에게 제공할 기능이나 서비스)',
+              '경쟁제품 대비 우위 요소와 차별화 전략',
+            ]}
+          />
+          <LongAnswer
+            name="feasibilityAndBusinessViability"
+            title="3. 아이디어의 실현가능성 및 사업성"
+            description={[
+              '아이디어 실현을 위한 기술적 타당성을 판단할 수 있는 사용 기술',
+              '아이디어 구현 방법 등의 합리적 근거',
+              '수익 창출(또는 가치 실현)을 위한 수익구조',
+            ]}
+          />
+          <LongAnswer
+            name="expectedEffects"
+            title="4. 아이디어의 기대 효과"
+            description={[
+              '아이디어 구현에 따른 목표 달성 시 예상되는 기대효과(일자리 창출, 사회문제 해결, 사회공헌 기여도 등)',
+            ]}
+          />
         </Section>
         <Section title="팀원 정보 (팀장 포함 2~4명)">
           {members.map((m, i) => (
@@ -334,6 +372,40 @@ export default function ApplyPage() {
         </button>
       </form>
     </div>
+  );
+}
+function LongAnswer({
+  name,
+  title,
+  description,
+}: {
+  name: string;
+  title: string;
+  description: string[];
+}) {
+  return (
+    <label className="block rounded-xl border border-[#cbd5df] bg-white p-4 sm:p-5">
+      <span className="block text-lg font-extrabold text-[#111827]">
+        {title}
+        <span className="ml-1 text-base font-bold text-[#d92d20]" aria-hidden>
+          *
+        </span>
+      </span>
+      <span className="sr-only">필수 입력 항목</span>
+      <ul className="mt-3 mb-4 list-disc space-y-2 pl-5 text-[15px] leading-7 font-medium text-[#374151]">
+        {description.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+      <textarea
+        name={name}
+        required
+        maxLength={10000}
+        aria-label={title}
+        placeholder="내용을 구체적으로 작성해 주세요."
+        className="min-h-48 w-full border-2 border-[#9ca8b5] bg-white p-4 text-base leading-7 font-medium text-[#111827] outline-none placeholder:text-[#6b7280] hover:border-[#667789] focus:border-[#176f9f] focus:ring-3 focus:ring-[#176f9f]/15"
+      />
+    </label>
   );
 }
 function Section({

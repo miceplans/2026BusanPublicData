@@ -16,6 +16,10 @@ type Detail = Record<string, unknown> & {
   industry: string;
   item_name: string;
   item_summary: string;
+  proposal_background: string;
+  introduction_and_differentiation: string;
+  feasibility_and_business_viability: string;
+  expected_effects: string;
   requests: string | null;
   created_at: string;
   updated_at: string;
@@ -100,6 +104,16 @@ export default function Page() {
             ['참가분야', app.industry],
             ['아이템명', app.item_name],
             ['아이템요약', app.item_summary],
+            ['1. 아이디어의 제안 배경', app.proposal_background],
+            [
+              '2. 아이디어의 소개 및 차별점',
+              app.introduction_and_differentiation,
+            ],
+            [
+              '3. 아이디어의 실현가능성 및 사업성',
+              app.feasibility_and_business_viability,
+            ],
+            ['4. 아이디어의 기대 효과', app.expected_effects],
             ['요청사항', app.requests ?? ''],
           ].map(([k, v]) => (
             <div key={String(k)}>
@@ -126,7 +140,10 @@ export default function Page() {
             <tbody>
               {app.application_members.length === 0 && (
                 <tr>
-                  <td colSpan={3} className="p-6 text-center text-sm text-[#999]">
+                  <td
+                    colSpan={3}
+                    className="p-6 text-center text-sm text-[#999]"
+                  >
                     팀원 정보가 없습니다.
                   </td>
                 </tr>

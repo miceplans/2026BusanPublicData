@@ -87,6 +87,12 @@ export async function POST(request: NextRequest) {
         industry: parsed.data.industry,
         item_name: parsed.data.itemName,
         item_summary: parsed.data.itemSummary,
+        proposal_background: parsed.data.proposalBackground,
+        introduction_and_differentiation:
+          parsed.data.introductionAndDifferentiation,
+        feasibility_and_business_viability:
+          parsed.data.feasibilityAndBusinessViability,
+        expected_effects: parsed.data.expectedEffects,
         is_busan_based: parsed.data.isBusanBased,
         eligibility_confirmed: true,
         exclusion_confirmed: true,

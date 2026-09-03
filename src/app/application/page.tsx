@@ -15,6 +15,10 @@ type App = {
   industry: string;
   item_name: string;
   item_summary: string;
+  proposal_background: string;
+  introduction_and_differentiation: string;
+  feasibility_and_business_viability: string;
+  expected_effects: string;
   is_busan_based: boolean;
   eligibility_confirmed: boolean;
   exclusion_confirmed: boolean;
@@ -85,6 +89,10 @@ export default function Page() {
       industry: f.get('industry'),
       itemName: f.get('itemName'),
       itemSummary: f.get('itemSummary'),
+      proposalBackground: f.get('proposalBackground'),
+      introductionAndDifferentiation: f.get('introductionAndDifferentiation'),
+      feasibilityAndBusinessViability: f.get('feasibilityAndBusinessViability'),
+      expectedEffects: f.get('expectedEffects'),
       isBusanBased: f.get('isBusanBased') === 'true',
       eligibilityConfirmed: true,
       exclusionConfirmed: true,
@@ -230,6 +238,44 @@ export default function Page() {
               className="mt-2 min-h-32 w-full border border-[#dfe3e8] bg-white p-3 outline-none focus:border-[#35c1de] focus:ring-3 focus:ring-[#35c1de]/10"
             />
           </label>
+          {[
+            [
+              'proposalBackground',
+              '1. 아이디어의 제안 배경',
+              app.proposal_background,
+            ],
+            [
+              'introductionAndDifferentiation',
+              '2. 아이디어의 소개 및 차별점',
+              app.introduction_and_differentiation,
+            ],
+            [
+              'feasibilityAndBusinessViability',
+              '3. 아이디어의 실현가능성 및 사업성',
+              app.feasibility_and_business_viability,
+            ],
+            [
+              'expectedEffects',
+              '4. 아이디어의 기대 효과',
+              app.expected_effects,
+            ],
+          ].map(([name, label, value]) => (
+            <label
+              className="rounded-xl border border-[#cbd5df] bg-white p-4 sm:col-span-2"
+              key={name}
+            >
+              <span className="block text-base font-extrabold text-[#111827]">
+                {label}
+              </span>
+              <textarea
+                name={name}
+                defaultValue={value}
+                required
+                maxLength={10000}
+                className="mt-3 min-h-48 w-full border-2 border-[#9ca8b5] bg-white p-4 text-base leading-7 font-medium text-[#111827] outline-none placeholder:text-[#6b7280] focus:border-[#176f9f] focus:ring-3 focus:ring-[#176f9f]/15"
+              />
+            </label>
+          ))}
           {app.application_members
             .sort((a, b) => a.display_order - b.display_order)
             .map((m, i) => (

@@ -11,6 +11,10 @@ const headers = [
   '참가분야',
   '아이템명',
   '아이템요약',
+  '아이디어의 제안 배경',
+  '아이디어의 소개 및 차별점',
+  '아이디어의 실현가능성 및 사업성',
+  '아이디어의 기대 효과',
   '팀장이름',
   '팀장이메일',
   '팀장연락처',
@@ -41,6 +45,10 @@ type ExportRow = {
   industry: string;
   item_name: string;
   item_summary: string;
+  proposal_background: string;
+  introduction_and_differentiation: string;
+  feasibility_and_business_viability: string;
+  expected_effects: string;
   leader_name: string;
   leader_email: string;
   leader_phone: string;
@@ -67,7 +75,7 @@ export async function GET(request: NextRequest) {
   let q = createAdminClient()
     .from('applications')
     .select(
-      'id,receipt_number,team_name,participation_type,industry,item_name,item_summary,leader_name,leader_email,leader_phone,leader_region,is_busan_based,requests,created_at,updated_at,application_members(name,role,is_leader,display_order),application_files(count)',
+      'id,receipt_number,team_name,participation_type,industry,item_name,item_summary,proposal_background,introduction_and_differentiation,feasibility_and_business_viability,expected_effects,leader_name,leader_email,leader_phone,leader_region,is_busan_based,requests,created_at,updated_at,application_members(name,role,is_leader,display_order),application_files(count)',
     )
     .order('created_at', { ascending: false });
   if (ids?.length) q = q.in('id', ids);
@@ -90,6 +98,10 @@ export async function GET(request: NextRequest) {
       v.industry,
       v.item_name,
       v.item_summary,
+      v.proposal_background,
+      v.introduction_and_differentiation,
+      v.feasibility_and_business_viability,
+      v.expected_effects,
       v.leader_name,
       v.leader_email,
       v.leader_phone,
