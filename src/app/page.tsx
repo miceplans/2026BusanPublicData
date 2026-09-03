@@ -103,6 +103,33 @@ const agreementRequirements = [
   '상위 수상팀이 협약요건을 충족하지 못하거나 협약을 포기하면\n 차순위 수상팀에 사업화 지원 자격이 순차 승계됨',
 ];
 
+const commercializationProcess = [
+  '협약 체결',
+  '전문가 컨설팅',
+  '창업·사업화 지원금 수여',
+];
+
+const mandatoryAgreementRequirements = [
+  '(공통) 협약일로부터 1년 이상 부산광역시 관내 소재 창업기업을 유지하여야 함',
+  '(예비창업자) 협약일로부터 2개월 이내 부산광역시 관내로 창업자(대표자) 명의의 사업자등록을 완료하여야 함',
+  '(신규창업자) 협약 기준 소재지가 부산광역시이거나 2개월 이내 부산광역시 관내로 소재지를 이전등록 완료하여야 함(지점은 해당되지 않음)',
+];
+
+const commercializationEligibility = [
+  'AI 창업 경진대회 입상팀 (수상순위에 따라 협약요건 충족팀 순차 지원)',
+  '지원제외 대상에 해당하지 않으며, 아래 창업·사업화 지원 협약요건을 이행할 수 있는 자',
+];
+
+const excludedFromSupport = [
+  '국세·지방세 체납 또는 금융기관 등 채무불이행이 확인된 경우',
+  '파산·회생절차·개인회생절차 개시 신청이 이루어진 경우',
+  '중소기업창업 지원법 시행령상 창업 제외 업종(사행산업, 유흥업 등)',
+  '동일한 사업계획으로 다른 정부·지자체 사업으로부터 중복으로 사업화 자금을 지원받고 있는 경우',
+  '타인의 특허·실용신안 등 지식재산권을 침해하거나 도용할 우려가 있는 아이템',
+  '정부·기관 사업 제재 중이거나 의무사항(보고서 제출, 정산금·환수금 납부 등) 불이행 중인 경우',
+  '기타 관련 법령에 저촉되어 사업 참여 제한을 받고 있는 기업',
+];
+
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
     <h2 className="max-w-[760px] text-[clamp(1.5rem,4.5vw,3rem)] leading-[1.12] font-semibold tracking-[0.055em]">
@@ -491,6 +518,146 @@ export default async function HomePage() {
               </section>
             </div>
           </div>
+
+          <section id="commercialization-support" className="scroll-mt-28">
+            <SectionTitle>창업·사업화 지원</SectionTitle>
+
+            <div className="mt-12">
+              <h3 className="text-2xl font-semibold tracking-[-0.04em]">
+                추진절차
+              </h3>
+              <ol className="mt-6 grid gap-3 lg:grid-cols-3">
+                {commercializationProcess.map((step, index) => (
+                  <li
+                    className="landing-panel interactive-card relative flex min-h-32 items-center justify-center rounded-[24px] border border-[#45C4DE]/55 p-6 text-center text-xl font-semibold"
+                    key={step}
+                  >
+                    <span className="sr-only">{index + 1}단계: </span>
+                    {step}
+                    {index < commercializationProcess.length - 1 && (
+                      <span
+                        aria-hidden="true"
+                        className="absolute -bottom-7 left-1/2 z-2 -translate-x-1/2 text-2xl text-[#45C4DE] lg:top-1/2 lg:-right-7 lg:bottom-auto lg:left-auto lg:-translate-y-1/2"
+                      >
+                        →
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ol>
+              <p className="mt-7 text-center text-sm font-semibold text-white/55">
+                11월 중 순차 진행
+              </p>
+            </div>
+
+            <div className="mt-16">
+              <h3 className="text-2xl font-semibold tracking-[-0.04em]">
+                지원내용
+              </h3>
+              <p className="mt-3 text-base font-semibold text-white/60">
+                창업·사업화 지원 (총 1억원 규모)
+              </p>
+              <div className="mt-6 grid gap-5 lg:grid-cols-[1.15fr_0.7fr_1.15fr]">
+                <article className="landing-panel rounded-[28px] border border-[#45C4DE]/45 p-7 sm:p-8">
+                  <p className="text-sm font-bold text-[#45C4DE]">
+                    창업·사업화 컨설팅
+                  </p>
+                  <p className="mt-5 text-lg leading-[1.65] font-semibold text-white/80">
+                    창업·사업화 전문가 매칭 및 컨설팅을 통한 역량 강화
+                  </p>
+                </article>
+                <article className="landing-panel rounded-[28px] border border-[#45C4DE]/55 p-7 sm:p-8">
+                  <p className="text-sm font-bold text-[#45C4DE]">
+                    창업·사업화 지원금
+                  </p>
+                  <ul className="mt-5 grid gap-3">
+                    {['3,000만원', '2,000만원', '1,000만원'].map((amount) => (
+                      <li
+                        className="border-t border-[#45C4DE]/35 pt-3 text-2xl font-semibold first:border-0 first:pt-0"
+                        key={amount}
+                      >
+                        {amount}
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+                <article className="landing-panel rounded-[28px] border border-[#45C4DE]/45 p-7 sm:p-8">
+                  <p className="text-sm font-bold text-[#45C4DE]">비고</p>
+                  <p className="mt-5 text-lg leading-[1.65] font-semibold text-white/80">
+                    경진대회 수상순위에 따라 협약요건 충족팀 순차 지원
+                  </p>
+                </article>
+              </div>
+              <p className="mt-5 text-sm leading-[1.6] text-white/50">
+                ※ 지원 대상자는 부산지역 내 창업 또는 사업장 이전 필수
+              </p>
+            </div>
+
+            <div className="mt-16">
+              <h3 className="text-2xl font-semibold tracking-[-0.04em]">
+                지원조건(협약요건)
+              </h3>
+              <ul className="mt-6 grid gap-3 text-sm leading-[1.65] text-white/75">
+                {commercializationEligibility.map((item) => (
+                  <li className="flex items-start gap-2.5" key={item}>
+                    <span
+                      aria-hidden="true"
+                      className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-[#45C4DE]"
+                    />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 grid gap-5 lg:grid-cols-2">
+                <article className="landing-panel rounded-[28px] border border-[#45C4DE]/55 p-7 sm:p-8">
+                  <h4 className="text-lg font-semibold">필수 협약요건</h4>
+                  <ol className="mt-6 grid gap-4 text-sm leading-[1.7] text-white/75">
+                    {mandatoryAgreementRequirements.map(
+                      (requirement, index) => (
+                        <li
+                          className="flex items-start gap-3"
+                          key={requirement}
+                        >
+                          <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-[#45C4DE]/50 text-xs font-bold text-[#45C4DE]">
+                            {index + 1}
+                          </span>
+                          <span>{requirement}</span>
+                        </li>
+                      ),
+                    )}
+                  </ol>
+                </article>
+                <article className="landing-panel rounded-[28px] border border-[#45C4DE]/45 p-7 sm:p-8">
+                  <h4 className="text-lg font-semibold">지원제외 대상</h4>
+                  <ul className="mt-6 grid gap-3 text-sm leading-[1.65] text-white/70">
+                    {excludedFromSupport.map((item) => (
+                      <li className="flex items-start gap-2.5" key={item}>
+                        <span
+                          aria-hidden="true"
+                          className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-[#45C4DE]"
+                        />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              </div>
+            </div>
+
+            <div className="landing-panel mt-5 rounded-[28px] border border-[#45C4DE]/45 p-7 sm:p-8">
+              <h3 className="text-lg font-semibold">제출서류</h3>
+              <p className="mt-4 flex items-start gap-2.5 text-sm leading-[1.65] text-white/75">
+                <span
+                  aria-hidden="true"
+                  className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-[#45C4DE]"
+                />
+                <span>
+                  사업자등록증 사본(부산광역시 관내 사업장 소재지 확인이 가능한
+                  발급분)
+                </span>
+              </p>
+            </div>
+          </section>
 
           <FaqSection faqs={faqs} />
         </div>
