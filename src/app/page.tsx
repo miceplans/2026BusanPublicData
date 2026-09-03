@@ -220,6 +220,12 @@ export default async function HomePage() {
             >
               추진절차
             </a>
+            <a
+              className="hidden min-h-11 items-center rounded-full px-4 hover:bg-[#45C4DE]/15 md:flex"
+              href="#contact"
+            >
+              문의하기
+            </a>
             <Link
               className="brand-gradient flex min-h-11 items-center rounded-full px-5 text-white"
               href="/apply"
@@ -751,6 +757,30 @@ export default async function HomePage() {
           </section>
 
           <FaqSection faqs={faqs} />
+
+          <section id="contact" className="scroll-mt-28">
+            <SectionTitle>문의하기</SectionTitle>
+            <p className="mt-5 text-sm leading-[1.7] text-white/70 sm:text-base">
+              대회 참가에 대해 궁금한 점이 있으신가요?
+              <br />
+              카카오톡 오픈 채팅방으로 편하게 문의해 주세요.
+            </p>
+            <a
+              className="mt-8 flex min-h-14 w-fit items-center gap-2 rounded-full bg-[#FEE500] px-8 font-bold text-[#191919] transition-opacity hover:opacity-90"
+              href="http://pf.kakao.com/_uwqJX"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <Image
+                alt=""
+                aria-hidden="true"
+                src="/assets/kakaoicon.png"
+                width={21}
+                height={21}
+              />
+              카카오톡 오픈 채팅방 문의하기
+            </a>
+          </section>
         </div>
 
         <section className="bg-[#111111] px-5 py-24 text-white sm:px-8 sm:py-32">
