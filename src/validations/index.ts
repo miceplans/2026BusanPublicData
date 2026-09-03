@@ -1,8 +1,22 @@
 import { z } from 'zod';
-import { INDUSTRIES, PARTICIPATION_TYPES } from '@/types';
+import {
+  GENDERS,
+  INDUSTRIES,
+  INFORMATION_SOURCES,
+  PARTICIPATION_TYPES,
+} from '@/types';
 
 const requiredText = (label: string, max: number) =>
   z.string().trim().min(1, `${label}을(를) 입력해 주세요.`).max(max);
+const birthDateField = (label: string) =>
+  z
+    .string()
+    .regex(
+      /^\d{6}$/,
+      `${label}을(를) 생년월일 6자리(예: 260101)로 입력해 주세요.`,
+    );
+const genderField = (label: string) =>
+  z.enum(GENDERS, { error: `${label}을(를) 선택해 주세요.` });
 export function normalizeTeamName(value: string) {
   return value
     .normalize('NFKC')
@@ -26,32 +40,36 @@ export const memberSchema = z.object({
   name: requiredText('팀원 이름', 50),
   role: requiredText('팀 내 역할', 100),
   isLeader: z.boolean(),
+  org: requiredText('팀원 소속', 100),
+  email: z.email('올바른 이메일 주소를 입력해 주세요.').max(254),
+  phone: z
+    .string()
+    .regex(/^01[016789]-?\d{3,4}-?\d{4}$/, '올바른 연락처를 입력해 주세요.'),
+  birthDate: birthDateField('팀원 생년월일'),
+  gender: genderField('팀원 성별'),
+  residence: requiredText('팀원 거주지', 100),
 });
 const applicationBaseSchema = z.object({
   idempotencyKey: z.uuid(),
   teamName: requiredText('팀명', 100),
   leaderName: requiredText('팀장 이름', 50),
+  leaderOrg: requiredText('팀장 소속', 100),
   leaderEmail: z.email('올바른 이메일 주소를 입력해 주세요.').max(254),
   leaderPhone: z
     .string()
     .regex(/^01[016789]-?\d{3,4}-?\d{4}$/, '올바른 연락처를 입력해 주세요.'),
-  leaderRegion: requiredText('지역', 100),
+  leaderBirthDate: birthDateField('팀장 생년월일'),
+  leaderGender: genderField('팀장 성별'),
+  leaderResidence: requiredText('거주지', 100),
   participationType: z.enum(PARTICIPATION_TYPES),
   industry: z.enum(INDUSTRIES),
-  itemName: requiredText('아이템명', 200),
-  itemSummary: requiredText('아이템 요약', 10000),
-  proposalBackground: requiredText('아이디어의 제안 배경', 10000),
-  introductionAndDifferentiation: requiredText(
-    '아이디어의 소개 및 차별점',
-    10000,
-  ),
-  feasibilityAndBusinessViability: requiredText(
-    '아이디어의 실현가능성 및 사업성',
-    10000,
-  ),
-  expectedEffects: requiredText('아이디어의 기대 효과', 10000),
+  informationSource: z.enum(INFORMATION_SOURCES, {
+    error: '대회 정보 습득 경로를 선택해 주세요.',
+  }),
+  informationSourceOther: z.string().trim().max(100).optional().default(''),
+  itemName: requiredText('아이템명', 20),
+  itemSummary: requiredText('아이템 요약', 40),
   members: z.array(memberSchema).min(2).max(4),
-  isBusanBased: z.boolean(),
   eligibilityConfirmed: z.literal(true),
   exclusionConfirmed: z.literal(true),
   privacyAgreed: z.literal(true),
@@ -69,9 +87,21 @@ function validateLeader(
       message: '팀장을 팀원 목록에 한 번 포함해 주세요.',
     });
 }
+function validateInformationSource(
+  data: { informationSource: string; informationSourceOther?: string },
+  context: z.RefinementCtx,
+) {
+  if (data.informationSource === '기타' && !data.informationSourceOther?.trim())
+    context.addIssue({
+      code: 'custom',
+      path: ['informationSourceOther'],
+      message: '기타 습득 경로를 입력해 주세요.',
+    });
+}
 export const applicationSchema = applicationBaseSchema.superRefine(
   (data, context) => {
     validateLeader(data, context);
+    validateInformationSource(data, context);
   },
 );
 export const applicationUpdateSchema = applicationBaseSchema
@@ -83,23 +113,25 @@ export const applicationUpdateSchema = applicationBaseSchema
   .required({
     teamName: true,
     leaderName: true,
+    leaderOrg: true,
     leaderEmail: true,
     leaderPhone: true,
-    leaderRegion: true,
+    leaderBirthDate: true,
+    leaderGender: true,
+    leaderResidence: true,
     participationType: true,
     industry: true,
+    informationSource: true,
     itemName: true,
     itemSummary: true,
-    proposalBackground: true,
-    introductionAndDifferentiation: true,
-    feasibilityAndBusinessViability: true,
-    expectedEffects: true,
     members: true,
-    isBusanBased: true,
     eligibilityConfirmed: true,
     exclusionConfirmed: true,
   })
-  .superRefine(validateLeader);
+  .superRefine((data, context) => {
+    validateLeader(data, context);
+    validateInformationSource(data, context);
+  });
 export const applicationLoginSchema = z.object({
   teamName: requiredText('팀명', 100),
   password: z.string().regex(/^\d{4}$/, '연락처 뒤 4자리를 입력해 주세요.'),

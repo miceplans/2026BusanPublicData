@@ -9,17 +9,18 @@ type Detail = Record<string, unknown> & {
   receipt_number: string;
   team_name: string;
   leader_name: string;
+  leader_org: string;
   leader_email: string;
   leader_phone: string;
-  leader_region: string;
+  leader_birth_date: string;
+  leader_gender: string;
+  leader_residence: string;
   participation_type: string;
   industry: string;
+  information_source: string | null;
+  information_source_other: string | null;
   item_name: string;
   item_summary: string;
-  proposal_background: string;
-  introduction_and_differentiation: string;
-  feasibility_and_business_viability: string;
-  expected_effects: string;
   requests: string | null;
   created_at: string;
   updated_at: string;
@@ -28,6 +29,12 @@ type Detail = Record<string, unknown> & {
     name: string;
     role: string;
     is_leader: boolean;
+    org: string;
+    email: string;
+    phone: string;
+    birth_date: string;
+    gender: string;
+    residence: string;
   }[];
   application_files: {
     id: string;
@@ -97,23 +104,22 @@ export default function Page() {
         <dl className="mt-8 grid gap-4 rounded-xl border border-[#e5e5e5] p-5 sm:grid-cols-2">
           {[
             ['팀장', app.leader_name],
+            ['소속', app.leader_org],
             ['이메일', app.leader_email],
             ['연락처', app.leader_phone],
-            ['지역', app.leader_region],
+            ['생년월일', app.leader_birth_date],
+            ['성별', app.leader_gender],
+            ['거주지', app.leader_residence],
             ['참가유형', app.participation_type],
             ['참가분야', app.industry],
+            [
+              '대회 정보 습득 경로',
+              app.information_source === '기타'
+                ? `기타 (${app.information_source_other ?? ''})`
+                : (app.information_source ?? '미입력'),
+            ],
             ['아이템명', app.item_name],
             ['아이템요약', app.item_summary],
-            ['1. 아이디어의 제안 배경', app.proposal_background],
-            [
-              '2. 아이디어의 소개 및 차별점',
-              app.introduction_and_differentiation,
-            ],
-            [
-              '3. 아이디어의 실현가능성 및 사업성',
-              app.feasibility_and_business_viability,
-            ],
-            ['4. 아이디어의 기대 효과', app.expected_effects],
             ['요청사항', app.requests ?? ''],
           ].map(([k, v]) => (
             <div key={String(k)}>
@@ -127,7 +133,17 @@ export default function Page() {
           <table className="w-full text-left text-sm">
             <thead>
               <tr className="brand-gradient text-white">
-                {['이름', '역할', '구분'].map((x) => (
+                {[
+                  '이름',
+                  '소속',
+                  '역할',
+                  '이메일',
+                  '연락처',
+                  '생년월일',
+                  '성별',
+                  '거주지',
+                  '구분',
+                ].map((x) => (
                   <th
                     className="p-3 text-xs font-bold tracking-wide whitespace-nowrap first:pl-4 last:pr-4"
                     key={x}
@@ -141,7 +157,7 @@ export default function Page() {
               {app.application_members.length === 0 && (
                 <tr>
                   <td
-                    colSpan={3}
+                    colSpan={9}
                     className="p-6 text-center text-sm text-[#999]"
                   >
                     팀원 정보가 없습니다.
@@ -154,7 +170,13 @@ export default function Page() {
                   key={m.id}
                 >
                   <td className="p-3 pl-4 font-bold text-[#111]">{m.name}</td>
+                  <td className="p-3 text-[#333]">{m.org}</td>
                   <td className="p-3 text-[#333]">{m.role}</td>
+                  <td className="p-3 text-[#333]">{m.email}</td>
+                  <td className="p-3 text-[#333]">{m.phone}</td>
+                  <td className="p-3 text-[#333]">{m.birth_date}</td>
+                  <td className="p-3 text-[#333]">{m.gender}</td>
+                  <td className="p-3 text-[#333]">{m.residence}</td>
                   <td className="p-3 pr-4 text-[#666]">
                     {m.is_leader ? '팀장' : '팀원'}
                   </td>

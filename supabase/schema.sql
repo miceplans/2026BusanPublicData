@@ -1,4 +1,4 @@
--- 전체 스키마 스냅샷: 실제 운영 DB와 동일한 최종 상태(마이그레이션 202609030003 적용 후)입니다.
+-- 전체 스키마 스냅샷: 실제 운영 DB와 동일한 최종 상태(마이그레이션 202609030005 적용 후)입니다.
 -- 신규 환경 구축 시 이 파일을 적용하면 운영 DB와 동일한 구조가 만들어집니다.
 create extension if not exists "pgcrypto";
 create extension if not exists "pg_trgm";
@@ -8,13 +8,17 @@ create table if not exists public.applications (
  id uuid primary key default gen_random_uuid(), receipt_number text not null unique, team_name text not null,
  normalized_team_name text not null unique, password_hash text not null, leader_name text not null,
  credential_type text not null default 'phone_last_four' check (credential_type = 'phone_last_four'),
- leader_email text not null, leader_phone text not null, leader_region text not null default '',
+ leader_email text not null, leader_phone text not null, leader_residence text not null default '',
+ leader_org text not null default '', leader_birth_date text not null default '' check (leader_birth_date = '' or leader_birth_date ~ '^[0-9]{6}$'),
+ leader_gender text not null default '' check (leader_gender in ('','남','여')),
  participation_type text not null check (participation_type in ('예비창업팀','신규창업기업')),
  industry text not null check (industry in ('해양','에너지테크','미래모빌리티','융합부품·소재','라이프스타일','디지털테크','금융','문화관광','바이오헬스')),
+ information_source text check (information_source in ('공모 관련 사이트','SNS','검색포털','학교안내','지인소개','기타')),
+ information_source_other text check (char_length(information_source_other) <= 100),
+ check (information_source <> '기타' or nullif(btrim(information_source_other), '') is not null),
  item_name text not null, item_summary text not null,
  proposal_background text not null, introduction_and_differentiation text not null,
  feasibility_and_business_viability text not null, expected_effects text not null,
- is_busan_based boolean not null,
  eligibility_confirmed boolean not null check (eligibility_confirmed), exclusion_confirmed boolean not null check (exclusion_confirmed),
  privacy_agreed_at timestamptz not null, requests text,
  additional_data jsonb not null default '{}'::jsonb check (jsonb_typeof(additional_data) = 'object'),
@@ -25,6 +29,9 @@ create table if not exists public.applications (
 create table if not exists public.application_members (
  id uuid primary key default gen_random_uuid(), application_id uuid not null references public.applications(id) on delete cascade,
  name text not null, role text not null, is_leader boolean not null default false, display_order smallint not null check (display_order between 1 and 4),
+ org text not null default '', email text not null default '', phone text not null default '',
+ birth_date text not null default '' check (birth_date = '' or birth_date ~ '^[0-9]{6}$'),
+ gender text not null default '' check (gender in ('','남','여')), residence text not null default '',
  created_at timestamptz not null default now(), updated_at timestamptz not null default now(), unique(application_id, display_order)
 );
 create unique index if not exists application_one_leader_idx on public.application_members(application_id) where is_leader;

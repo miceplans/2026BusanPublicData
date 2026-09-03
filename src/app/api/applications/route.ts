@@ -80,20 +80,25 @@ export async function POST(request: NextRequest) {
         password_hash: passwordHash,
         credential_type: 'phone_last_four',
         leader_name: parsed.data.leaderName,
+        leader_org: parsed.data.leaderOrg,
         leader_email: parsed.data.leaderEmail.toLowerCase(),
         leader_phone: parsed.data.leaderPhone,
-        leader_region: parsed.data.leaderRegion,
+        leader_birth_date: parsed.data.leaderBirthDate,
+        leader_gender: parsed.data.leaderGender,
+        leader_residence: parsed.data.leaderResidence,
         participation_type: parsed.data.participationType,
         industry: parsed.data.industry,
+        information_source: parsed.data.informationSource,
+        information_source_other:
+          parsed.data.informationSource === '기타'
+            ? parsed.data.informationSourceOther
+            : null,
         item_name: parsed.data.itemName,
         item_summary: parsed.data.itemSummary,
-        proposal_background: parsed.data.proposalBackground,
-        introduction_and_differentiation:
-          parsed.data.introductionAndDifferentiation,
-        feasibility_and_business_viability:
-          parsed.data.feasibilityAndBusinessViability,
-        expected_effects: parsed.data.expectedEffects,
-        is_busan_based: parsed.data.isBusanBased,
+        proposal_background: '',
+        introduction_and_differentiation: '',
+        feasibility_and_business_viability: '',
+        expected_effects: '',
         eligibility_confirmed: true,
         exclusion_confirmed: true,
         privacy_agreed_at: now,
@@ -112,6 +117,12 @@ export async function POST(request: NextRequest) {
         role: member.role,
         is_leader: member.isLeader,
         display_order: index + 1,
+        org: member.org,
+        email: member.email.toLowerCase(),
+        phone: member.phone,
+        birth_date: member.birthDate,
+        gender: member.gender,
+        residence: member.residence,
       })),
     );
     if (memberError) throw memberError;

@@ -7,9 +7,26 @@ import type { FaqItem } from '@/types';
 
 export const dynamic = 'force-dynamic';
 
+function FlowArrow({ className = '' }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      className={className}
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+    >
+      <path
+        d="M593.23-480 291.92-781.31q-11.92-11.92-11.61-28.38.31-16.46 12.23-28.39Q304.46-850 320.92-850t28.39 11.92l306.23 306.85q10.84 10.85 16.07 24.31 5.24 13.46 5.24 26.92t-5.24 26.92q-5.23 13.46-16.07 24.31L348.69-121.92q-11.92 11.92-28.07 11.61-16.16-.31-28.08-12.23-11.92-11.92-11.92-28.38t11.92-28.39L593.23-480Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
 const overview = [
   ['대회명', '2026 AI 창업 경진대회'],
-  ['주제', '부산시 9대 전략산업 분야 내 자유주제 공모'],
+  ['주제', '모집분야 내 AI를 활용한 자유주제'],
   ['접수기간', '2026. 9. 7.(월) ~ 9. 30.(수)'],
   ['개최장소', '벡스코 컨벤션홀 205호'],
   [
@@ -380,7 +397,7 @@ export default async function HomePage() {
                 부산 9대 전략산업 모집분야
               </h3>
               <p className="mt-2 text-sm text-white/60">
-                주제 : 부산시 9대 전략산업 분야 내 자유주제 공모
+                주제 : 모집분야 내 AI를 활용한 자유주제
               </p>
               <ul
                 className="mt-6 grid grid-cols-3 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-9"
@@ -457,7 +474,7 @@ export default async function HomePage() {
                 <p className="mt-5 text-center text-sm text-white/55">
                   상기 일정은 진행 상황에 따라 변경될 수 있습니다.
                 </p>
-                <ol className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+                <ol className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 xl:gap-12">
                   {schedule.map(([date, label], index) => (
                     <li
                       className="landing-panel interactive-card relative flex min-h-48 flex-col items-center justify-between rounded-[24px] border border-[#45C4DE]/55 p-5 text-center"
@@ -473,12 +490,7 @@ export default async function HomePage() {
                         {date}
                       </span>
                       {index < schedule.length - 1 && (
-                        <span
-                          aria-hidden="true"
-                          className="absolute top-1/2 -right-3.5 z-2 hidden -translate-y-1/2 text-xl text-[#45C4DE] xl:block"
-                        >
-                          →
-                        </span>
+                        <FlowArrow className="absolute top-1/2 left-[calc(100%+1.5rem)] z-2 hidden -translate-x-1/2 -translate-y-1/2 text-[#45C4DE] xl:block" />
                       )}
                     </li>
                   ))}
@@ -548,10 +560,7 @@ export default async function HomePage() {
                       </h4>
                       <ul className="mt-3 grid gap-3 text-sm leading-[1.65] text-white/75">
                         {contestSubmissionDocuments.map((item) => (
-                          <li
-                            className="flex items-start gap-2.5"
-                            key={item}
-                          >
+                          <li className="flex items-start gap-2.5" key={item}>
                             <span
                               aria-hidden="true"
                               className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-[#45C4DE]"
@@ -613,7 +622,7 @@ export default async function HomePage() {
               <h3 className="text-2xl font-semibold tracking-[-0.04em]">
                 추진절차
               </h3>
-              <ol className="mt-6 grid gap-3 lg:grid-cols-3">
+              <ol className="mt-6 grid gap-16 lg:grid-cols-3 lg:gap-12">
                 {commercializationProcess.map((step, index) => (
                   <li
                     className="landing-panel interactive-card relative flex min-h-32 items-center justify-center rounded-[24px] border border-[#45C4DE]/55 p-6 text-center text-xl font-semibold"
@@ -622,12 +631,7 @@ export default async function HomePage() {
                     <span className="sr-only">{index + 1}단계: </span>
                     {step}
                     {index < commercializationProcess.length - 1 && (
-                      <span
-                        aria-hidden="true"
-                        className="absolute -bottom-7 left-1/2 z-2 -translate-x-1/2 text-2xl text-[#45C4DE] lg:top-1/2 lg:-right-7 lg:bottom-auto lg:left-auto lg:-translate-y-1/2"
-                      >
-                        →
-                      </span>
+                      <FlowArrow className="absolute -bottom-11 left-1/2 z-2 -translate-x-1/2 rotate-90 text-[#45C4DE] lg:top-1/2 lg:bottom-auto lg:left-[calc(100%+1.5rem)] lg:-translate-y-1/2 lg:rotate-0" />
                     )}
                   </li>
                 ))}

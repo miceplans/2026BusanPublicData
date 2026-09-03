@@ -4,35 +4,37 @@ import { requireAdmin } from '@/lib/admin-auth';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { jsonError } from '@/lib/http';
 import { escapeSpreadsheetFormula } from '@/lib/output-safety';
+const memberHeaders = (n: number) => [
+  `팀원${n}이름`,
+  `팀원${n}소속`,
+  `팀원${n}역할`,
+  `팀원${n}이메일`,
+  `팀원${n}연락처`,
+  `팀원${n}생년월일`,
+  `팀원${n}성별`,
+  `팀원${n}거주지`,
+  `팀원${n}구분`,
+];
 const headers = [
   '접수번호',
   '팀명',
   '참가유형',
   '참가분야',
+  '대회 정보 습득 경로',
   '아이템명',
   '아이템요약',
-  '아이디어의 제안 배경',
-  '아이디어의 소개 및 차별점',
-  '아이디어의 실현가능성 및 사업성',
-  '아이디어의 기대 효과',
   '팀장이름',
+  '팀장소속',
   '팀장이메일',
   '팀장연락처',
-  '지역',
+  '팀장생년월일',
+  '팀장성별',
+  '거주지',
   '팀원수',
-  '팀원1이름',
-  '팀원1역할',
-  '팀원1구분',
-  '팀원2이름',
-  '팀원2역할',
-  '팀원2구분',
-  '팀원3이름',
-  '팀원3역할',
-  '팀원3구분',
-  '팀원4이름',
-  '팀원4역할',
-  '팀원4구분',
-  '부산소재여부',
+  ...memberHeaders(1),
+  ...memberHeaders(2),
+  ...memberHeaders(3),
+  ...memberHeaders(4),
   '증빙자료수',
   '요청사항',
   '신청일시',
@@ -43,17 +45,17 @@ type ExportRow = {
   team_name: string;
   participation_type: string;
   industry: string;
+  information_source: string | null;
+  information_source_other: string | null;
   item_name: string;
   item_summary: string;
-  proposal_background: string;
-  introduction_and_differentiation: string;
-  feasibility_and_business_viability: string;
-  expected_effects: string;
   leader_name: string;
+  leader_org: string;
   leader_email: string;
   leader_phone: string;
-  leader_region: string;
-  is_busan_based: boolean;
+  leader_birth_date: string;
+  leader_gender: string;
+  leader_residence: string;
   requests: string | null;
   created_at: string;
   updated_at: string;
@@ -62,6 +64,12 @@ type ExportRow = {
     role: string;
     is_leader: boolean;
     display_order: number;
+    org: string;
+    email: string;
+    phone: string;
+    birth_date: string;
+    gender: string;
+    residence: string;
   }[];
   application_files: { count: number }[];
 };
@@ -75,7 +83,7 @@ export async function GET(request: NextRequest) {
   let q = createAdminClient()
     .from('applications')
     .select(
-      'id,receipt_number,team_name,participation_type,industry,item_name,item_summary,proposal_background,introduction_and_differentiation,feasibility_and_business_viability,expected_effects,leader_name,leader_email,leader_phone,leader_region,is_busan_based,requests,created_at,updated_at,application_members(name,role,is_leader,display_order),application_files(count)',
+      'id,receipt_number,team_name,participation_type,industry,information_source,information_source_other,item_name,item_summary,leader_name,leader_org,leader_email,leader_phone,leader_birth_date,leader_gender,leader_residence,requests,created_at,updated_at,application_members(name,role,is_leader,display_order,org,email,phone,birth_date,gender,residence),application_files(count)',
     )
     .order('created_at', { ascending: false });
   if (ids?.length) q = q.in('id', ids);
@@ -88,27 +96,38 @@ export async function GET(request: NextRequest) {
     const memberCells = Array.from({ length: 4 }, (_, index) => {
       const member = members[index];
       return member
-        ? [member.name, member.role, member.is_leader ? '팀장' : '팀원']
-        : ['', '', ''];
+        ? [
+            member.name,
+            member.org,
+            member.role,
+            member.email,
+            member.phone,
+            member.birth_date,
+            member.gender,
+            member.residence,
+            member.is_leader ? '팀장' : '팀원',
+          ]
+        : ['', '', '', '', '', '', '', '', ''];
     }).flat();
     return [
       v.receipt_number,
       v.team_name,
       v.participation_type,
       v.industry,
+      v.information_source === '기타'
+        ? `기타 (${v.information_source_other ?? ''})`
+        : (v.information_source ?? ''),
       v.item_name,
       v.item_summary,
-      v.proposal_background,
-      v.introduction_and_differentiation,
-      v.feasibility_and_business_viability,
-      v.expected_effects,
       v.leader_name,
+      v.leader_org,
       v.leader_email,
       v.leader_phone,
-      v.leader_region,
+      v.leader_birth_date,
+      v.leader_gender,
+      v.leader_residence,
       members.length,
       ...memberCells,
-      v.is_busan_based ? '예' : '아니오',
       v.application_files?.[0]?.count ?? 0,
       v.requests ?? '',
       v.created_at,

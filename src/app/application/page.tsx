@@ -2,24 +2,29 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { ContestHeader, fieldClass } from '@/components/contest-header';
 import { formatPhoneNumber } from '@/validations';
-import { INDUSTRIES, PARTICIPATION_TYPES } from '@/types';
+import {
+  GENDERS,
+  INDUSTRIES,
+  INFORMATION_SOURCES,
+  PARTICIPATION_TYPES,
+} from '@/types';
 import { useToast } from '@/components/toast';
 type App = {
   receipt_number: string;
   team_name: string;
   leader_name: string;
+  leader_org: string;
   leader_email: string;
   leader_phone: string;
-  leader_region: string;
+  leader_birth_date: string;
+  leader_gender: string;
+  leader_residence: string;
   participation_type: string;
   industry: string;
+  information_source: string | null;
+  information_source_other: string | null;
   item_name: string;
   item_summary: string;
-  proposal_background: string;
-  introduction_and_differentiation: string;
-  feasibility_and_business_viability: string;
-  expected_effects: string;
-  is_busan_based: boolean;
   eligibility_confirmed: boolean;
   exclusion_confirmed: boolean;
   requests: string | null;
@@ -29,6 +34,12 @@ type App = {
     role: string;
     is_leader: boolean;
     display_order: number;
+    org: string;
+    email: string;
+    phone: string;
+    birth_date: string;
+    gender: string;
+    residence: string;
   }[];
   application_files: {
     id: string;
@@ -82,18 +93,18 @@ export default function Page() {
     const body = {
       teamName: f.get('teamName'),
       leaderName: f.get('leaderName'),
+      leaderOrg: f.get('leaderOrg'),
       leaderEmail: f.get('leaderEmail'),
       leaderPhone: f.get('leaderPhone'),
-      leaderRegion: f.get('leaderRegion'),
+      leaderBirthDate: f.get('leaderBirthDate'),
+      leaderGender: f.get('leaderGender'),
+      leaderResidence: f.get('leaderResidence'),
       participationType: f.get('participationType'),
       industry: f.get('industry'),
+      informationSource: f.get('informationSource'),
+      informationSourceOther: f.get('informationSourceOther') || '',
       itemName: f.get('itemName'),
       itemSummary: f.get('itemSummary'),
-      proposalBackground: f.get('proposalBackground'),
-      introductionAndDifferentiation: f.get('introductionAndDifferentiation'),
-      feasibilityAndBusinessViability: f.get('feasibilityAndBusinessViability'),
-      expectedEffects: f.get('expectedEffects'),
-      isBusanBased: f.get('isBusanBased') === 'true',
       eligibilityConfirmed: true,
       exclusionConfirmed: true,
       requests: f.get('requests'),
@@ -103,6 +114,12 @@ export default function Page() {
           name: String(f.get(`memberName${i}`)),
           role: String(f.get(`memberRole${i}`)),
           isLeader: m.is_leader,
+          org: String(f.get(`memberOrg${i}`)),
+          email: String(f.get(`memberEmail${i}`)),
+          phone: String(f.get(`memberPhone${i}`)),
+          birthDate: String(f.get(`memberBirthDate${i}`)),
+          gender: String(f.get(`memberGender${i}`)),
+          residence: String(f.get(`memberResidence${i}`)),
         })),
     };
     try {
@@ -196,6 +213,12 @@ export default function Page() {
             autoComplete="name"
           />
           <F
+            n="leaderOrg"
+            l="팀장 소속"
+            v={app.leader_org}
+            autoComplete="organization"
+          />
+          <F
             n="leaderEmail"
             l="팀장 이메일"
             v={app.leader_email}
@@ -210,9 +233,16 @@ export default function Page() {
             phone
           />
           <F
-            n="leaderRegion"
-            l="지역"
-            v={app.leader_region}
+            n="leaderBirthDate"
+            l="생년월일"
+            v={app.leader_birth_date}
+            placeholder="예: 260101"
+          />
+          <S n="leaderGender" l="성별" v={app.leader_gender} values={GENDERS} />
+          <F
+            n="leaderResidence"
+            l="거주지"
+            v={app.leader_residence}
             autoComplete="address-level1"
           />
           <S
@@ -222,63 +252,61 @@ export default function Page() {
             values={PARTICIPATION_TYPES}
           />
           <S n="industry" l="참가 분야" v={app.industry} values={INDUSTRIES} />
-          <F n="itemName" l="아이템명" v={app.item_name} />
-          <S
-            n="isBusanBased"
-            l="부산 소재 여부"
-            v={String(app.is_busan_based)}
-            values={['true', 'false']}
-            labels={['예', '아니오']}
+          <InformationSourceField
+            value={app.information_source ?? ''}
+            otherValue={app.information_source_other ?? ''}
+          />
+          <F
+            n="itemName"
+            l="아이템명"
+            v={app.item_name}
+            placeholder="제안 아이디어를 20자 이내로 표현"
           />
           <label className="sm:col-span-2">
             아이템 요약
             <textarea
               name="itemSummary"
               defaultValue={app.item_summary}
+              placeholder="제안 아이디어의 핵심 내용과 기대 효과를 40자 내외로 요약"
               className="mt-2 min-h-32 w-full border border-[#dfe3e8] bg-white p-3 outline-none focus:border-[#35c1de] focus:ring-3 focus:ring-[#35c1de]/10"
             />
           </label>
-          {[
-            [
-              'proposalBackground',
-              '1. 아이디어의 제안 배경',
-              app.proposal_background,
-            ],
-            [
-              'introductionAndDifferentiation',
-              '2. 아이디어의 소개 및 차별점',
-              app.introduction_and_differentiation,
-            ],
-            [
-              'feasibilityAndBusinessViability',
-              '3. 아이디어의 실현가능성 및 사업성',
-              app.feasibility_and_business_viability,
-            ],
-            [
-              'expectedEffects',
-              '4. 아이디어의 기대 효과',
-              app.expected_effects,
-            ],
-          ].map(([name, label, value]) => (
-            <label className="sm:col-span-2" key={name}>
-              <span className="block text-base font-bold text-[#333d4b]">
-                {label}
-              </span>
-              <textarea
-                name={name}
-                defaultValue={value}
-                required
-                maxLength={10000}
-                className="mt-2 min-h-48 w-full border border-[#dfe3e8] bg-white p-4 text-base leading-7 font-medium text-[#111827] outline-none placeholder:text-[#6b7280] focus:border-[#35c1de] focus:ring-3 focus:ring-[#35c1de]/10"
-              />
-            </label>
-          ))}
           {app.application_members
             .sort((a, b) => a.display_order - b.display_order)
             .map((m, i) => (
               <div className="contents" key={i}>
                 <F n={`memberName${i}`} l={`팀원 ${i + 1} 이름`} v={m.name} />
+                <F n={`memberOrg${i}`} l={`팀원 ${i + 1} 소속`} v={m.org} />
                 <F n={`memberRole${i}`} l="역할" v={m.role} />
+                <F
+                  n={`memberEmail${i}`}
+                  l={`팀원 ${i + 1} 이메일`}
+                  v={m.email}
+                  type="email"
+                />
+                <F
+                  n={`memberPhone${i}`}
+                  l={`팀원 ${i + 1} 연락처`}
+                  v={m.phone}
+                  phone
+                />
+                <F
+                  n={`memberBirthDate${i}`}
+                  l={`팀원 ${i + 1} 생년월일`}
+                  v={m.birth_date}
+                  placeholder="예: 260101"
+                />
+                <S
+                  n={`memberGender${i}`}
+                  l={`팀원 ${i + 1} 성별`}
+                  v={m.gender}
+                  values={GENDERS}
+                />
+                <F
+                  n={`memberResidence${i}`}
+                  l={`팀원 ${i + 1} 거주지`}
+                  v={m.residence}
+                />
               </div>
             ))}
           <label className="sm:col-span-2">
@@ -344,6 +372,7 @@ function F({
   type = 'text',
   autoComplete,
   phone = false,
+  placeholder,
 }: {
   n: string;
   l: string;
@@ -351,6 +380,7 @@ function F({
   type?: string;
   autoComplete?: React.HTMLInputAutoCompleteAttribute;
   phone?: boolean;
+  placeholder?: string;
 }) {
   return (
     <label className="text-sm font-bold">
@@ -360,6 +390,7 @@ function F({
         name={n}
         type={type}
         defaultValue={v}
+        placeholder={placeholder}
         autoComplete={autoComplete}
         inputMode={phone ? 'numeric' : undefined}
         maxLength={phone ? 13 : undefined}
@@ -405,5 +436,45 @@ function S({
         ))}
       </select>
     </label>
+  );
+}
+
+function InformationSourceField({
+  value,
+  otherValue,
+}: {
+  value: string;
+  otherValue: string;
+}) {
+  const [selected, setSelected] = useState(value);
+  return (
+    <fieldset className="sm:col-span-2">
+      <legend className="text-sm font-bold">대회 정보 습득 경로</legend>
+      <div className="mt-2 grid gap-3 sm:grid-cols-3">
+        {INFORMATION_SOURCES.map((source) => (
+          <label className="flex items-center gap-2 text-sm" key={source}>
+            <input
+              required
+              type="radio"
+              name="informationSource"
+              value={source}
+              checked={selected === source}
+              onChange={(event) => setSelected(event.target.value)}
+            />
+            {source}
+          </label>
+        ))}
+      </div>
+      {selected === '기타' && (
+        <input
+          required
+          name="informationSourceOther"
+          maxLength={100}
+          defaultValue={otherValue}
+          aria-label="기타 대회 정보 습득 경로"
+          className={`${fieldClass} mt-3 font-normal`}
+        />
+      )}
+    </fieldset>
   );
 }

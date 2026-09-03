@@ -1,22 +1,50 @@
 'use client';
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { ContestHeader, fieldClass } from '@/components/contest-header';
-import { INDUSTRIES, PARTICIPATION_TYPES, type SiteSettings } from '@/types';
+import {
+  GENDERS,
+  INDUSTRIES,
+  INFORMATION_SOURCES,
+  PARTICIPATION_TYPES,
+  type SiteSettings,
+} from '@/types';
 import { useToast } from '@/components/toast';
 import Link from 'next/link';
 import { formatPhoneNumber } from '@/validations';
-type Member = { name: string; role: string; isLeader: boolean };
+type Member = {
+  name: string;
+  role: string;
+  isLeader: boolean;
+  org: string;
+  email: string;
+  phone: string;
+  birthDate: string;
+  gender: string;
+  residence: string;
+};
+const emptyMember = (role: string, isLeader: boolean): Member => ({
+  name: '',
+  role,
+  isLeader,
+  org: '',
+  email: '',
+  phone: '',
+  birthDate: '',
+  gender: '',
+  residence: '',
+});
 export default function ApplyPage() {
   const { showToast } = useToast();
   const [idempotencyKey] = useState(() => crypto.randomUUID());
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [leaderName, setLeaderName] = useState('');
   const [members, setMembers] = useState<Member[]>([
-    { name: '', role: '팀장', isLeader: true },
-    { name: '', role: '', isLeader: false },
+    emptyMember('팀장', true),
+    emptyMember('', false),
   ]);
   const [busy, setBusy] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
+  const [informationSource, setInformationSource] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     fetch('/api/settings')
@@ -26,7 +54,11 @@ export default function ApplyPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const uploadEnabled = !!settings?.evidence_label;
-  function updateMember(index: number, key: 'name' | 'role', value: string) {
+  function updateMember(
+    index: number,
+    key: Exclude<keyof Member, 'isLeader'>,
+    value: string,
+  ) {
     setMembers((v) =>
       v.map((m, i) => (i === index ? { ...m, [key]: value } : m)),
     );
@@ -46,30 +78,44 @@ export default function ApplyPage() {
     const form = event.currentTarget;
     const fd = new FormData(form);
     const leaderName = String(fd.get('leaderName'));
+    const leaderOrg = String(fd.get('leaderOrg'));
+    const leaderEmail = String(fd.get('leaderEmail'));
+    const leaderPhone = String(fd.get('leaderPhone'));
+    const leaderBirthDate = String(fd.get('leaderBirthDate'));
+    const leaderGender = String(fd.get('leaderGender'));
+    const leaderResidence = String(fd.get('leaderResidence'));
     const synced = members.map((m, i) =>
       i === 0
-        ? { ...m, name: leaderName, isLeader: true }
+        ? {
+            ...m,
+            name: leaderName,
+            isLeader: true,
+            org: leaderOrg,
+            email: leaderEmail,
+            phone: leaderPhone,
+            birthDate: leaderBirthDate,
+            gender: leaderGender,
+            residence: leaderResidence,
+          }
         : { ...m, isLeader: false },
     );
     const data = {
       idempotencyKey,
       teamName: fd.get('teamName'),
       leaderName,
-      leaderEmail: fd.get('leaderEmail'),
-      leaderPhone: fd.get('leaderPhone'),
-      leaderRegion: fd.get('leaderRegion'),
+      leaderOrg,
+      leaderEmail,
+      leaderPhone,
+      leaderBirthDate,
+      leaderGender,
+      leaderResidence,
       participationType: fd.get('participationType') || '',
       industry: fd.get('industry') || '',
+      informationSource: fd.get('informationSource') || '',
+      informationSourceOther: fd.get('informationSourceOther') || '',
       itemName: fd.get('itemName'),
       itemSummary: fd.get('itemSummary'),
-      proposalBackground: fd.get('proposalBackground'),
-      introductionAndDifferentiation: fd.get('introductionAndDifferentiation'),
-      feasibilityAndBusinessViability: fd.get(
-        'feasibilityAndBusinessViability',
-      ),
-      expectedEffects: fd.get('expectedEffects'),
       members: synced,
-      isBusanBased: fd.get('isBusanBased') === 'yes',
       eligibilityConfirmed: fd.get('eligibilityConfirmed') === 'on',
       exclusionConfirmed: fd.get('exclusionConfirmed') === 'on',
       privacyAgreed: fd.get('privacyAgreed') === 'on',
@@ -134,6 +180,65 @@ export default function ApplyPage() {
             설정됩니다.
           </p>
         </Section>
+        <Section title="대회 참가 정보">
+          <Grid>
+            <Dropdown
+              name="participationType"
+              label="참가 유형"
+              values={PARTICIPATION_TYPES}
+              columns={1}
+            />
+            <Dropdown name="industry" label="참가 분야" values={INDUSTRIES} />
+            <Field
+              name="itemName"
+              label="아이템명"
+              maxLength={20}
+              placeholder="제안 아이디어를 20자 이내로 표현"
+            />
+          </Grid>
+          <Label text="아이템 요약">
+            <textarea
+              name="itemSummary"
+              required
+              maxLength={Math.min(settings?.item_summary_max_length ?? 40, 40)}
+              placeholder="제안 아이디어의 핵심 내용과 기대 효과를 40자 내외로 요약"
+              className="min-h-32 border border-[#dfe3e8] bg-white p-4 outline-none hover:border-[#c9d0d8] focus:border-[#35c1de] focus:ring-3 focus:ring-[#35c1de]/10"
+            />
+          </Label>
+        </Section>
+        <Section title="대회 정보 습득 경로">
+          <fieldset>
+            <legend className="sr-only">대회 정보 습득 경로 (필수)</legend>
+            <div className="grid gap-3 sm:grid-cols-3">
+              {INFORMATION_SOURCES.map((source) => (
+                <label className="flex items-center gap-2 text-sm" key={source}>
+                  <input
+                    required
+                    type="radio"
+                    name="informationSource"
+                    value={source}
+                    checked={informationSource === source}
+                    onChange={(event) =>
+                      setInformationSource(event.target.value)
+                    }
+                    className="size-4"
+                  />
+                  {source}
+                </label>
+              ))}
+            </div>
+            {informationSource === '기타' && (
+              <input
+                required
+                name="informationSourceOther"
+                maxLength={100}
+                aria-label="기타 대회 정보 습득 경로"
+                placeholder="기타 경로를 입력해 주세요."
+                className={`${fieldClass} mt-4`}
+              />
+            )}
+          </fieldset>
+        </Section>
         <Section title="팀장 정보">
           <Grid>
             <Field
@@ -142,6 +247,11 @@ export default function ApplyPage() {
               value={leaderName}
               onChange={(e) => setLeaderName(e.target.value)}
               autoComplete="name"
+            />
+            <Field
+              name="leaderOrg"
+              label="팀장 소속"
+              autoComplete="organization"
             />
             <Field
               name="leaderEmail"
@@ -163,116 +273,158 @@ export default function ApplyPage() {
               }}
             />
             <Field
-              name="leaderRegion"
-              label="지역"
+              name="leaderBirthDate"
+              label="생년월일"
+              placeholder="예: 260101"
+              inputMode="numeric"
+              maxLength={6}
+              onChange={(e) => {
+                e.currentTarget.value = e.currentTarget.value
+                  .replace(/\D/g, '')
+                  .slice(0, 6);
+              }}
+            />
+            <Field
+              name="leaderResidence"
+              label="거주지"
               placeholder="예: 부산"
               autoComplete="address-level1"
             />
           </Grid>
-          <fieldset className="flex flex-col gap-2">
-            <legend className="text-sm font-bold text-[#333d4b]">
-              부산 소재 여부
-            </legend>
-            <div className="flex gap-4">
-              {[
-                ['yes', '예'],
-                ['no', '아니오'],
-              ].map(([value, label], index) => (
-                <label className="flex items-center gap-2 text-sm" key={value}>
-                  <input
-                    type="radio"
-                    name="isBusanBased"
-                    value={value}
-                    defaultChecked={index === 1}
-                    className="size-4"
-                  />
-                  {label}
-                </label>
-              ))}
-            </div>
-          </fieldset>
-        </Section>
-        <Section title="대회 참가 정보">
-          <Grid>
-            <Dropdown
-              name="participationType"
-              label="참가 유형"
-              values={PARTICIPATION_TYPES}
-              columns={1}
-            />
-            <Dropdown name="industry" label="참가 분야" values={INDUSTRIES} />
-            <Field name="itemName" label="아이템명" />
-          </Grid>
-          <Label text="아이템 요약">
-            <textarea
-              name="itemSummary"
-              required
-              maxLength={settings?.item_summary_max_length ?? 10000}
-              className="min-h-32 border border-[#dfe3e8] bg-white p-4 outline-none hover:border-[#c9d0d8] focus:border-[#35c1de] focus:ring-3 focus:ring-[#35c1de]/10"
-            />
-          </Label>
-          <LongAnswer
-            name="proposalBackground"
-            title="1. 아이디어의 제안 배경"
-            description={[
-              'AI 창업 아이디어가 진입하고자 하는 시장에서 해당 아이디어의 부재로 인한 불편한 점',
-              '국내외 시장(사회·경제·기술)의 문제점 또는 아이디어 출현으로 인한 이점과 사회적 의미',
-            ]}
-          />
-          <LongAnswer
-            name="introductionAndDifferentiation"
-            title="2. 아이디어의 소개 및 차별점"
-            description={[
-              '아이디어의 핵심 기능(AI를 활용해 고객에게 제공할 기능이나 서비스)',
-              '경쟁제품 대비 우위 요소와 차별화 전략',
-            ]}
-          />
-          <LongAnswer
-            name="feasibilityAndBusinessViability"
-            title="3. 아이디어의 실현가능성 및 사업성"
-            description={[
-              '아이디어 실현을 위한 기술적 타당성을 판단할 수 있는 사용 기술',
-              '아이디어 구현 방법 등의 합리적 근거',
-              '수익 창출(또는 가치 실현)을 위한 수익구조',
-            ]}
-          />
-          <LongAnswer
-            name="expectedEffects"
-            title="4. 아이디어의 기대 효과"
-            description={[
-              '아이디어 구현에 따른 목표 달성 시 예상되는 기대효과(일자리 창출, 사회문제 해결, 사회공헌 기여도 등)',
-            ]}
-          />
+          <GenderField name="leaderGender" legend="성별" />
         </Section>
         <Section title="팀원 정보 (팀장 포함 2~4명)">
           {members.map((m, i) => (
             <div
-              className="motion-list-item grid gap-3 sm:grid-cols-[1fr_1fr_auto]"
+              className="motion-list-item flex flex-col gap-3 rounded-xl border border-[#e5e5e5] p-4"
               key={i}
             >
-              <input
-                className={fieldClass}
-                aria-label={`${i + 1}번째 팀원 이름`}
-                placeholder={i === 0 ? '팀장 이름과 자동으로 일치' : '이름'}
-                value={i === 0 ? leaderName : m.name}
-                disabled={i === 0}
-                onChange={(e) => updateMember(i, 'name', e.target.value)}
-              />
-              <input
-                className={fieldClass}
-                aria-label={`${i + 1}번째 팀원 역할`}
-                placeholder="팀 내 역할"
-                value={m.role}
-                onChange={(e) => updateMember(i, 'role', e.target.value)}
-              />
-              {i > 1 && (
-                <button
-                  type="button"
-                  className="motion-control rounded-lg px-3 py-2 text-red-700 hover:bg-[#f5f5f5]"
-                  onClick={() => setMembers((v) => v.filter((_, x) => x !== i))}
-                >
-                  삭제
-                </button>
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-bold text-[#333d4b]">
+                  {i === 0 ? '팀원 1 (팀장)' : `팀원 ${i + 1}`}
+                </span>
+                {i > 1 && (
+                  <button
+                    type="button"
+                    className="motion-control rounded-lg px-3 py-1 text-sm text-red-700 hover:bg-[#f5f5f5]"
+                    onClick={() =>
+                      setMembers((v) => v.filter((_, x) => x !== i))
+                    }
+                  >
+                    삭제
+                  </button>
+                )}
+              </div>
+              {i === 0 ? (
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <input
+                    className={fieldClass}
+                    aria-label="팀장 이름과 자동으로 일치"
+                    placeholder="팀장 이름과 자동으로 일치"
+                    value={leaderName}
+                    disabled
+                  />
+                  <input
+                    className={fieldClass}
+                    aria-label="팀장 팀 내 역할"
+                    placeholder="팀 내 역할"
+                    value={m.role}
+                    onChange={(e) => updateMember(i, 'role', e.target.value)}
+                  />
+                  <p className="text-xs text-[#666] sm:col-span-2">
+                    소속·이메일·연락처·생년월일·성별·거주지는 위 &lsquo;팀장
+                    정보&rsquo;의 입력값이 그대로 사용됩니다.
+                  </p>
+                </div>
+              ) : (
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <input
+                    className={fieldClass}
+                    aria-label={`${i + 1}번째 팀원 이름`}
+                    placeholder="이름"
+                    value={m.name}
+                    onChange={(e) => updateMember(i, 'name', e.target.value)}
+                  />
+                  <input
+                    className={fieldClass}
+                    aria-label={`${i + 1}번째 팀원 소속`}
+                    placeholder="소속"
+                    value={m.org}
+                    onChange={(e) => updateMember(i, 'org', e.target.value)}
+                  />
+                  <input
+                    className={fieldClass}
+                    aria-label={`${i + 1}번째 팀원 역할`}
+                    placeholder="팀 내 역할"
+                    value={m.role}
+                    onChange={(e) => updateMember(i, 'role', e.target.value)}
+                  />
+                  <input
+                    className={fieldClass}
+                    type="email"
+                    aria-label={`${i + 1}번째 팀원 이메일`}
+                    placeholder="이메일"
+                    value={m.email}
+                    onChange={(e) => updateMember(i, 'email', e.target.value)}
+                  />
+                  <input
+                    className={fieldClass}
+                    inputMode="numeric"
+                    maxLength={13}
+                    aria-label={`${i + 1}번째 팀원 연락처`}
+                    placeholder="010-0000-0000"
+                    value={m.phone}
+                    onChange={(e) =>
+                      updateMember(
+                        i,
+                        'phone',
+                        formatPhoneNumber(e.target.value),
+                      )
+                    }
+                  />
+                  <input
+                    className={fieldClass}
+                    inputMode="numeric"
+                    maxLength={6}
+                    aria-label={`${i + 1}번째 팀원 생년월일`}
+                    placeholder="생년월일 (예: 260101)"
+                    value={m.birthDate}
+                    onChange={(e) =>
+                      updateMember(
+                        i,
+                        'birthDate',
+                        e.target.value.replace(/\D/g, '').slice(0, 6),
+                      )
+                    }
+                  />
+                  <input
+                    className={fieldClass}
+                    aria-label={`${i + 1}번째 팀원 거주지`}
+                    placeholder="거주지"
+                    value={m.residence}
+                    onChange={(e) =>
+                      updateMember(i, 'residence', e.target.value)
+                    }
+                  />
+                  <fieldset className="flex items-center gap-4 sm:col-span-2">
+                    <legend className="sr-only">{`${i + 1}번째 팀원 성별`}</legend>
+                    {GENDERS.map((g) => (
+                      <label
+                        className="flex items-center gap-2 text-sm"
+                        key={g}
+                      >
+                        <input
+                          type="radio"
+                          name={`memberGender${i}`}
+                          checked={m.gender === g}
+                          onChange={() => updateMember(i, 'gender', g)}
+                          className="size-4"
+                        />
+                        {g}
+                      </label>
+                    ))}
+                  </fieldset>
+                </div>
               )}
             </div>
           ))}
@@ -280,12 +432,7 @@ export default function ApplyPage() {
             <button
               type="button"
               className="motion-control w-fit rounded-lg border border-[#b7e4ee] bg-[#effbfe] px-4 py-2 font-bold text-[#176f9f] hover:bg-[#ddf5fa]"
-              onClick={() =>
-                setMembers((v) => [
-                  ...v,
-                  { name: '', role: '', isLeader: false },
-                ])
-              }
+              onClick={() => setMembers((v) => [...v, emptyMember('', false)])}
             >
               팀원 추가
             </button>
@@ -296,7 +443,12 @@ export default function ApplyPage() {
             {settings?.evidence_purpose && (
               <p className="text-sm text-[#666]">{settings.evidence_purpose}</p>
             )}
-            <div className="grid gap-2 sm:grid-cols-2">
+            <div className="flex flex-col gap-2">
+              <DocumentDownload
+                href="/downloads/idea-proposal.hwp"
+                fileName="[신청서 양식] 2026 AI 창업 경진대회 아이디어 제안서.hwp"
+                label="아이디어 제안서 양식"
+              />
               <DocumentDownload
                 href="/downloads/privacy-consent.hwp"
                 fileName="개인정보 수집 및 이용에 관한 동의서.hwp"
@@ -374,6 +526,10 @@ export default function ApplyPage() {
             <li>
               부정행위가 적발되면 수상이 취소되고 상금이 회수될 수 있습니다.
             </li>
+            <li>
+              심사결과는 공개하지 않으며, 심사결과와 관련된 문의 및 이의제기
+              등은 일체 받지 않습니다.
+            </li>
           </ol>
         </Section>
         <Section title="필수 확인">
@@ -405,40 +561,6 @@ export default function ApplyPage() {
         </button>
       </form>
     </div>
-  );
-}
-function LongAnswer({
-  name,
-  title,
-  description,
-}: {
-  name: string;
-  title: string;
-  description: string[];
-}) {
-  return (
-    <label className="block">
-      <span className="block text-base font-bold text-[#333d4b]">
-        {title}
-        <span className="ml-1 text-base font-bold text-[#d92d20]" aria-hidden>
-          *
-        </span>
-      </span>
-      <span className="sr-only">필수 입력 항목</span>
-      <ul className="mt-3 mb-4 list-disc space-y-2 pl-5 text-[15px] leading-7 font-medium text-[#374151]">
-        {description.map((item) => (
-          <li key={item}>{item}</li>
-        ))}
-      </ul>
-      <textarea
-        name={name}
-        required
-        maxLength={10000}
-        aria-label={title}
-        placeholder="내용을 구체적으로 작성해 주세요."
-        className="min-h-48 w-full border border-[#dfe3e8] bg-white p-4 text-base leading-7 font-medium text-[#111827] outline-none placeholder:text-[#6b7280] hover:border-[#c9d0d8] focus:border-[#35c1de] focus:ring-3 focus:ring-[#35c1de]/10"
-      />
-    </label>
   );
 }
 function Section({
@@ -477,7 +599,7 @@ function DocumentDownload({
     >
       <span>{label}</span>
       <span aria-hidden className="shrink-0">
-        ↓ 다운로드
+        ↓
       </span>
     </a>
   );
@@ -611,6 +733,27 @@ function Dropdown({
         )}
       </div>
     </Label>
+  );
+}
+function GenderField({ name, legend }: { name: string; legend: string }) {
+  return (
+    <fieldset className="flex flex-col gap-2">
+      <legend className="text-sm font-bold text-[#333d4b]">{legend}</legend>
+      <div className="flex gap-4">
+        {GENDERS.map((g, index) => (
+          <label className="flex items-center gap-2 text-sm" key={g}>
+            <input
+              required={index === 0}
+              type="radio"
+              name={name}
+              value={g}
+              className="size-4"
+            />
+            {g}
+          </label>
+        ))}
+      </div>
+    </fieldset>
   );
 }
 function Check({

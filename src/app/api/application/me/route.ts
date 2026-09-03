@@ -15,7 +15,7 @@ export async function GET() {
   const { data, error } = await db
     .from('applications')
     .select(
-      'id,receipt_number,team_name,leader_name,leader_email,leader_phone,leader_region,participation_type,industry,item_name,item_summary,proposal_background,introduction_and_differentiation,feasibility_and_business_viability,expected_effects,is_busan_based,eligibility_confirmed,exclusion_confirmed,requests,created_at,updated_at,application_members(id,name,role,is_leader,display_order),application_files(id,original_name,mime_type,size_bytes,created_at)',
+      'id,receipt_number,team_name,leader_name,leader_org,leader_email,leader_phone,leader_birth_date,leader_gender,leader_residence,participation_type,industry,information_source,information_source_other,item_name,item_summary,eligibility_confirmed,exclusion_confirmed,requests,created_at,updated_at,application_members(id,name,role,is_leader,display_order,org,email,phone,birth_date,gender,residence),application_files(id,original_name,mime_type,size_bytes,created_at)',
     )
     .eq('id', id)
     .single();
@@ -54,22 +54,23 @@ export async function PATCH(request: NextRequest) {
       team_name: parsed.data.teamName,
       normalized_team_name: normalized,
       leader_name: parsed.data.leaderName,
+      leader_org: parsed.data.leaderOrg,
       leader_email: parsed.data.leaderEmail.toLowerCase(),
       leader_phone: parsed.data.leaderPhone,
       password_hash: await hash(phoneLastFour(parsed.data.leaderPhone), 12),
       credential_type: 'phone_last_four',
-      leader_region: parsed.data.leaderRegion,
+      leader_birth_date: parsed.data.leaderBirthDate,
+      leader_gender: parsed.data.leaderGender,
+      leader_residence: parsed.data.leaderResidence,
       participation_type: parsed.data.participationType,
       industry: parsed.data.industry,
+      information_source: parsed.data.informationSource,
+      information_source_other:
+        parsed.data.informationSource === '기타'
+          ? parsed.data.informationSourceOther
+          : null,
       item_name: parsed.data.itemName,
       item_summary: parsed.data.itemSummary,
-      proposal_background: parsed.data.proposalBackground,
-      introduction_and_differentiation:
-        parsed.data.introductionAndDifferentiation,
-      feasibility_and_business_viability:
-        parsed.data.feasibilityAndBusinessViability,
-      expected_effects: parsed.data.expectedEffects,
-      is_busan_based: parsed.data.isBusanBased,
       eligibility_confirmed: true,
       exclusion_confirmed: true,
       requests: parsed.data.requests || null,
@@ -90,6 +91,12 @@ export async function PATCH(request: NextRequest) {
       role: member.role,
       is_leader: member.isLeader,
       display_order: index + 1,
+      org: member.org,
+      email: member.email.toLowerCase(),
+      phone: member.phone,
+      birth_date: member.birthDate,
+      gender: member.gender,
+      residence: member.residence,
     })),
   );
   if (memberError) return jsonError('팀원 정보를 저장할 수 없습니다.', 500);

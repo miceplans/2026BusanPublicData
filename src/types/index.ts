@@ -8,12 +8,28 @@ export const INDUSTRIES = [
   '금융',
   '문화관광',
   '바이오헬스',
+  '혁신기술분야'
 ] as const;
 export const PARTICIPATION_TYPES = ['예비창업팀', '신규창업기업'] as const;
+export const INFORMATION_SOURCES = [
+  '공모 관련 사이트',
+  'SNS',
+  '검색포털',
+  '학교안내',
+  '지인소개',
+  '기타',
+] as const;
+export const GENDERS = ['남', '여'] as const;
 export type ApplicationMember = {
   name: string;
   role: string;
   isLeader: boolean;
+  org: string;
+  email: string;
+  phone: string;
+  birthDate: string;
+  gender: string;
+  residence: string;
 };
 export type FaqItem = { question: string; answer: string };
 export type SiteSettings = {
