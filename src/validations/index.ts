@@ -22,16 +22,6 @@ export function formatPhoneNumber(value: string) {
 export function phoneLastFour(value: string) {
   return phoneDigits(value).slice(-4);
 }
-export const passwordSchema = z
-  .string()
-  .min(8, '비밀번호는 8자 이상이어야 합니다.')
-  .max(64)
-  .refine(
-    (value) =>
-      [/[A-Za-z]/, /\d/, /[^A-Za-z\d\s]/].filter((r) => r.test(value)).length >=
-      2,
-    '영문, 숫자, 특수문자 중 2종류 이상을 포함해 주세요.',
-  );
 export const memberSchema = z.object({
   name: requiredText('팀원 이름', 50),
   role: requiredText('팀 내 역할', 100),
@@ -133,9 +123,4 @@ export const adminSignupSchema = z
     path: ['passwordConfirm'],
     message: '비밀번호가 일치하지 않습니다.',
   });
-export const adminPatchSchema = z
-  .object({
-    password: passwordSchema.optional(),
-  })
-  .refine((value) => Object.keys(value).length > 0, '변경할 값이 없습니다.');
 export type ApplicationInput = z.infer<typeof applicationSchema>;

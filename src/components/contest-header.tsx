@@ -15,7 +15,7 @@ export function ContestHeader({
         href="/"
         className="flex min-h-11 items-center text-lg leading-tight font-extrabold tracking-[-0.035em] text-[#191f28] sm:shrink-0 sm:text-xl"
       >
-        창업경진대회 참가관리
+        2026 AI 창업 경진대회
       </Link>
       {(helper || actionLabel) && (
         <div className="flex min-w-0 flex-wrap items-center gap-3 sm:justify-end">

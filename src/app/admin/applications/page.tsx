@@ -22,7 +22,6 @@ export default function Page() {
   const [items, setItems] = useState<Row[]>([]);
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState('');
-  const [message, setMessage] = useState('');
   const load = useCallback(() => {
     const q = new URLSearchParams({ search });
     fetch(`/api/admin/applications?${q}`)
@@ -48,24 +47,6 @@ export default function Page() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
   useEffect(load, [load]);
-  async function patch(id: string, body: unknown) {
-    try {
-      const r = await fetch(`/api/admin/applications/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-      const v = await r.json();
-      if (!r.ok) {
-        showToast(v.error ?? '변경하지 못했습니다.');
-        return;
-      }
-      setMessage('변경했습니다.');
-      load();
-    } catch {
-      showToast('네트워크 오류로 변경하지 못했습니다. 다시 시도해주세요.');
-    }
-  }
   return (
     <div>
       <ContestHeader
@@ -104,11 +85,8 @@ export default function Page() {
             관리자 추가
           </Link>
         </div>
-        {message && (
-          <p className="motion-feedback mt-4 text-sm text-[#666]">{message}</p>
-        )}
         <div className="mt-6 overflow-x-auto rounded-2xl border border-[#e5e5e5] bg-white shadow-sm">
-          <table className="w-full min-w-[1050px] text-left text-sm">
+          <table className="w-full min-w-[950px] text-left text-sm">
             <thead>
               <tr className="brand-gradient text-white">
                 {[
@@ -118,7 +96,6 @@ export default function Page() {
                   '분야',
                   '신청일',
                   '증빙',
-                  '비밀번호',
                 ].map((x) => (
                   <th
                     className="p-3 text-xs font-bold tracking-wide whitespace-nowrap first:pl-4 last:pr-4"
@@ -133,7 +110,7 @@ export default function Page() {
               {items.length === 0 && (
                 <tr>
                   <td
-                    colSpan={7}
+                    colSpan={6}
                     className="p-10 text-center text-sm text-[#999]"
                   >
                     신청 내역이 없습니다.
@@ -172,25 +149,6 @@ export default function Page() {
                   </td>
                   <td className="p-3 text-center text-[#333]">
                     {x.application_files?.[0]?.count ?? 0}
-                  </td>
-                  <td className="p-3 pr-4">
-                    <button
-                      className="motion-control rounded-[10px] border border-[#e5e5e5] px-3 py-2 text-xs font-bold whitespace-nowrap text-[#111] hover:bg-[#eef4fb]"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        const p = prompt(
-                          '새 비밀번호를 입력하세요. 비우면 자동 생성합니다.',
-                        );
-                        if (p === null) return;
-                        const generated =
-                          p || `${crypto.randomUUID().slice(0, 8)}!A1`;
-                        patch(x.id, { password: generated });
-                        if (!p)
-                          showToast(`새 비밀번호: ${generated}`, 'success');
-                      }}
-                    >
-                      초기화
-                    </button>
                   </td>
                 </tr>
               ))}

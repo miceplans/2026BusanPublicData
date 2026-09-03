@@ -7,7 +7,7 @@ do $$ begin create type public.email_delivery_status as enum ('pending','sent','
 create table if not exists public.applications (
  id uuid primary key default gen_random_uuid(), receipt_number text not null unique, team_name text not null,
  normalized_team_name text not null unique, password_hash text not null, leader_name text not null,
- credential_type text not null default 'phone_last_four' check (credential_type in ('phone_last_four', 'admin_reset')),
+ credential_type text not null default 'phone_last_four' check (credential_type = 'phone_last_four'),
  leader_email text not null, leader_phone text not null, leader_region text not null default '',
  participation_type text not null check (participation_type in ('예비창업팀','신규창업기업')),
  industry text not null check (industry in ('해양','에너지테크','미래모빌리티','융합부품·소재','라이프스타일','디지털테크','금융','문화관광','바이오헬스')),
@@ -36,7 +36,7 @@ create table if not exists public.application_files (
 );
 create table if not exists public.email_logs (
  id uuid primary key default gen_random_uuid(), application_id uuid not null references public.applications(id) on delete cascade,
- email_type text not null check (email_type in ('application_completed','password_reset')), idempotency_key text not null unique,
+ email_type text not null check (email_type = 'application_completed'), idempotency_key text not null unique,
  status public.email_delivery_status not null default 'pending', attempt_count smallint not null default 0 check (attempt_count between 0 and 4),
  next_retry_at timestamptz, sent_at timestamptz, provider_message_id text, error_code text, error_summary text,
  created_at timestamptz not null default now(), updated_at timestamptz not null default now()
