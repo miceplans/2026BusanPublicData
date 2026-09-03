@@ -9,6 +9,8 @@ export const dynamic = 'force-dynamic';
 
 const overview = [
   ['대회명', '2026 AI 창업 경진대회'],
+  ['주제', '부산시 9대 전략산업 분야 내 자유주제 공모'],
+  ['접수기간', '2026. 9. 7.(월) ~ 9. 30.(수)'],
   ['개최장소', '벡스코 컨벤션홀 205호'],
   [
     '추진목적',
@@ -23,6 +25,20 @@ const overview = [
     '주최 부산광역시 · 주관 부산정보산업진흥원 · 참여 부산창조경제혁신대표이사',
   ],
   ['참가대상', '전국 AI 관련 예비·신규 창업팀(2~4인 구성)'],
+];
+
+const awards = [
+  ['대상', '1팀', '부산광역시장상', '200만원 상당'],
+  ['최우수', '2팀', '부산정보산업진흥원장상', '100만원 상당'],
+  ['우수', '3팀', '부산정보산업진흥원장상', '50만원 상당'],
+  ['장려', '5팀', '부산창조경제혁신센터 대표이사상', '30만원 상당'],
+];
+
+const contestSubmissionDocuments = [
+  '참가신청서',
+  '아이디어 기획서',
+  '개인정보 수집·이용 동의서',
+  '참가자 서약서',
 ];
 
 const partners = [
@@ -59,9 +75,9 @@ const strategicIndustries = [
 ];
 
 const schedule = [
-  ['9월', '참가팀 모집'],
-  ['10월', '서면 심사'],
-  ['10월 31일', '발표심사 및 시상식'],
+  ['9.7(월) ~ 9.30(수)', '참가팀 모집'],
+  ['10.1 ~ 10.7', '서면 심사'],
+  ['10.31', '발표심사 및 시상식'],
   ['11월', '창업·사업화 지원 협약'],
   ['11월 ~ 12월', '창업·사업화 교육 및 컨설팅 (3주)'],
   ['12월', '창업·사업화 지원금 수여'],
@@ -70,19 +86,28 @@ const schedule = [
 const operationPlan = [
   {
     stage: '예선',
+    tag: '서면평가',
     qualification: 'AI 관련 예비창업팀·업력 2년 이내 신규 창업기업',
-    description: '온라인 서류심사 및 본선 참가팀 발표',
+    description: '부산 9대 전략산업 분야 AI 관련 창업·사업화 계획 서면평가',
+    selection: '제한없음 → 20팀',
+    period: '10.1 ~ 10.7',
   },
   {
-    stage: '온라인 오리엔테이션',
-    qualification: '예선 서류평가 통과팀',
+    stage: '오리엔테이션',
+    tag: '온라인',
+    qualification: '예선 서면평가 통과팀',
     description:
-      'ZOOM을 활용해 본선 일정·운영규정·평가항목·발표순서 안내(팀별 1~2인 접속)',
+      'ZOOM을 활용해 본선일정·운영규정·평가항목·발표순서 안내(팀별 1~2인 접속)',
+    selection: '20팀',
+    period: '10월 중',
   },
   {
-    stage: '본선',
-    qualification: '예선 서류평가 통과 20팀',
-    description: '팀별 10분 발표·5분 질의응답으로 최종 11팀 선발 및 시상',
+    stage: '본선 및 시상식',
+    tag: '발표평가',
+    qualification: '예선 서면평가 통과 20팀',
+    description: '팀별 10분 발표 + 5분 질의응답',
+    selection: '20팀 → 11팀 시상',
+    period: '10.31',
   },
 ];
 
@@ -354,6 +379,9 @@ export default async function HomePage() {
               <h3 className="text-xl font-semibold">
                 부산 9대 전략산업 모집분야
               </h3>
+              <p className="mt-2 text-sm text-white/60">
+                주제 : 부산시 9대 전략산업 분야 내 자유주제 공모
+              </p>
               <ul
                 className="mt-6 grid grid-cols-3 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-9"
                 aria-label="모집분야"
@@ -380,6 +408,43 @@ export default async function HomePage() {
                   </li>
                 ))}
               </ul>
+            </div>
+            <div className="landing-panel mt-5 rounded-[32px] border border-[#45C4DE]/55 p-7 sm:p-10">
+              <h3 className="text-xl font-semibold">
+                시상내역
+                <span className="ml-2 text-sm font-semibold text-white/55">
+                  (총 700만원 규모 생성형 AI 이용권)
+                </span>
+              </h3>
+              <div className="mt-6 overflow-x-auto">
+                <table className="w-full min-w-[560px] border-collapse text-left text-sm">
+                  <thead>
+                    <tr className="border-b border-[#45C4DE]/45 text-white/55">
+                      <th className="py-3 pr-4 font-bold">순위</th>
+                      <th className="py-3 pr-4 font-bold">팀수</th>
+                      <th className="py-3 pr-4 font-bold">훈격</th>
+                      <th className="py-3 font-bold">부상</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {awards.map(([rank, teams, title, prize]) => (
+                      <tr
+                        className="border-b border-[#45C4DE]/20 last:border-0"
+                        key={rank}
+                      >
+                        <td className="py-4 pr-4 font-bold text-[#45C4DE]">
+                          {rank}
+                        </td>
+                        <td className="py-4 pr-4 text-white/85">{teams}</td>
+                        <td className="py-4 pr-4 text-white/85">{title}</td>
+                        <td className="py-4 font-semibold text-white">
+                          {prize}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </section>
 
@@ -428,7 +493,7 @@ export default async function HomePage() {
                       key={item.stage}
                     >
                       <span className="text-sm font-semibold text-[#45C4DE]">
-                        {index + 1}단계
+                        {index + 1}단계 · {item.tag}
                       </span>
                       <h3 className="mt-4 text-2xl font-semibold tracking-[-0.04em]">
                         {item.stage}
@@ -437,6 +502,8 @@ export default async function HomePage() {
                         {[
                           ['자격', item.qualification],
                           ['내용', item.description],
+                          ['선발팀수', item.selection],
+                          ['시기', item.period],
                         ].map(([label, value]) => (
                           <div
                             className="border-t border-[#45C4DE]/45 pt-4"
@@ -475,6 +542,25 @@ export default async function HomePage() {
                         </li>
                       ))}
                     </ul>
+                    <div className="mt-8 border-t border-[#45C4DE]/45 pt-6">
+                      <h4 className="text-xs font-bold tracking-[0.04em] text-white/55 uppercase">
+                        제출서류
+                      </h4>
+                      <ul className="mt-3 grid gap-3 text-sm leading-[1.65] text-white/75">
+                        {contestSubmissionDocuments.map((item) => (
+                          <li
+                            className="flex items-start gap-2.5"
+                            key={item}
+                          >
+                            <span
+                              aria-hidden="true"
+                              className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-[#45C4DE]"
+                            />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                   <div className="landing-panel interactive-card rounded-[32px] border border-[#45C4DE]/45 p-7 sm:p-10">
                     <h3 className="text-2xl font-semibold tracking-[-0.04em]">
