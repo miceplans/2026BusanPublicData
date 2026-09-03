@@ -653,7 +653,7 @@ export default async function HomePage() {
               <p className="mt-3 text-base font-semibold text-white/60">
                 창업·사업화 지원 (총 1억원 규모)
               </p>
-              <div className="mt-6 grid gap-5 lg:grid-cols-[1.15fr_0.7fr_1.15fr]">
+              <div className="mt-6 grid gap-5 lg:grid-cols-[1fr_0.9fr_1fr]">
                 <article className="landing-panel rounded-[28px] border border-[#45C4DE]/45 p-7 sm:p-8">
                   <p className="text-sm font-bold text-[#45C4DE]">
                     창업·사업화 컨설팅
@@ -667,12 +667,21 @@ export default async function HomePage() {
                     창업·사업화 지원금
                   </p>
                   <ul className="mt-5 grid gap-3">
-                    {['3,000만원', '2,000만원', '1,000만원'].map((amount) => (
+                    {[
+                      ['3,000', '1팀'],
+                      ['2,000', '2팀'],
+                      ['1,000', '3팀'],
+                    ].map(([amount, teams]) => (
                       <li
-                        className="border-t border-[#45C4DE]/35 pt-3 text-2xl font-semibold first:border-0 first:pt-0"
+                        className="flex items-baseline justify-center gap-1.5 border-t border-[#45C4DE]/35 pt-3 text-2xl font-semibold whitespace-nowrap first:border-0 first:pt-0"
                         key={amount}
                       >
-                        {amount}
+                        <span>{amount}</span>
+                        <span className="text-sm font-medium">만원</span>
+                        <span className="mx-0.5 text-sm font-medium text-white/65">
+                          x
+                        </span>
+                        <span>{teams}</span>
                       </li>
                     ))}
                   </ul>
