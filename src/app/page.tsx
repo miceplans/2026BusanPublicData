@@ -25,16 +25,37 @@ const overview = [
   ['참가대상', '전국 AI 관련 예비·신규 창업팀(2~4인 구성)'],
 ];
 
+const partners = [
+  {
+    name: '부산광역시',
+    logo: '/assets/partner-busan-metropolitan-city.png',
+    width: 3332,
+    height: 714,
+  },
+  {
+    name: '부산정보산업진흥원',
+    logo: '/assets/partner-busan-it-industry-promotion-agency.png',
+    width: 865,
+    height: 143,
+  },
+  {
+    name: '부산창조경제혁신센터',
+    logo: '/assets/partner-busan-center-for-creative-economy-innovation.png',
+    width: 1387,
+    height: 273,
+  },
+];
+
 const strategicIndustries = [
-  '해양',
-  '에너지테크',
-  '미래모빌리티',
-  '융합부품 소재',
-  '라이프스타일',
-  '디지털테크',
-  '금융',
-  '문화관광',
-  '바이오헬스',
+  { icon: '/assets/industries/ocean.png', label: '해양' },
+  { icon: '/assets/industries/energy-tech.png', label: '에너지테크' },
+  { icon: '/assets/industries/future-mobility.png', label: '미래모빌리티' },
+  { icon: '/assets/industries/fusion-parts.png', label: '융합부품 소재' },
+  { icon: '/assets/industries/lifestyle.png', label: '라이프스타일' },
+  { icon: '/assets/industries/digital-tech.png', label: '디지털테크' },
+  { icon: '/assets/industries/finance.png', label: '금융' },
+  { icon: '/assets/industries/culture-tourism.png', label: '문화관광' },
+  { icon: '/assets/industries/bio-health.png', label: '바이오헬스' },
 ];
 
 const schedule = [
@@ -223,6 +244,30 @@ export default async function HomePage() {
                 </div>
               ))}
             </div>
+            <div className="mt-14 flex items-center justify-center gap-4 overflow-x-auto rounded-2xl bg-black/50 px-6 py-4 backdrop-blur-[2px] sm:gap-6">
+              {partners.map((partner, index) => (
+                <div
+                  className="flex shrink-0 items-center gap-4 sm:gap-6"
+                  key={partner.name}
+                >
+                  {index > 0 && (
+                    <span
+                      aria-hidden="true"
+                      className="text-base font-bold text-white/30"
+                    >
+                      ×
+                    </span>
+                  )}
+                  <Image
+                    alt={`${partner.name} 로고`}
+                    className="max-h-6 w-auto shrink-0 object-contain sm:max-h-8"
+                    height={partner.height}
+                    src={partner.logo}
+                    width={partner.width}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -281,13 +326,29 @@ export default async function HomePage() {
               <h3 className="text-xl font-semibold">
                 부산 9대 전략산업 모집분야
               </h3>
-              <ul className="mt-6 flex flex-wrap gap-2" aria-label="모집분야">
-                {strategicIndustries.map((industry) => (
+              <ul
+                className="mt-6 grid grid-cols-3 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-9"
+                aria-label="모집분야"
+              >
+                {strategicIndustries.map(({ icon, label }) => (
                   <li
-                    className="rounded-full border border-[#45C4DE]/40 bg-[#0D1E5E] px-4 py-2 text-sm font-bold text-white/75"
-                    key={industry}
+                    className="interactive-card flex flex-col items-center gap-2 rounded-2xl border border-[#45C4DE]/35 bg-[#0D1E5E] px-2 py-4 text-center sm:gap-3 sm:py-5"
+                    key={label}
                   >
-                    {industry}
+                    <span className="relative h-14 w-full sm:h-16">
+                      <Image
+                        alt=""
+                        aria-hidden="true"
+                        className="object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.35)]"
+                        fill
+                        sizes="80px"
+                        src={icon}
+                        unoptimized
+                      />
+                    </span>
+                    <span className="text-xs leading-[1.3] font-bold break-keep text-white/80 sm:text-sm">
+                      {label}
+                    </span>
                   </li>
                 ))}
               </ul>
