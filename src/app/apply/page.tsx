@@ -190,9 +190,6 @@ export default function ApplyPage() {
                 </label>
               ))}
             </div>
-            <p className="text-xs text-[#666]">
-              부산 소재 예비·신규 창업자에게 평가 전형별 우대 가점이 부여됩니다.
-            </p>
           </fieldset>
         </Section>
         <Section title="대회 참가 정보">
