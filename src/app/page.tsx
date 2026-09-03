@@ -277,7 +277,7 @@ export default async function HomePage() {
                 </Link>
               </div>
             </div>
-            <div className="hero-stats mx-auto mt-20 grid max-w-[980px] border-t border-[#45C4DE]/55 pt-8 text-center sm:grid-cols-3 sm:gap-8">
+            <div className="hero-stats mx-auto mt-20 grid max-w-[1120px] border-t border-[#45C4DE]/55 pt-8 text-center sm:grid-cols-4 sm:gap-6 lg:gap-8">
               {[
                 ['접수기간', '9.7~9.30'],
                 ['본선일정', '10.31(토)'],
