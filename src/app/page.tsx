@@ -92,7 +92,7 @@ const strategicIndustries = [
 ];
 
 const schedule = [
-  ['9.7(월) ~ 9.30(수)', '참가팀 모집'],
+  ['9.7(월) ~ 9.30(수) 18:00시', '참가팀 모집'],
   ['10.1 ~ 10.7', '서면 심사'],
   ['10.31', '발표심사 및 시상식'],
   ['11월', '창업·사업화 지원 협약'],
@@ -296,7 +296,7 @@ export default async function HomePage() {
             </div>
             <div className="hero-stats mx-auto mt-20 grid max-w-[1120px] border-t border-[#45C4DE]/55 pt-8 text-center sm:grid-cols-4 sm:gap-6 lg:gap-8">
               {[
-                ['접수기간', '9.7~9.30'],
+                ['접수기간', '9.7~9.30 18:00시'],
                 ['본선일정', '10.31(토)'],
                 ['2~4인', '팀 단위 참가'],
                 ['1억 7백만원', '시상·사업화 지원'],
