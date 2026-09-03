@@ -133,7 +133,7 @@ const participation = [
   '예비창업자는 공고일 기준 신청자 명의의 개인·법인 사업자등록이 없어야 함',
   '신규창업자는 공고일 기준 개업일(법인은 법인설립등기일)로부터\n 2년이 경과하지 않아야 함',
   '2~4인으로 구성된 팀',
-  '팀원 전원이 지원대상 요건을 충족해야 함'
+  '팀원 전원이 지원대상 요건을 충족해야 함',
 ];
 
 const agreementTargets = [
@@ -204,21 +204,15 @@ export default async function HomePage() {
           >
             <a
               className="hidden min-h-11 items-center rounded-full px-4 hover:bg-[#45C4DE]/15 sm:flex"
-              href="#overview"
+              href="#contest"
             >
-              대회개요
+              AI창업 경진대회
             </a>
             <a
               className="hidden min-h-11 items-center rounded-full px-4 hover:bg-[#45C4DE]/15 sm:flex"
               href="#support"
             >
-              지원내용
-            </a>
-            <a
-              className="hidden min-h-11 items-center rounded-full px-4 hover:bg-[#45C4DE]/15 md:flex"
-              href="#schedule"
-            >
-              추진절차
+              창업사업화 지원
             </a>
             <a
               className="hidden min-h-11 items-center rounded-full px-4 hover:bg-[#45C4DE]/15 md:flex"
@@ -348,8 +342,8 @@ export default async function HomePage() {
         </section>
 
         <div className="mx-auto max-w-[1280px] space-y-28 px-5 py-24 sm:px-8 sm:py-32 lg:space-y-40">
-          <section id="overview" className="scroll-mt-28">
-            <SectionTitle>대회개요</SectionTitle>
+          <section id="contest" className="scroll-mt-28">
+            <SectionTitle>AI창업 경진대회</SectionTitle>
             <dl className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {overview.map(([term, detail]) => (
                 <div
@@ -370,8 +364,13 @@ export default async function HomePage() {
             </dl>
           </section>
 
-          <section id="support" className="scroll-mt-28">
-            <SectionTitle>단계별 지원내용</SectionTitle>
+          <section aria-labelledby="contest-benefits-title">
+            <h2
+              id="contest-benefits-title"
+              className="max-w-[760px] text-[clamp(1.5rem,4.5vw,3rem)] leading-[1.12] font-semibold tracking-[0.055em]"
+            >
+              경진대회 지원 및 시상
+            </h2>
             <div className="mt-12 grid gap-5 lg:grid-cols-2">
               <article className="landing-panel interactive-card rounded-[32px] border border-[#45C4DE]/45 p-7 sm:p-10">
                 <span className="text-sm font-semibold text-[#45C4DE]">
@@ -621,8 +620,8 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <section id="commercialization-support" className="scroll-mt-28">
-            <SectionTitle>창업·사업화 지원</SectionTitle>
+          <section id="support" className="scroll-mt-28">
+            <SectionTitle>창업사업화 지원</SectionTitle>
 
             <div className="mt-12">
               <h3 className="text-2xl font-semibold tracking-[-0.04em]">
