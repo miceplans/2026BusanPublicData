@@ -157,6 +157,7 @@ export default function ApplyPage() {
         helper="참가 신청"
         actionLabel="신청 확인·수정"
         actionHref="/application/login"
+        singleLineMobile
       />
       <form
         onSubmit={submit}

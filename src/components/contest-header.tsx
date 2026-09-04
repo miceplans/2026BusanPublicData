@@ -5,22 +5,36 @@ export function ContestHeader({
   actionLabel,
   actionHref = '/apply',
   links,
+  singleLineMobile = false,
 }: {
   helper?: string;
   actionLabel?: string;
   actionHref?: string;
   links?: { label: string; href: string }[];
+  singleLineMobile?: boolean;
 }) {
   return (
-    <header className="motion-section sticky top-0 z-20 flex min-h-[72px] flex-col items-stretch justify-between gap-3 border-b border-black/5 bg-white/90 px-5 py-3 backdrop-blur-xl sm:flex-row sm:items-center sm:px-8 lg:px-10">
+    <header
+      className={`motion-section sticky top-0 z-20 flex min-h-[72px] justify-between border-b border-black/5 bg-white/90 px-5 py-3 backdrop-blur-xl sm:flex-row sm:items-center sm:px-8 lg:px-10 ${
+        singleLineMobile
+          ? 'flex-row items-center gap-2'
+          : 'flex-col items-stretch gap-3'
+      }`}
+    >
       <Link
         href="/"
-        className="flex min-h-11 items-center text-lg leading-tight font-extrabold tracking-[-0.035em] text-[#191f28] sm:shrink-0 sm:text-xl"
+        className={`flex min-h-11 items-center leading-tight font-extrabold tracking-[-0.035em] text-[#191f28] sm:shrink-0 sm:text-xl ${
+          singleLineMobile ? 'whitespace-nowrap text-[15px]' : 'text-lg'
+        }`}
       >
         2026 AI 창업 경진대회
       </Link>
       {(helper || actionLabel || links?.length) && (
-        <div className="flex min-w-0 flex-wrap items-center gap-3 sm:justify-end">
+        <div
+          className={`flex min-w-0 items-center sm:justify-end ${
+            singleLineMobile ? 'shrink-0 flex-nowrap gap-2' : 'flex-wrap gap-3'
+          }`}
+        >
           {helper && (
             <span className="hidden text-sm text-[#666] md:block">
               {helper}
@@ -38,7 +52,9 @@ export function ContestHeader({
           {actionLabel && (
             <Link
               href={actionHref}
-              className="motion-control inline-flex min-h-11 items-center justify-center rounded-[8px] bg-[#f2f4f6] px-4 py-2 text-sm font-bold text-[#333d4b] hover:bg-[#e5e8eb] sm:px-[18px]"
+              className={`motion-control inline-flex min-h-11 items-center justify-center rounded-[8px] bg-[#f2f4f6] py-2 text-sm font-bold text-[#333d4b] hover:bg-[#e5e8eb] sm:px-[18px] ${
+                singleLineMobile ? 'whitespace-nowrap px-3' : 'px-4'
+              }`}
             >
               {actionLabel}
             </Link>
