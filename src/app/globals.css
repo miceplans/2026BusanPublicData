@@ -185,7 +185,21 @@ video {
 }
 
 .contest-brief {
+  min-width: 0;
+  max-width: 100%;
   color: rgba(255, 255, 255, 0.94);
+}
+
+.contest-brief-content,
+.contest-brief-content > div,
+.contest-brief-content .landing-panel,
+.contest-brief-content .overflow-x-auto {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.contest-brief-content .overflow-x-auto {
+  width: 100%;
 }
 
 .contest-brief-title {
@@ -244,9 +258,16 @@ video {
   font-size: 0.8125rem;
 }
 
-.contest-awards-table th,
-.contest-awards-table td {
+.contest-brief-table.contest-awards-table th,
+.contest-brief-table.contest-awards-table td {
   text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.contest-brief-table.contest-awards-table th:nth-child(3),
+.contest-brief-table.contest-awards-table td:nth-child(3) {
+  word-break: break-all;
 }
 
 .contest-evaluation-table td {

@@ -345,7 +345,10 @@ export default function Page() {
             <h2 className="font-bold">증빙자료</h2>
             {app.application_files.map((f) => (
               <div key={f.id} className="mt-2 flex items-center gap-3">
-                <a href={`/api/files/${f.id}`} className="underline">
+                <a
+                  href={`/api/files/${f.id}`}
+                  className="min-w-0 break-all underline"
+                >
                   {f.original_name}
                 </a>
                 {editable && (

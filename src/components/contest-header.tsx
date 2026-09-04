@@ -23,8 +23,8 @@ export function ContestHeader({
     >
       <Link
         href="/"
-        className={`flex min-h-11 items-center leading-tight font-extrabold tracking-[-0.035em] text-[#191f28] sm:shrink-0 sm:text-xl ${
-          singleLineMobile ? 'whitespace-nowrap text-[15px]' : 'text-lg'
+        className={`flex min-h-11 min-w-0 items-center leading-tight font-extrabold tracking-[-0.035em] text-[#191f28] sm:shrink-0 sm:text-xl ${
+          singleLineMobile ? 'text-[15px]' : 'text-lg'
         }`}
       >
         2026 AI 창업 경진대회
@@ -32,7 +32,7 @@ export function ContestHeader({
       {(helper || actionLabel || links?.length) && (
         <div
           className={`flex min-w-0 items-center sm:justify-end ${
-            singleLineMobile ? 'shrink-0 flex-nowrap gap-2' : 'flex-wrap gap-3'
+            singleLineMobile ? 'flex-nowrap gap-2' : 'flex-wrap gap-3'
           }`}
         >
           {helper && (
@@ -44,7 +44,7 @@ export function ContestHeader({
             <Link
               key={link.href}
               href={link.href}
-              className="motion-control inline-flex min-h-11 items-center justify-center rounded-[8px] border border-[#e5e5e5] px-4 py-2 text-sm font-bold text-[#333d4b] hover:bg-[#f2f4f6] sm:px-[18px]"
+              className="motion-control inline-flex min-h-11 min-w-0 items-center justify-center rounded-[8px] border border-[#e5e5e5] px-4 py-2 text-sm font-bold text-[#333d4b] hover:bg-[#f2f4f6] sm:px-[18px]"
             >
               {link.label}
             </Link>
@@ -52,8 +52,8 @@ export function ContestHeader({
           {actionLabel && (
             <Link
               href={actionHref}
-              className={`motion-control inline-flex min-h-11 items-center justify-center rounded-[8px] bg-[#f2f4f6] py-2 text-sm font-bold text-[#333d4b] hover:bg-[#e5e8eb] sm:px-[18px] ${
-                singleLineMobile ? 'whitespace-nowrap px-3' : 'px-4'
+              className={`motion-control inline-flex min-h-11 min-w-0 items-center justify-center rounded-[8px] bg-[#f2f4f6] py-2 text-sm font-bold text-[#333d4b] hover:bg-[#e5e8eb] sm:px-[18px] ${
+                singleLineMobile ? 'px-3' : 'px-4'
               }`}
             >
               {actionLabel}

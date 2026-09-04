@@ -349,7 +349,7 @@ export default async function HomePage() {
           <section id="contest" className="contest-brief scroll-mt-28">
             <SectionTitle>AI 창업 경진대회</SectionTitle>
 
-            <div className="mt-12 grid gap-10 text-lg leading-[1.75] text-white/72 sm:text-xl">
+            <div className="contest-brief-content mt-12 grid gap-10 text-lg leading-[1.75] text-white/72 sm:text-xl">
               <div aria-labelledby="contest-eligibility">
                 <h3 id="contest-eligibility" className="contest-brief-title">
                   참가자격
@@ -470,7 +470,7 @@ export default async function HomePage() {
                 </h3>
                 <section className="landing-panel mt-5 rounded-[32px] border border-[#45C4DE]/55 p-7 sm:p-10">
                   <div className="overflow-x-auto">
-                    <table className="contest-brief-table contest-awards-table min-w-[620px]">
+                    <table className="contest-brief-table contest-awards-table table-fixed">
                       <thead>
                         <tr>
                           <th>순위</th>
