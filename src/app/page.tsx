@@ -378,7 +378,7 @@ export default async function HomePage() {
                   접수기간
                 </h3>
                 <section className="landing-panel mt-5 rounded-[32px] border border-[#45C4DE]/45 p-7 sm:p-10">
-                  <p className="rounded-[20px] border border-[#45C4DE]/25 bg-black/20 px-5 py-5 text-lg font-semibold text-white sm:px-6 sm:text-xl">
+                  <p className="text-lg font-semibold text-white sm:text-xl">
                     2026. 9. 7.(월) ~ 9. 30.(수), 18:00
                   </p>
                 </section>
