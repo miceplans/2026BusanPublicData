@@ -309,7 +309,7 @@ export default async function HomePage() {
                   <span
                     className={`mt-4 block text-white/60 sm:mt-5 ${
                       label === '9.7.(월) ~ 9.30.(수), 18:00'
-                        ? 'whitespace-nowrap text-xl sm:text-2xl'
+                        ? 'text-xl whitespace-nowrap sm:text-2xl'
                         : 'text-3xl sm:text-4xl'
                     }`}
                   >
@@ -603,6 +603,10 @@ export default async function HomePage() {
                       </li>
                     ))}
                   </ul>
+                  <br />
+                  <text className="text-m font-medium">
+                    본선진출팀: 발표자료(PPT), 사실증명(사업자등록사실여부)
+                  </text>
                 </section>
               </div>
             </div>
@@ -748,10 +752,14 @@ export default async function HomePage() {
                   aria-hidden="true"
                   className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-white/45"
                 />
-                <span>
-                  사업자등록증 사본(부산광역시 관내 사업장 소재지 확인이 가능한
-                  발급분)
-                </span>
+                <span>사업자등록증 사본(협약일로부터 2개월 이내)</span>
+              </p>
+              <p className="mt-4 flex items-start gap-2.5 text-lg leading-[1.65] text-white/75 sm:text-xl">
+                <span
+                  aria-hidden="true"
+                  className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-white/45"
+                />
+                <span>부산시 관내 사업장 소재지 확인이 가능한 발급분</span>
               </p>
             </div>
           </section>

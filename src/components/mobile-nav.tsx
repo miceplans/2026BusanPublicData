@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 
 const navLinks = [
@@ -10,13 +10,15 @@ const navLinks = [
   { href: '#contact', label: '문의하기' },
 ];
 
+const subscribeToClient = () => () => {};
+
 export function MobileNav() {
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(
+    subscribeToClient,
+    () => true,
+    () => false,
+  );
 
   useEffect(() => {
     if (!open) return;
@@ -27,7 +29,10 @@ export function MobileNav() {
   }, [open]);
 
   return (
-    <nav aria-label="주요 메뉴" className="flex items-center gap-1 text-sm font-bold">
+    <nav
+      aria-label="주요 메뉴"
+      className="flex items-center gap-1 text-sm font-bold"
+    >
       {navLinks.map((link) => (
         <a
           key={link.href}
