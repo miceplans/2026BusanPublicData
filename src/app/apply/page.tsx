@@ -422,17 +422,17 @@ export default function ApplyPage() {
             )}
             <div className="flex flex-col gap-2">
               <DocumentDownload
-                href="/downloads/idea-proposal.hwp"
+                href="/downloads/[제출서류] 2026 AI 창업 경진대회 아이디어 제안서.hwp"
                 fileName="[제출서류] 2026 AI 창업 경진대회 아이디어 제안서.hwp"
                 label="아이디어 제안서 양식"
               />
               <DocumentDownload
-                href="/downloads/privacy-consent.hwp"
-                fileName="[제출서류] 2026 AI 창업 경진대회 개인정보동의서.hwp"
+                href="/downloads/[제출서류] 2026 AI 창업 경진대회 개인정보 수집 및 이용에 관한 동의서.hwp"
+                fileName="[제출서류] 2026 AI 창업 경진대회 개인정보 수집 및 이용에 관한 동의서.hwp"
                 label="개인정보 수집·이용 동의서"
               />
               <DocumentDownload
-                href="/downloads/participation-pledge.hwp"
+                href="/downloads/[제출서류] 2026 AI 창업 경진대회 참가서약서.hwp"
                 fileName="[제출서류] 2026 AI 창업 경진대회 참가서약서.hwp"
                 label="참가 서약서"
               />
