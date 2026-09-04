@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { ContestHeader } from '@/components/contest-header';
 import { useToast } from '@/components/toast';
+import { formatKoreanDateTime } from '@/lib/date-format';
 type Detail = Record<string, unknown> & {
   receipt_number: string;
   team_name: string;
@@ -240,8 +241,7 @@ export default function Page() {
             >
               <span>
                 {e.status} · 시도 {e.attempt_count}회{' '}
-                {e.sent_at &&
-                  `· ${new Date(e.sent_at).toLocaleString('ko-KR')}`}{' '}
+                {e.sent_at && `· ${formatKoreanDateTime(e.sent_at)}`}{' '}
                 {e.error_summary && `· ${e.error_summary}`}
               </span>
               {e.status !== 'sent' && (

@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { ContestHeader } from '@/components/contest-header';
 import { useToast } from '@/components/toast';
+import { formatKoreanDateTime } from '@/lib/date-format';
 type Log = {
   id: string;
   action: string;
@@ -52,7 +53,7 @@ export default function Page() {
               {logs.map((v) => (
                 <tr className="motion-row" key={v.id}>
                   <td className="border-t border-[#eee] p-3">
-                    {new Date(v.created_at).toLocaleString('ko-KR')}
+                    {formatKoreanDateTime(v.created_at)}
                   </td>
                   <td className="border-t border-[#eee] p-3">{v.action}</td>
                   <td className="border-t border-[#eee] p-3">

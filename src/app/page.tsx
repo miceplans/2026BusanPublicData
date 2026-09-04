@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { SiteFooter } from '@/components/site-footer';
 import { FaqSection } from '@/components/faq-section';
+import { MobileNav } from '@/components/mobile-nav';
 import { getSettings } from '@/lib/settings';
 import type { FaqItem } from '@/types';
 
@@ -27,7 +28,7 @@ function FlowArrow({ className = '' }: { className?: string }) {
 const overview = [
   ['대회명', '2026 AI 창업 경진대회'],
   ['주제', '모집분야 내 AI를 활용한 자유주제'],
-  ['접수기간', '2026. 9. 7.(월) ~ 9. 30.(수)'],
+  ['접수기간', '2026.9.7.(월) ~ 9.30.(수), 18:00'],
   ['개최장소', '벡스코 컨벤션홀 205호'],
   [
     '추진목적',
@@ -92,9 +93,9 @@ const strategicIndustries = [
 ];
 
 const schedule = [
-  ['9.7(월) ~ 9.30(수) 18:00시', '참가팀 모집'],
-  ['10.1 ~ 10.7', '서면 심사'],
-  ['10.31', '발표심사 및 시상식'],
+  ['9.7.(월) ~ 9.30.(수), 18:00', '참가팀 모집'],
+  ['10.1.(목) ~ 10.7.(수)', '예선(서류) 심사'],
+  ['10.31.(토)', '본선 발표 및 시상식'],
   ['11월', '창업·사업화 지원 협약'],
   ['11월 ~ 12월', '창업·사업화 교육 및 컨설팅 (3주)'],
   ['12월', '창업·사업화 지원금 수여'],
@@ -107,7 +108,7 @@ const operationPlan = [
     qualification: 'AI 관련 예비창업팀·업력 2년 이내 신규 창업기업',
     description: '부산 9대 전략산업 분야 AI 관련 창업·사업화 계획 서면평가',
     selection: '제한없음 → 20팀',
-    period: '10.1 ~ 10.7',
+    period: '10.1.(목) ~ 10.7.(수)',
   },
   {
     stage: '오리엔테이션',
@@ -124,7 +125,7 @@ const operationPlan = [
     qualification: '예선 서면평가 통과 20팀',
     description: '팀별 10분 발표 + 5분 질의응답',
     selection: '20팀 → 11팀 시상',
-    period: '10.31',
+    period: '10.31.(토)',
   },
 ];
 
@@ -191,42 +192,14 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-[#05070f] bg-[url('/assets/bg.webp')] bg-cover bg-fixed bg-center text-white">
       <header className="sticky top-0 z-20 border-b border-[#45C4DE]/35 bg-[#0D1E5E]/80 backdrop-blur-xl">
-        <div className="mx-auto flex min-h-[76px] max-w-[1280px] items-center justify-between gap-4 px-5 sm:px-8">
+        <div className="relative mx-auto flex min-h-[76px] max-w-[1280px] items-center justify-between gap-4 px-5 sm:px-8">
           <Link
             className="flex min-h-11 items-center text-lg font-semibold tracking-[-0.045em] sm:text-xl"
             href="/"
           >
             2026 AI 창업 경진대회
           </Link>
-          <nav
-            aria-label="주요 메뉴"
-            className="flex items-center gap-1 text-sm font-bold"
-          >
-            <a
-              className="hidden min-h-11 items-center rounded-full px-4 hover:bg-[#45C4DE]/15 sm:flex"
-              href="#contest"
-            >
-              AI창업 경진대회
-            </a>
-            <a
-              className="hidden min-h-11 items-center rounded-full px-4 hover:bg-[#45C4DE]/15 sm:flex"
-              href="#support"
-            >
-              창업사업화 지원
-            </a>
-            <a
-              className="hidden min-h-11 items-center rounded-full px-4 hover:bg-[#45C4DE]/15 md:flex"
-              href="#contact"
-            >
-              문의하기
-            </a>
-            <Link
-              className="brand-gradient flex min-h-11 items-center rounded-full px-5 text-white"
-              href="/apply"
-            >
-              참가 신청
-            </Link>
-          </nav>
+          <MobileNav />
         </div>
       </header>
 
@@ -296,8 +269,8 @@ export default async function HomePage() {
             </div>
             <div className="hero-stats mx-auto mt-20 grid max-w-[1120px] border-t border-[#45C4DE]/55 pt-8 text-center sm:grid-cols-4 sm:gap-6 lg:gap-8">
               {[
-                ['접수기간', '9.7~9.30 18:00시'],
-                ['본선일정', '10.31(토)'],
+                ['접수기간', '9.7.(월) ~ 9.30.(수), 18:00'],
+                ['본선일정', '10.31.(토)'],
                 ['2~4인', '팀 단위 참가'],
                 ['1억 7백만원', '시상·사업화 지원'],
               ].map(([value, label]) => (

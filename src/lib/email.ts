@@ -3,6 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import { getServerEnv } from '@/lib/env/server';
 import { createSmtpTransport } from '@/lib/smtp/server';
 import { escapeHtml } from '@/lib/output-safety';
+import { formatKoreanDateTime } from '@/lib/date-format';
 
 export async function sendCompletionEmail(input: {
   applicationId: string;
@@ -43,7 +44,7 @@ export async function sendCompletionEmail(input: {
       from: `행사 운영사무국 <${env.SMTP_FROM_EMAIL}>`,
       to: input.email,
       subject: `[접수 완료] ${input.receiptNumber}`,
-      html: `<h1>신청이 완료되었습니다.</h1><p>접수번호: ${input.receiptNumber}</p><p>팀명: ${safeTeamName}</p><p>신청 완료 시각: ${new Intl.DateTimeFormat('ko-KR', { dateStyle: 'long', timeStyle: 'short', timeZone: 'Asia/Seoul' }).format(new Date(input.createdAt))}</p><p>${input.body ?? ''}</p><p>신청 확인·수정: ${process.env.NEXT_PUBLIC_SITE_URL}/application/login</p><p>${input.contact ?? ''}</p>`,
+      html: `<h1>신청이 완료되었습니다.</h1><p>접수번호: ${input.receiptNumber}</p><p>팀명: ${safeTeamName}</p><p>신청 완료 시각: ${formatKoreanDateTime(input.createdAt)}</p><p>${input.body ?? ''}</p><p>신청 확인·수정: ${process.env.NEXT_PUBLIC_SITE_URL}/application/login</p><p>${input.contact ?? ''}</p>`,
     });
     await db.from('email_logs').upsert(
       {

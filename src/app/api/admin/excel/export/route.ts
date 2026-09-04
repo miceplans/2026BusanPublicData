@@ -4,6 +4,7 @@ import { requireAdmin } from '@/lib/admin-auth';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { jsonError } from '@/lib/http';
 import { escapeSpreadsheetFormula } from '@/lib/output-safety';
+import { formatKoreanDateTime } from '@/lib/date-format';
 const memberHeaders = (n: number) => [
   `팀원${n}이름`,
   `팀원${n}소속`,
@@ -130,8 +131,8 @@ export async function GET(request: NextRequest) {
       ...memberCells,
       v.application_files?.[0]?.count ?? 0,
       v.requests ?? '',
-      v.created_at,
-      v.updated_at,
+      formatKoreanDateTime(v.created_at),
+      formatKoreanDateTime(v.updated_at),
     ];
   });
   const safeRows = rows.map((row) => row.map(escapeSpreadsheetFormula));

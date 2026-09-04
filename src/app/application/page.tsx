@@ -9,6 +9,7 @@ import {
   PARTICIPATION_TYPES,
 } from '@/types';
 import { useToast } from '@/components/toast';
+import { formatKoreanDateTime } from '@/lib/date-format';
 type App = {
   receipt_number: string;
   team_name: string;
@@ -203,7 +204,7 @@ export default function Page() {
           신청 확인·수정
         </h1>
         <p className="rounded-lg bg-[#f5f7fb] p-4 text-sm">
-          최종 수정 {new Date(app.updated_at).toLocaleString('ko-KR')}
+          최종 수정 {formatKoreanDateTime(app.updated_at)}
           {!editable && ' · 현재 읽기 전용'}
         </p>
         <fieldset

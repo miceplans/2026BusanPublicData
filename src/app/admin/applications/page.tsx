@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { ContestHeader } from '@/components/contest-header';
 import { useToast } from '@/components/toast';
+import { formatKoreanDateTime } from '@/lib/date-format';
 type Row = {
   id: string;
   receipt_number: string;
@@ -146,7 +147,7 @@ export default function Page() {
                     {x.industry}
                   </td>
                   <td className="p-3 whitespace-nowrap text-[#666]">
-                    {new Date(x.created_at).toLocaleString('ko-KR')}
+                    {formatKoreanDateTime(x.created_at)}
                   </td>
                   <td className="p-3 text-center text-[#333]">
                     {x.application_files?.[0]?.count ?? 0}
