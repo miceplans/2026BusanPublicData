@@ -42,7 +42,10 @@ const contestSubmissionDocuments = [
 const evaluationCriteria = [
   {
     category: '문제인식',
-    items: ['창업 아이디어 제안배경(목적 및 문제의식 등)', '시장 분석 및 환경분석'],
+    items: [
+      '창업 아이디어 제안배경(목적 및 문제의식 등)',
+      '시장 분석 및 환경분석',
+    ],
     score: 20,
   },
   {
@@ -55,7 +58,10 @@ const evaluationCriteria = [
   },
   {
     category: '실현가능성 및 사업성',
-    items: ['아이디어의 실현가능성 및 우수성', '아이디어의 수익화 모델 전개 가능여부'],
+    items: [
+      '아이디어의 실현가능성 및 우수성',
+      '아이디어의 수익화 모델 전개 가능여부',
+    ],
     score: 30,
   },
   {
@@ -68,14 +74,18 @@ const evaluationCriteria = [
   },
 ];
 
+// Uniform shrink applied to all 9 strategic-industry icons.
+const ICON_SCALE = 0.7;
+
 const strategicIndustries = [
   {
     icon: '/assets/industries/ocean.png',
     label: '해양',
     description: '스마트물류, 해운항만, 해양데이터서비스, 스마트양식',
-    // ocean.png is a very wide/flat product shot (689x144) — scale the
-    // width only, leaving the height as rendered.
-    iconScaleClassName: 'scale-x-75',
+    // ocean.png is a very wide/flat product shot (689x144) — scaled down
+    // 2x more than the other icons' ICON_SCALE, plus an extra x-only
+    // squeeze so the flat image doesn't stretch across the card.
+    iconScale: { x: 0.3, y: 0.4 },
   },
   {
     icon: '/assets/industries/energy-tech.png',
@@ -111,11 +121,15 @@ const strategicIndustries = [
     icon: '/assets/industries/culture-tourism.png',
     label: '문화관광',
     description: '영화영상콘텐츠, 게임, 의료뷰티, 해양레저관광·전시·컨벤션',
+    // 10px smaller than the shared icon box.
+    iconBoxClassName: 'relative h-[54px] w-full sm:h-[70px]',
   },
   {
     icon: '/assets/industries/bio-health.png',
     label: '바이오헬스',
     description: '의료기기, 의료서비스, 실버케어',
+    // 10px smaller than the shared icon box.
+    iconBoxClassName: 'relative h-[54px] w-full sm:h-[70px]',
   },
 ];
 
@@ -282,18 +296,18 @@ export default async function HomePage() {
             <div className="hero-stats mx-auto mt-20 grid max-w-[1120px] border-t border-[#45C4DE]/55 pt-8 text-center sm:grid-cols-4 sm:gap-6 lg:gap-8">
               {[
                 ['접수기간', '9.7.(월) ~ 9.30.(수), 18:00'],
-                ['본선일정', '10.31.(토)'],
-                ['시상·사업화 지원', '1억 7백만원'],
-                ['팀 단위 참가', '2~4인'],
+                ['본선 일정', '10.31.(토)'],
+                ['총 지원 규모', '1억 7백만원'],
+                ['참가 단위', '2~4인 팀'],
               ].map(([value, label]) => (
                 <div
                   className="border-b border-[#45C4DE]/55 py-5 sm:border-0 sm:py-0"
                   key={label}
                 >
-                  <strong className="block text-3xl font-semibold tracking-[-0.05em] text-white sm:text-4xl">
+                  <strong className="block text-base font-semibold tracking-[-0.05em] text-white sm:text-2xl">
                     {value}
                   </strong>
-                  <span className="mt-2 block text-sm text-white/60">
+                  <span className="mt-4 block text-3xl text-white/60 sm:mt-5 sm:text-4xl">
                     {label}
                   </span>
                 </div>
@@ -302,36 +316,42 @@ export default async function HomePage() {
             <div className="mt-20 flex flex-wrap items-center justify-center gap-4 px-6 sm:gap-6">
               {[
                 {
+                  role: '주최',
                   alt: '부산광역시 로고',
                   src: '/assets/partner-busan-metropolitan-city-white.png',
                   width: 243,
                   height: 63,
                 },
                 {
+                  role: '주관',
                   alt: '부산정보산업진흥원 로고',
                   src: '/assets/partner-busan-it-industry-promotion-agency-white.png',
                   width: 392,
                   height: 66,
                 },
                 {
+                  role: '×',
                   alt: '부산창조경제혁신센터 로고',
                   src: '/assets/partner-busan-center-for-creative-economy-innovation-white.png',
                   width: 365,
                   height: 72,
                 },
-              ].map((logo, index) => (
+              ].map((logo) => (
                 <div
-                  className="flex shrink-0 items-center gap-4 sm:gap-6"
+                  className={`flex shrink-0 items-center ${
+                    logo.role === '×' ? 'gap-4 sm:gap-6' : 'gap-2'
+                  }`}
                   key={logo.src}
                 >
-                  {index > 0 && (
-                    <span
-                      aria-hidden="true"
-                      className="text-lg font-bold text-white/30"
-                    >
-                      ×
-                    </span>
-                  )}
+                  <span
+                    className={
+                      logo.role === '×'
+                        ? 'inline-flex h-7 items-center text-lg leading-none font-bold text-white/30'
+                        : 'text-xs font-semibold text-white/55 sm:text-sm'
+                    }
+                  >
+                    {logo.role}
+                  </span>
                   <Image
                     alt={logo.alt}
                     className="h-auto max-h-5 w-auto object-contain sm:max-h-7"
@@ -375,30 +395,50 @@ export default async function HomePage() {
                     aria-label="모집분야"
                   >
                     {strategicIndustries.map(
-                      ({ icon, label, description, iconScaleClassName }) => (
-                        <li
-                          className="interactive-card flex flex-col items-center gap-3 rounded-2xl px-4 py-5 text-center"
-                          key={label}
-                        >
-                          <span className="text-lg leading-[1.3] font-bold break-keep text-white/90 sm:text-xl">
-                            {label}
-                          </span>
-                          <span className="relative h-16 w-full sm:h-20">
-                            <Image
-                              alt=""
-                              aria-hidden="true"
-                              className={`object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.35)] ${iconScaleClassName ?? ''}`}
-                              fill
-                              sizes="96px"
-                              src={icon}
-                              unoptimized
-                            />
-                          </span>
-                          <span className="text-sm leading-[1.5] break-keep text-white/50 sm:text-base">
-                            {description}
-                          </span>
-                        </li>
-                      ),
+                      ({
+                        icon,
+                        label,
+                        description,
+                        iconScale,
+                        iconBoxClassName,
+                      }) => {
+                        const { x: scaleX, y: scaleY } = iconScale ?? {
+                          x: ICON_SCALE,
+                          y: ICON_SCALE,
+                        };
+                        return (
+                          <li
+                            className="interactive-card flex flex-col items-center gap-3 rounded-2xl px-4 py-5 text-center"
+                            key={label}
+                          >
+                            <span className="text-lg leading-[1.3] font-bold break-keep text-white/90 sm:text-xl">
+                              {label}
+                            </span>
+                            <span
+                              className={
+                                iconBoxClassName ??
+                                'relative h-16 w-full sm:h-20'
+                              }
+                            >
+                              <Image
+                                alt=""
+                                aria-hidden="true"
+                                className="object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.35)]"
+                                style={{
+                                  transform: `scale(${scaleX}, ${scaleY})`,
+                                }}
+                                fill
+                                sizes="96px"
+                                src={icon}
+                                unoptimized
+                              />
+                            </span>
+                            <span className="text-sm leading-[1.5] break-keep text-white/50 sm:text-base">
+                              {description}
+                            </span>
+                          </li>
+                        );
+                      },
                     )}
                   </ul>
                 </section>
@@ -529,11 +569,12 @@ export default async function HomePage() {
                       </tbody>
                     </table>
                   </div>
-                  <p className="mt-5 text-lg leading-[1.6] text-white/50 sm:text-xl">
-                    ※ 평가위원별 최저점과 최고점을 제외한 점수들의 평균 점수를 산출
+                  <p className="mt-5 text-lg leading-[1.6] text-white/50 sm:text-sm">
+                    ※ 평가위원별 최저점과 최고점을 제외한 점수들의 평균 점수를
+                    산출
                     <br />※ 최저 또는 최고점이 2개 이상일 경우 각각 1개만 제외
-                    <br />※ 결과 개별 연락(문자, 이메일, 전화) 후 두절 시
-                    불합격 처리
+                    <br />※ 결과 개별 연락(문자, 이메일, 전화) 후 두절 시 불합격
+                    처리
                   </p>
                 </section>
               </div>
@@ -597,7 +638,7 @@ export default async function HomePage() {
               </p>
               <div className="mt-6 grid gap-5 lg:grid-cols-[1fr_0.9fr_1fr]">
                 <article className="landing-panel rounded-[28px] border border-[#45C4DE]/45 p-7 sm:p-8">
-                  <p className="text-sm font-bold text-[#45C4DE]">
+                  <p className="text-lg font-semibold text-[#45C4DE]">
                     창업·사업화 컨설팅
                   </p>
                   <p className="mt-5 text-lg leading-[1.65] font-semibold text-white/80 sm:text-xl">
@@ -605,7 +646,7 @@ export default async function HomePage() {
                   </p>
                 </article>
                 <article className="landing-panel rounded-[28px] border border-[#45C4DE]/55 p-7 sm:p-8">
-                  <p className="text-sm font-bold text-[#45C4DE]">
+                  <p className="text-lg font-semibold text-[#45C4DE]">
                     창업·사업화 지원금
                   </p>
                   <ul className="mt-5 grid gap-3">
@@ -629,13 +670,13 @@ export default async function HomePage() {
                   </ul>
                 </article>
                 <article className="landing-panel rounded-[28px] border border-[#45C4DE]/45 p-7 sm:p-8">
-                  <p className="text-sm font-bold text-[#45C4DE]">비고</p>
+                  <p className="text-lg font-semibold text-[#45C4DE]">비고</p>
                   <p className="mt-5 text-lg leading-[1.65] font-semibold text-white/80 sm:text-xl">
                     경진대회 수상순위에 따라 협약요건 충족팀 순차 지원
                   </p>
                 </article>
               </div>
-              <p className="mt-5 text-lg leading-[1.6] text-white/50 sm:text-xl">
+              <p className="mt-5 text-lg leading-[1.6] text-white/50 sm:text-sm">
                 ※ 지원 대상자는 부산지역 내 창업 또는 사업장 이전 필수
               </p>
             </div>
@@ -649,7 +690,7 @@ export default async function HomePage() {
                   <li className="flex items-start gap-2.5" key={item}>
                     <span
                       aria-hidden="true"
-                      className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-[#45C4DE]"
+                      className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-white/45"
                     />
                     <span>{item}</span>
                   </li>
@@ -657,7 +698,9 @@ export default async function HomePage() {
               </ul>
               <div className="mt-6 grid gap-5 lg:grid-cols-2">
                 <article className="landing-panel rounded-[28px] border border-[#45C4DE]/55 p-7 sm:p-8">
-                  <h4 className="text-lg font-semibold">필수 협약요건</h4>
+                  <h4 className="text-lg font-semibold text-[#45C4DE]">
+                    필수 협약요건
+                  </h4>
                   <ol className="mt-6 grid gap-4 text-lg leading-[1.7] text-white/75 sm:text-xl">
                     {mandatoryAgreementRequirements.map(
                       (requirement, index) => (
@@ -675,13 +718,15 @@ export default async function HomePage() {
                   </ol>
                 </article>
                 <article className="landing-panel rounded-[28px] border border-[#45C4DE]/45 p-7 sm:p-8">
-                  <h4 className="text-lg font-semibold">지원제외 대상</h4>
+                  <h4 className="text-lg font-semibold text-[#45C4DE]">
+                    지원제외 대상
+                  </h4>
                   <ul className="mt-6 grid gap-3 text-lg leading-[1.65] text-white/70 sm:text-xl">
                     {excludedFromSupport.map((item) => (
                       <li className="flex items-start gap-2.5" key={item}>
                         <span
                           aria-hidden="true"
-                          className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-[#45C4DE]"
+                          className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-white/45"
                         />
                         <span>{item}</span>
                       </li>
@@ -692,11 +737,11 @@ export default async function HomePage() {
             </div>
 
             <div className="landing-panel mt-5 rounded-[28px] border border-[#45C4DE]/45 p-7 sm:p-8">
-              <h3 className="text-lg font-semibold">제출서류</h3>
+              <h3 className="text-lg font-semibold text-[#45C4DE]">제출서류</h3>
               <p className="mt-4 flex items-start gap-2.5 text-lg leading-[1.65] text-white/75 sm:text-xl">
                 <span
                   aria-hidden="true"
-                  className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-[#45C4DE]"
+                  className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-white/45"
                 />
                 <span>
                   사업자등록증 사본(부산광역시 관내 사업장 소재지 확인이 가능한
