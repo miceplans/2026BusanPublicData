@@ -73,10 +73,9 @@ const strategicIndustries = [
     icon: '/assets/industries/ocean.png',
     label: '해양',
     description: '스마트물류, 해운항만, 해양데이터서비스, 스마트양식',
-    // ocean.png is a very wide/flat product shot (689x144) — a small scale
-    // bump keeps it from reading as tiny next to the other icons without
-    // making it stretch too wide across the card.
-    iconScaleClassName: 'scale-110',
+    // ocean.png is a very wide/flat product shot (689x144) — scale the
+    // width only, leaving the height as rendered.
+    iconScaleClassName: 'scale-x-75',
   },
   {
     icon: '/assets/industries/energy-tech.png',
