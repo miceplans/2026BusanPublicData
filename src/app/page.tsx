@@ -344,7 +344,7 @@ export default async function HomePage() {
                       className="interactive-card flex flex-col items-center gap-3 rounded-2xl px-4 py-5 text-center"
                       key={label}
                     >
-                      <span className="text-sm leading-[1.3] font-bold break-keep text-white/80">
+                      <span className="text-base leading-[1.3] font-bold break-keep text-white/90 sm:text-lg">
                         {label}
                       </span>
                       <span className="relative h-14 w-full sm:h-16">
