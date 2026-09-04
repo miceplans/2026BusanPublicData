@@ -311,173 +311,170 @@ export default async function HomePage() {
           <section id="contest" className="contest-brief scroll-mt-28">
             <SectionTitle>AI창업 경진대회</SectionTitle>
 
-            <div className="mt-12 grid gap-5 text-base leading-[1.75] text-white/72 sm:text-[1.0625rem]">
-              <section
-                aria-labelledby="contest-eligibility"
-                className="landing-panel rounded-[32px] border border-[#45C4DE]/45 p-7 sm:p-10"
-              >
+            <div className="mt-12 grid gap-10 text-base leading-[1.75] text-white/72 sm:text-[1.0625rem]">
+              <div aria-labelledby="contest-eligibility">
                 <h3 id="contest-eligibility" className="contest-brief-title">
-                  가. 참가자격
+                  참가자격
                 </h3>
-                <ul className="mt-4 grid gap-1.5 pl-6 [list-style:disc] marker:text-white/60">
-                  {participation.map((item) => (
-                    <li className="pl-1 whitespace-pre-line" key={item}>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </section>
+                <section className="landing-panel mt-5 rounded-[32px] border border-[#45C4DE]/45 p-7 sm:p-10">
+                  <ul className="grid gap-1.5 pl-6 [list-style:disc] marker:text-white/60">
+                    {participation.map((item) => (
+                      <li className="pl-1 whitespace-pre-line" key={item}>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              </div>
 
-              <section
-                aria-labelledby="contest-industries"
-                className="landing-panel rounded-[32px] border border-[#45C4DE]/55 p-7 sm:p-10"
-              >
+              <div aria-labelledby="contest-industries">
                 <h3 id="contest-industries" className="contest-brief-title">
-                  나. 모집분야 — 부산 9대 전략산업
+                  모집분야 — 부산 9대 전략산업
                 </h3>
-                <ul
-                  className="mt-6 grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-3"
-                  aria-label="모집분야"
-                >
-                  {strategicIndustries.map(({ icon, label, description }) => (
-                    <li
-                      className="interactive-card flex flex-col items-center gap-3 rounded-2xl px-4 py-5 text-center"
-                      key={label}
-                    >
-                      <span className="text-base leading-[1.3] font-bold break-keep text-white/90 sm:text-lg">
-                        {label}
-                      </span>
-                      <span className="relative h-14 w-full sm:h-16">
-                        <Image
-                          alt=""
-                          aria-hidden="true"
-                          className="object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.35)]"
-                          fill
-                          sizes="80px"
-                          src={icon}
-                          unoptimized
-                        />
-                      </span>
-                      <span className="text-xs leading-[1.5] break-keep text-white/50 sm:text-sm">
-                        {description}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </section>
+                <section className="landing-panel mt-5 rounded-[32px] border border-[#45C4DE]/55 p-7 sm:p-10">
+                  <ul
+                    className="grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-3"
+                    aria-label="모집분야"
+                  >
+                    {strategicIndustries.map(({ icon, label, description }) => (
+                      <li
+                        className="interactive-card flex flex-col items-center gap-3 rounded-2xl px-4 py-5 text-center"
+                        key={label}
+                      >
+                        <span className="text-base leading-[1.3] font-bold break-keep text-white/90 sm:text-lg">
+                          {label}
+                        </span>
+                        <span className="relative h-14 w-full sm:h-16">
+                          <Image
+                            alt=""
+                            aria-hidden="true"
+                            className="object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.35)]"
+                            fill
+                            sizes="80px"
+                            src={icon}
+                            unoptimized
+                          />
+                        </span>
+                        <span className="text-xs leading-[1.5] break-keep text-white/50 sm:text-sm">
+                          {description}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              </div>
 
-              <section
-                aria-labelledby="contest-topic"
-                className="landing-panel rounded-[32px] border border-[#45C4DE]/45 p-7 sm:p-10"
-              >
+              <div aria-labelledby="contest-topic">
                 <h3 id="contest-topic" className="contest-brief-title">
-                  다. 주제
+                  주제
                 </h3>
-                <p className="mt-3">
-                  부산시 9대 전략산업 분야 내 자유주제 공모
-                </p>
-              </section>
+                <section className="landing-panel mt-5 rounded-[32px] border border-[#45C4DE]/45 p-7 sm:p-10">
+                  <p>부산시 9대 전략산업 분야 내 자유주제 공모</p>
+                </section>
+              </div>
 
-              <section
-                aria-labelledby="contest-period"
-                className="landing-panel rounded-[32px] border border-[#45C4DE]/45 p-7 sm:p-10"
-              >
+              <div aria-labelledby="contest-period">
                 <h3 id="contest-period" className="contest-brief-title">
-                  라. 접수기간
+                  접수기간
                 </h3>
-                <p className="mt-5 rounded-[20px] border border-[#45C4DE]/25 bg-black/20 px-5 py-5 text-lg font-semibold text-white sm:px-6 sm:text-xl">
-                  2026. 9. 7.(월) ~ 9. 30.(수), 18:00
-                </p>
-              </section>
+                <section className="landing-panel mt-5 rounded-[32px] border border-[#45C4DE]/45 p-7 sm:p-10">
+                  <p className="rounded-[20px] border border-[#45C4DE]/25 bg-black/20 px-5 py-5 text-lg font-semibold text-white sm:px-6 sm:text-xl">
+                    2026. 9. 7.(월) ~ 9. 30.(수), 18:00
+                  </p>
+                </section>
+              </div>
 
-              <section
+              <div
                 id="schedule"
+                className="scroll-mt-28"
                 aria-labelledby="contest-schedule"
-                className="landing-panel scroll-mt-28 rounded-[32px] border border-[#45C4DE]/55 p-7 sm:p-10"
               >
                 <h3 id="contest-schedule" className="contest-brief-title">
-                  마. 추진일정
+                  추진일정
                 </h3>
-                <div className="mt-4 overflow-x-auto">
-                  <table className="contest-brief-table min-w-[760px]">
-                    <thead>
-                      <tr>
-                        <th>단계</th>
-                        <th>내용</th>
-                        <th>선발팀수</th>
-                        <th>시기</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {operationPlan.map((item) => (
-                        <tr key={item.stage}>
-                          <td>
-                            <strong>{item.stage}</strong>
-                            <span>{item.tag}</span>
-                          </td>
-                          <td>{item.description}</td>
-                          <td>{item.selection}</td>
-                          <td>{item.period}</td>
+                <section className="landing-panel mt-5 rounded-[32px] border border-[#45C4DE]/55 p-7 sm:p-10">
+                  <div className="overflow-x-auto">
+                    <table className="contest-brief-table min-w-[760px]">
+                      <thead>
+                        <tr>
+                          <th>단계</th>
+                          <th>내용</th>
+                          <th>선발팀수</th>
+                          <th>시기</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </section>
+                      </thead>
+                      <tbody>
+                        {operationPlan.map((item) => (
+                          <tr key={item.stage}>
+                            <td>
+                              <strong>{item.stage}</strong>
+                              <span>{item.tag}</span>
+                            </td>
+                            <td>{item.description}</td>
+                            <td>{item.selection}</td>
+                            <td>{item.period}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              </div>
 
-              <section
-                aria-labelledby="contest-awards"
-                className="landing-panel rounded-[32px] border border-[#45C4DE]/55 p-7 sm:p-10"
-              >
+              <div aria-labelledby="contest-awards">
                 <h3 id="contest-awards" className="contest-brief-title">
-                  바. 시상내역
+                  시상내역
                   <span className="ml-1 text-sm font-medium text-white/55">
                     (총 700만원 규모 생성형 AI 이용권)
                   </span>
                 </h3>
-                <div className="mt-4 overflow-x-auto">
-                  <table className="contest-brief-table min-w-[620px]">
-                    <thead>
-                      <tr>
-                        <th>순위</th>
-                        <th>팀수</th>
-                        <th>훈격</th>
-                        <th>부상</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {awards.map(([rank, teams, title, prize]) => (
-                        <tr key={rank}>
-                          <td>{rank}</td>
-                          <td>{teams}</td>
-                          <td>{title}</td>
-                          <td>{prize}</td>
+                <section className="landing-panel mt-5 rounded-[32px] border border-[#45C4DE]/55 p-7 sm:p-10">
+                  <div className="overflow-x-auto">
+                    <table className="contest-brief-table min-w-[620px]">
+                      <thead>
+                        <tr>
+                          <th>순위</th>
+                          <th>팀수</th>
+                          <th>훈격</th>
+                          <th>부상</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </section>
+                      </thead>
+                      <tbody>
+                        {awards.map(([rank, teams, title, prize]) => (
+                          <tr key={rank}>
+                            <td>{rank}</td>
+                            <td>{teams}</td>
+                            <td>{title}</td>
+                            <td>{prize}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              </div>
 
-              <section
+              <div
                 id="contest-documents"
+                className="scroll-mt-28"
                 aria-labelledby="contest-documents-title"
-                className="landing-panel scroll-mt-28 rounded-[32px] border border-[#45C4DE]/45 p-7 sm:p-10"
               >
                 <h3
                   id="contest-documents-title"
                   className="contest-brief-title"
                 >
-                  사. 제출서류
+                  제출서류
                 </h3>
-                <ul className="mt-4 grid gap-2 pl-6 [list-style:disc] marker:text-white/60">
-                  {contestSubmissionDocuments.map((item) => (
-                    <li className="pl-1" key={item}>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </section>
+                <section className="landing-panel mt-5 rounded-[32px] border border-[#45C4DE]/45 p-7 sm:p-10">
+                  <ul className="grid gap-2 pl-6 [list-style:disc] marker:text-white/60">
+                    {contestSubmissionDocuments.map((item) => (
+                      <li className="pl-1" key={item}>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              </div>
             </div>
           </section>
 
