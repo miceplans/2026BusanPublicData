@@ -1,5 +1,6 @@
 'use client';
 import { FormEvent, useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ContestHeader, fieldClass } from '@/components/contest-header';
 import { formatPhoneNumber } from '@/validations';
 import {
@@ -49,6 +50,7 @@ type App = {
   }[];
 };
 export default function Page() {
+  const router = useRouter();
   const { showToast } = useToast();
   const [app, setApp] = useState<App | null>(null);
   const [editable, setEditable] = useState(false);
@@ -71,7 +73,7 @@ export default function Page() {
     fetch('/api/application/me')
       .then(async (r) => {
         if (r.status === 401) {
-          location.href = '/application/login';
+          router.push('/application/login');
           return null;
         }
         const v = await r.json();

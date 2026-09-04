@@ -10,6 +10,7 @@ import {
 } from '@/types';
 import { useToast } from '@/components/toast';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { formatPhoneNumber } from '@/validations';
 type Member = {
   name: string;
@@ -34,6 +35,7 @@ const emptyMember = (role: string, isLeader: boolean): Member => ({
   residence: '',
 });
 export default function ApplyPage() {
+  const router = useRouter();
   const { showToast } = useToast();
   const [idempotencyKey] = useState(() => crypto.randomUUID());
   const [settings, setSettings] = useState<SiteSettings | null>(null);
@@ -144,7 +146,9 @@ export default function ApplyPage() {
         showToast(result.error ?? '제출하지 못했습니다.');
         return;
       }
-      location.href = `/apply/complete?receipt=${encodeURIComponent(result.receiptNumber)}`;
+      router.push(
+        `/apply/complete?receipt=${encodeURIComponent(result.receiptNumber)}`,
+      );
     } catch {
       showToast('네트워크 오류로 제출하지 못했습니다. 다시 시도해주세요.');
     } finally {
@@ -249,11 +253,7 @@ export default function ApplyPage() {
               onChange={(e) => setLeaderName(e.target.value)}
               autoComplete="name"
             />
-            <Field
-              name="leaderOrg"
-              label="소속"
-              autoComplete="organization"
-            />
+            <Field name="leaderOrg" label="소속" autoComplete="organization" />
             <Field
               name="leaderEmail"
               label="이메일"
@@ -420,6 +420,23 @@ export default function ApplyPage() {
             {settings?.evidence_purpose && (
               <p className="text-sm text-[#666]">{settings.evidence_purpose}</p>
             )}
+            <div className="flex flex-col gap-2">
+              <DocumentDownload
+                href="/downloads/idea-proposal.hwp"
+                fileName="[제출서류] 2026 AI 창업 경진대회 아이디어 제안서.hwp"
+                label="아이디어 제안서 양식"
+              />
+              <DocumentDownload
+                href="/downloads/privacy-consent.hwp"
+                fileName="[제출서류] 2026 AI 창업 경진대회 개인정보동의서.hwp"
+                label="개인정보 수집·이용 동의서"
+              />
+              <DocumentDownload
+                href="/downloads/participation-pledge.hwp"
+                fileName="[제출서류] 2026 AI 창업 경진대회 참가서약서.hwp"
+                label="참가 서약서"
+              />
+            </div>
             <div className="flex flex-col gap-2 rounded-[10px] border border-[#e5e5e5] px-4 py-2">
               {files.map((file, i) => (
                 <div
@@ -490,6 +507,10 @@ export default function ApplyPage() {
               심사결과는 공개하지 않으며, 심사결과와 관련된 문의 및 이의제기
               등은 일체 받지 않습니다.
             </li>
+            <li>
+              상금을 수령한 팀은 창업 후에 이행보증증권을 발행해야하며,
+              보증보험료는 자부담으로 진행됩니다.
+            </li>
           </ol>
         </Section>
         <Section title="필수 확인">
@@ -541,6 +562,28 @@ function Section({
 }
 function Grid({ children }: { children: React.ReactNode }) {
   return <div className="grid gap-4 sm:grid-cols-2">{children}</div>;
+}
+function DocumentDownload({
+  href,
+  fileName,
+  label,
+}: {
+  href: string;
+  fileName: string;
+  label: string;
+}) {
+  return (
+    <a
+      href={href}
+      download={fileName}
+      className="motion-control flex min-h-12 items-center justify-between gap-3 rounded-[10px] border border-[#b7e4ee] bg-[#effbfe] px-4 py-3 text-sm font-bold text-[#176f9f] hover:bg-[#ddf5fa]"
+    >
+      <span>{label}</span>
+      <span aria-hidden className="shrink-0">
+        ↓
+      </span>
+    </a>
+  );
 }
 function Label({
   text,

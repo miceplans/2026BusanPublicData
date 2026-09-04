@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { ContestHeader } from '@/components/contest-header';
 import { useToast } from '@/components/toast';
 import { formatKoreanDateTime } from '@/lib/date-format';
@@ -52,6 +52,7 @@ type Detail = Record<string, unknown> & {
   }[];
 };
 export default function Page() {
+  const router = useRouter();
   const { showToast } = useToast();
   const { id } = useParams<{ id: string }>();
   const [app, setApp] = useState<Detail | null>(null);
@@ -60,7 +61,7 @@ export default function Page() {
     fetch(`/api/admin/applications/${id}`)
       .then(async (r) => {
         if (r.status === 401) {
-          location.assign('/admin/login');
+          router.push('/admin/login');
           return null;
         }
         const v = await r.json();

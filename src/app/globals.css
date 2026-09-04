@@ -261,13 +261,7 @@ video {
 .contest-brief-table.contest-awards-table th,
 .contest-brief-table.contest-awards-table td {
   text-align: center;
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-
-.contest-brief-table.contest-awards-table th:nth-child(3),
-.contest-brief-table.contest-awards-table td:nth-child(3) {
-  word-break: break-all;
+  white-space: nowrap;
 }
 
 .contest-evaluation-table td {
@@ -294,21 +288,9 @@ video {
   font-weight: 500;
 }
 
-.faq-answer {
-  height: 0;
-  overflow: hidden;
-  will-change: height;
-}
-
 .faq-item {
   border-inline-width: 0 !important;
   box-shadow: none;
-}
-
-.faq-answer-inner {
-  opacity: 0;
-  transform: translateY(-12px);
-  will-change: opacity, transform;
 }
 
 @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {

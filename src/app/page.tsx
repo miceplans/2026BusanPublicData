@@ -37,6 +37,7 @@ const contestSubmissionDocuments = [
   '아이디어 기획서',
   '개인정보 수집·이용 동의서',
   '참가자 서약서',
+  '본선진출팀: 발표자료(PPT), 사실증명(사업자등록사실여부)',
 ];
 
 const evaluationCriteria = [
@@ -298,22 +299,16 @@ export default async function HomePage() {
                 ['접수기간', '9.7.(월) ~ 9.30.(수), 18:00'],
                 ['본선 일정', '10.31.(토)'],
                 ['참가 단위', '2~4인 팀'],
-              ].map(([value, label]) => (
+              ].map(([label, value]) => (
                 <div
                   className="border-b border-[#45C4DE]/55 py-5 sm:border-0 sm:py-0"
                   key={label}
                 >
-                  <strong className="block text-base font-semibold tracking-[-0.05em] text-white sm:text-2xl">
-                    {value}
-                  </strong>
-                  <span
-                    className={`mt-4 block text-white/60 sm:mt-5 ${
-                      label === '9.7.(월) ~ 9.30.(수), 18:00'
-                        ? 'text-xl whitespace-nowrap sm:text-2xl'
-                        : 'text-3xl sm:text-4xl'
-                    }`}
-                  >
+                  <strong className="block text-sm font-semibold tracking-[-0.05em] text-white sm:text-base">
                     {label}
+                  </strong>
+                  <span className="mt-2 block text-xl text-white/60 sm:text-2xl">
+                    {value}
                   </span>
                 </div>
               ))}
@@ -515,7 +510,7 @@ export default async function HomePage() {
                 </h3>
                 <section className="landing-panel mt-5 rounded-[32px] border border-[#45C4DE]/55 p-7 sm:p-10">
                   <div className="overflow-x-auto">
-                    <table className="contest-brief-table contest-awards-table table-fixed">
+                    <table className="contest-brief-table contest-awards-table min-w-[760px] table-fixed">
                       <thead>
                         <tr>
                           <th>순위</th>
@@ -603,10 +598,6 @@ export default async function HomePage() {
                       </li>
                     ))}
                   </ul>
-                  <br />
-                  <text className="text-m font-medium">
-                    본선진출팀: 발표자료(PPT), 사실증명(사업자등록사실여부)
-                  </text>
                 </section>
               </div>
             </div>

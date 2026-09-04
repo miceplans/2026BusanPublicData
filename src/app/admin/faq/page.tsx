@@ -1,16 +1,18 @@
 'use client';
 import { FormEvent, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ContestHeader, fieldClass } from '@/components/contest-header';
 import type { SiteSettings } from '@/types';
 import { useToast } from '@/components/toast';
 export default function Page() {
+  const router = useRouter();
   const { showToast } = useToast();
   const [s, setS] = useState<SiteSettings | null>(null);
   useEffect(() => {
     fetch('/api/admin/settings')
       .then(async (r) => {
         if (r.status === 401) {
-          location.href = '/admin/login';
+          router.push('/admin/login');
           return null;
         }
         const v = await r.json();

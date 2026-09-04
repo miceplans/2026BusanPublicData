@@ -1,5 +1,5 @@
 'use client';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import type { FaqItem } from '@/types';
 
 export function FaqSection({ faqs }: { faqs: FaqItem[] }) {
@@ -28,7 +28,7 @@ export function FaqSection({ faqs }: { faqs: FaqItem[] }) {
                   aria-expanded={open}
                   aria-controls={`faq-answer-${index}`}
                   id={`faq-question-${index}`}
-                  className="flex min-h-16 w-full items-center justify-between gap-4 px-6 text-left transition-colors duration-300 hover:bg-[#45C4DE]/10 sm:px-8"
+                  className="flex min-h-16 w-full items-center justify-between gap-4 px-6 text-left hover:bg-[#45C4DE]/10 sm:px-8"
                   onClick={() => setOpenIndex(open ? null : index)}
                 >
                   <span className="text-lg leading-[1.5] font-bold tracking-[-0.02em] sm:text-xl">
@@ -36,93 +36,26 @@ export function FaqSection({ faqs }: { faqs: FaqItem[] }) {
                   </span>
                   <span
                     aria-hidden="true"
-                    className={`shrink-0 text-xl text-[#45C4DE] transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+                    className="shrink-0 text-xl text-[#45C4DE]"
                   >
-                    ▾
+                    {open ? '▴' : '▾'}
                   </span>
                 </button>
-                <FaqAnswer answer={faq.answer} index={index} open={open} />
+                <div
+                  id={`faq-answer-${index}`}
+                  role="region"
+                  aria-labelledby={`faq-question-${index}`}
+                  hidden={!open}
+                >
+                  <p className="border-t border-[#45C4DE]/35 px-6 py-6 text-lg leading-[1.75] whitespace-pre-line text-white/75 sm:px-8 sm:text-xl">
+                    {faq.answer}
+                  </p>
+                </div>
               </div>
             );
           })}
         </div>
       )}
     </section>
-  );
-}
-
-function FaqAnswer({
-  answer,
-  index,
-  open,
-}: {
-  answer: string;
-  index: number;
-  open: boolean;
-}) {
-  const answerRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const previousOpenRef = useRef(open);
-
-  useLayoutEffect(() => {
-    const answerElement = answerRef.current;
-    const content = contentRef.current;
-    if (!answerElement || !content || previousOpenRef.current === open) return;
-    previousOpenRef.current = open;
-
-    answerElement.getAnimations().forEach((animation) => animation.cancel());
-    content.getAnimations().forEach((animation) => animation.cancel());
-
-    const contentHeight = content.scrollHeight;
-    const heightAnimation = answerElement.animate(
-      open
-        ? [{ height: '0px' }, { height: `${contentHeight}px` }]
-        : [{ height: `${contentHeight}px` }, { height: '0px' }],
-      {
-        duration: 650,
-        easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
-        fill: 'forwards',
-      },
-    );
-
-    const contentAnimation = content.animate(
-      open
-        ? [
-            { opacity: 0, transform: 'translateY(-14px)' },
-            { opacity: 1, transform: 'translateY(0)' },
-          ]
-        : [
-            { opacity: 1, transform: 'translateY(0)' },
-            { opacity: 0, transform: 'translateY(-8px)' },
-          ],
-      {
-        duration: open ? 520 : 300,
-        delay: open ? 90 : 0,
-        easing: 'ease-out',
-        fill: 'forwards',
-      },
-    );
-
-    return () => {
-      heightAnimation.cancel();
-      contentAnimation.cancel();
-    };
-  }, [open]);
-
-  return (
-    <div
-      ref={answerRef}
-      id={`faq-answer-${index}`}
-      role="region"
-      aria-labelledby={`faq-question-${index}`}
-      data-open={open}
-      className="faq-answer"
-    >
-      <div ref={contentRef} className="faq-answer-inner">
-        <p className="border-t border-[#45C4DE]/35 px-6 py-6 text-lg leading-[1.75] whitespace-pre-line text-white/75 sm:px-8 sm:text-xl">
-          {answer}
-        </p>
-      </div>
-    </div>
   );
 }

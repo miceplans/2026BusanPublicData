@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ContestHeader } from '@/components/contest-header';
 import { useToast } from '@/components/toast';
 import { formatKoreanDateTime } from '@/lib/date-format';
@@ -12,13 +13,14 @@ type Log = {
   created_at: string;
 };
 export default function Page() {
+  const router = useRouter();
   const { showToast } = useToast();
   const [logs, setLogs] = useState<Log[]>([]);
   useEffect(() => {
     fetch('/api/admin/audit-logs')
       .then(async (r) => {
         if (r.status === 401) {
-          location.href = '/admin/login';
+          router.push('/admin/login');
           return null;
         }
         const value = await r.json();

@@ -28,7 +28,7 @@ export default function Page() {
     fetch(`/api/admin/applications?${q}`)
       .then(async (r) => {
         if (r.status === 401) {
-          location.href = '/admin/login';
+          router.push('/admin/login');
           return null;
         }
         const v = await r.json();
