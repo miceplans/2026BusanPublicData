@@ -25,26 +25,6 @@ function FlowArrow({ className = '' }: { className?: string }) {
   );
 }
 
-const overview = [
-  ['대회명', '2026 AI 창업 경진대회'],
-  ['주제', '모집분야 내 AI를 활용한 자유주제'],
-  ['접수기간', '2026.9.7.(월) ~ 9.30.(수), 18:00'],
-  ['개최장소', '벡스코 컨벤션홀 205호'],
-  [
-    '추진목적',
-    '부산의 전략산업 분야 우수 AI 창업 아이디어를 발굴·육성하고, 예비·초기 창업기업의 사업화를 지원하여 지역 AI 창업 생태계를 활성화',
-  ],
-  [
-    '대회내용',
-    'AI 관련 예비·신규 창업팀의 예선·본선 시상 및 수상팀의 AI 시제품·서비스 제작을 위한 창업 사업화 비용 지원',
-  ],
-  [
-    '주최·주관',
-    '주최 부산광역시 · 주관 부산정보산업진흥원 · 참여 부산창조경제혁신대표이사',
-  ],
-  ['참가대상', '전국 AI 관련 예비·신규 창업팀(2~4인 구성)'],
-];
-
 const awards = [
   ['대상', '1팀', '부산광역시장상', '200만원 상당'],
   ['최우수', '2팀', '부산정보산업진흥원장상', '100만원 상당'],
@@ -57,12 +37,6 @@ const contestSubmissionDocuments = [
   '아이디어 기획서',
   '개인정보 수집·이용 동의서',
   '참가자 서약서',
-];
-
-const partners = [
-  '부산광역시',
-  '부산정보산업진흥원',
-  '부산창조경제혁신센터',
 ];
 
 const strategicIndustries = [
@@ -113,15 +87,6 @@ const strategicIndustries = [
   },
 ];
 
-const schedule = [
-  ['9.7.(월) ~ 9.30.(수), 18:00', '참가팀 모집'],
-  ['10.1.(목) ~ 10.7.(수)', '예선(서류) 심사'],
-  ['10.31.(토)', '본선 발표 및 시상식'],
-  ['11월', '창업·사업화 지원 협약'],
-  ['11월 ~ 12월', '창업·사업화 교육 및 컨설팅 (3주)'],
-  ['12월', '창업·사업화 지원금 수여'],
-];
-
 const operationPlan = [
   {
     stage: '예선',
@@ -156,15 +121,6 @@ const participation = [
   '신규창업자는 공고일 기준 개업일(법인은 법인설립등기일)로부터\n 2년이 경과하지 않아야 함',
   '2~4인으로 구성된 팀',
   '팀원 전원이 지원대상 요건을 충족해야 함',
-];
-
-const agreementTargets = [
-  '창업 경진대회 입상팀',
-  '지원제외 대상에 해당하지 않고 창업·사업화 지원 협약요건을 성실히 이행할 수 있는 팀',
-];
-
-const agreementRequirements = [
-  '상위 수상팀이 협약요건을 충족하지 못하거나 협약을 포기하면\n 차순위 수상팀에 사업화 지원 자격이 순차 승계됨',
 ];
 
 const commercializationProcess = [
@@ -211,7 +167,7 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#05070f] bg-[url('/assets/bg.webp')] bg-cover bg-fixed bg-center text-white">
+    <div className="landing-high-contrast min-h-screen bg-[#05070f] bg-[url('/assets/bg.webp')] bg-cover bg-fixed bg-center text-white">
       <header className="sticky top-0 z-20 border-b border-[#45C4DE]/35 bg-[#0D1E5E]/80 backdrop-blur-xl">
         <div className="relative mx-auto flex min-h-[76px] max-w-[1280px] items-center justify-between gap-4 px-5 sm:px-8">
           <Link
@@ -305,23 +261,46 @@ export default async function HomePage() {
                 </div>
               ))}
             </div>
-            <div className="mt-14 flex items-center justify-center gap-4 overflow-x-auto px-6 sm:gap-6">
-              {partners.map((partner, index) => (
+            <div className="mt-20 flex flex-wrap items-center justify-center gap-4 px-6 sm:gap-6">
+              {[
+                {
+                  alt: '부산광역시 로고',
+                  src: '/assets/partner-busan-metropolitan-city-white.png',
+                  width: 243,
+                  height: 63,
+                },
+                {
+                  alt: '부산정보산업진흥원 로고',
+                  src: '/assets/partner-busan-it-industry-promotion-agency-white.png',
+                  width: 392,
+                  height: 66,
+                },
+                {
+                  alt: '부산창조경제혁신센터 로고',
+                  src: '/assets/partner-busan-center-for-creative-economy-innovation-white.png',
+                  width: 365,
+                  height: 72,
+                },
+              ].map((logo, index) => (
                 <div
                   className="flex shrink-0 items-center gap-4 sm:gap-6"
-                  key={partner}
+                  key={logo.src}
                 >
                   {index > 0 && (
                     <span
                       aria-hidden="true"
-                      className="text-base font-bold text-white/30"
+                      className="text-lg font-bold text-white/30"
                     >
                       ×
                     </span>
                   )}
-                  <span className="text-sm font-semibold tracking-[-0.02em] text-white/75 sm:text-base">
-                    {partner}
-                  </span>
+                  <Image
+                    alt={logo.alt}
+                    className="h-auto max-h-5 w-auto object-contain sm:max-h-7"
+                    src={logo.src}
+                    width={logo.width}
+                    height={logo.height}
+                  />
                 </div>
               ))}
             </div>
@@ -329,286 +308,178 @@ export default async function HomePage() {
         </section>
 
         <div className="mx-auto max-w-[1280px] space-y-28 px-5 py-24 sm:px-8 sm:py-32 lg:space-y-40">
-          <section id="contest" className="scroll-mt-28">
+          <section id="contest" className="contest-brief scroll-mt-28">
             <SectionTitle>AI창업 경진대회</SectionTitle>
-            <dl className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {overview.map(([term, detail]) => (
-                <div
-                  className="landing-panel interactive-card min-h-44 rounded-[28px] border border-[#45C4DE]/45 p-7 sm:p-8"
-                  key={term}
-                >
-                  <dt className="text-sm font-bold text-white/55">{term}</dt>
-                  <dd className="font-suit mt-5 text-xl leading-[1.45] font-bold tracking-[-0.035em]">
-                    {detail}
-                  </dd>
-                  {term === '대회명' && (
-                    <p className="mt-3 text-sm font-medium text-[#45C4DE]">
-                      - AI 스타트업의 새로운 항구, 부산
-                    </p>
-                  )}
-                </div>
-              ))}
-            </dl>
-          </section>
 
-          <section aria-labelledby="contest-benefits-title">
-            <h2
-              id="contest-benefits-title"
-              className="max-w-[760px] text-[clamp(1.5rem,4.5vw,3rem)] leading-[1.12] font-semibold tracking-[0.055em]"
-            >
-              경진대회 지원 및 시상
-            </h2>
-            <div className="mt-12 grid gap-5 lg:grid-cols-2">
-              <article className="landing-panel interactive-card rounded-[32px] border border-[#45C4DE]/45 p-7 sm:p-10">
-                <span className="text-sm font-semibold text-[#45C4DE]">
-                  경진대회
-                </span>
-                <h3 className="mt-4 text-3xl font-semibold tracking-[-0.05em] sm:text-4xl">
-                  총 7백만원 지원
-                </h3>
-                <p className="mt-8 leading-[1.7] text-white/70">
-                  AI 관련 예비·신규 창업팀을 대상으로 예선과 본선을 거쳐 우수
-                  아이디어를 시상합니다.
-                </p>
-              </article>
-              <article className="landing-panel interactive-card rounded-[32px] border border-[#45C4DE]/55 p-7 text-white sm:p-10">
-                <span className="text-sm font-semibold text-white/70">
-                  사업화 지원
-                </span>
-                <h3 className="mt-4 text-3xl font-semibold tracking-[-0.05em] sm:text-4xl">
-                  총 1억원 지원
-                </h3>
-                <p className="mt-8 leading-[1.7] text-white/80">
-                  입상팀의 AI 시제품·서비스 제작을 위한 창업·사업화 비용을
-                  지원합니다.
-                </p>
-              </article>
-            </div>
-            <div className="landing-panel mt-5 rounded-[32px] border border-[#45C4DE]/55 p-7 sm:p-10">
-              <h3 className="text-xl font-semibold">
-                부산 9대 전략산업 모집분야
-              </h3>
-              <p className="mt-2 text-sm text-white/60">
-                주제 : 모집분야 내 AI를 활용한 자유주제
-              </p>
-              <ul
-                className="mt-6 grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-3"
-                aria-label="모집분야"
+            <div className="mt-12 grid gap-5 text-base leading-[1.75] text-white/72 sm:text-[1.0625rem]">
+              <section
+                aria-labelledby="contest-eligibility"
+                className="landing-panel rounded-[32px] border border-[#45C4DE]/45 p-7 sm:p-10"
               >
-                {strategicIndustries.map(({ icon, label, description }) => (
-                  <li
-                    className="interactive-card flex flex-col items-center gap-3 rounded-2xl px-4 py-5 text-center"
-                    key={label}
-                  >
-                    <span className="text-sm leading-[1.3] font-bold break-keep text-white/80">
-                      {label}
-                    </span>
-                    <span className="relative h-14 w-full sm:h-16">
-                      <Image
-                        alt=""
-                        aria-hidden="true"
-                        className="object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.35)]"
-                        fill
-                        sizes="80px"
-                        src={icon}
-                        unoptimized
-                      />
-                    </span>
-                    <span className="text-xs leading-[1.5] break-keep text-white/50 sm:text-sm">
-                      {description}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="landing-panel mt-5 rounded-[32px] border border-[#45C4DE]/55 p-7 sm:p-10">
-              <h3 className="text-xl font-semibold">
-                시상내역
-                <span className="ml-2 text-sm font-semibold text-white/55">
-                  (총 700만원 규모 생성형 AI 이용권)
-                </span>
-              </h3>
-              <div className="mt-6 overflow-x-auto">
-                <table className="w-full min-w-[560px] border-collapse text-left text-sm">
-                  <thead>
-                    <tr className="border-b border-[#45C4DE]/45 text-white/55">
-                      <th className="py-3 pr-4 font-bold">순위</th>
-                      <th className="py-3 pr-4 font-bold">팀수</th>
-                      <th className="py-3 pr-4 font-bold">훈격</th>
-                      <th className="py-3 font-bold">부상</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {awards.map(([rank, teams, title, prize]) => (
-                      <tr
-                        className="border-b border-[#45C4DE]/20 last:border-0"
-                        key={rank}
-                      >
-                        <td className="py-4 pr-4 font-bold text-[#45C4DE]">
-                          {rank}
-                        </td>
-                        <td className="py-4 pr-4 text-white/85">{teams}</td>
-                        <td className="py-4 pr-4 text-white/85">{title}</td>
-                        <td className="py-4 font-semibold text-white">
-                          {prize}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </section>
-
-          <div className="grid gap-20">
-            <div className="min-w-0">
-              <section id="schedule" className="scroll-mt-28">
-                <div className="flex justify-center text-center">
-                  <SectionTitle>6단계 추진절차</SectionTitle>
-                </div>
-                <p className="mt-5 text-center text-sm text-white/55">
-                  상기 일정은 진행 상황에 따라 변경될 수 있습니다.
-                </p>
-                <ol className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 xl:gap-12">
-                  {schedule.map(([date, label], index) => (
-                    <li
-                      className="landing-panel interactive-card relative flex min-h-48 flex-col items-center justify-between rounded-[24px] border border-[#45C4DE]/55 p-5 text-center"
-                      key={`${date}-${label}`}
-                    >
-                      <span className="text-sm font-bold text-[#45C4DE]">
-                        {index + 1}단계
-                      </span>
-                      <strong className="my-5 flex min-h-14 items-center text-lg leading-[1.4] tracking-[-0.035em]">
-                        {label}
-                      </strong>
-                      <span className="block w-full border-t border-[#45C4DE]/35 pt-4 text-base font-bold text-white/75">
-                        {date}
-                      </span>
-                      {index < schedule.length - 1 && (
-                        <FlowArrow className="absolute top-1/2 left-[calc(100%+1.5rem)] z-2 hidden -translate-x-1/2 -translate-y-1/2 text-[#45C4DE] xl:block" />
-                      )}
+                <h3 id="contest-eligibility" className="contest-brief-title">
+                  가. 참가자격
+                </h3>
+                <ul className="mt-4 grid gap-1.5 pl-6 [list-style:disc] marker:text-white/60">
+                  {participation.map((item) => (
+                    <li className="pl-1 whitespace-pre-line" key={item}>
+                      {item}
                     </li>
                   ))}
-                </ol>
+                </ul>
               </section>
-              <section className="mt-28 min-w-0">
-                <SectionTitle>운영계획</SectionTitle>
-                <div className="mt-12 grid gap-5 lg:grid-cols-3">
-                  {operationPlan.map((item, index) => (
-                    <article
-                      className="landing-panel interactive-card rounded-[28px] border border-[#45C4DE]/45 p-7"
-                      key={item.stage}
+
+              <section
+                aria-labelledby="contest-industries"
+                className="landing-panel rounded-[32px] border border-[#45C4DE]/55 p-7 sm:p-10"
+              >
+                <h3 id="contest-industries" className="contest-brief-title">
+                  나. 모집분야 — 부산 9대 전략산업
+                </h3>
+                <ul
+                  className="mt-6 grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-3"
+                  aria-label="모집분야"
+                >
+                  {strategicIndustries.map(({ icon, label, description }) => (
+                    <li
+                      className="interactive-card flex flex-col items-center gap-3 rounded-2xl px-4 py-5 text-center"
+                      key={label}
                     >
-                      <span className="text-sm font-semibold text-[#45C4DE]">
-                        {index + 1}단계 · {item.tag}
+                      <span className="text-sm leading-[1.3] font-bold break-keep text-white/80">
+                        {label}
                       </span>
-                      <h3 className="mt-4 text-2xl font-semibold tracking-[-0.04em]">
-                        {item.stage}
-                      </h3>
-                      <dl className="mt-8 grid gap-5">
-                        {[
-                          ['자격', item.qualification],
-                          ['내용', item.description],
-                          ['선발팀수', item.selection],
-                          ['시기', item.period],
-                        ].map(([label, value]) => (
-                          <div
-                            className="border-t border-[#45C4DE]/45 pt-4"
-                            key={label}
-                          >
-                            <dt className="text-xs font-bold text-white/55">
-                              {label}
-                            </dt>
-                            <dd className="mt-2 text-sm leading-[1.6]">
-                              {value}
-                            </dd>
-                          </div>
-                        ))}
-                      </dl>
-                    </article>
+                      <span className="relative h-14 w-full sm:h-16">
+                        <Image
+                          alt=""
+                          aria-hidden="true"
+                          className="object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.35)]"
+                          fill
+                          sizes="80px"
+                          src={icon}
+                          unoptimized
+                        />
+                      </span>
+                      <span className="text-xs leading-[1.5] break-keep text-white/50 sm:text-sm">
+                        {description}
+                      </span>
+                    </li>
                   ))}
+                </ul>
+              </section>
+
+              <section
+                aria-labelledby="contest-topic"
+                className="landing-panel rounded-[32px] border border-[#45C4DE]/45 p-7 sm:p-10"
+              >
+                <h3 id="contest-topic" className="contest-brief-title">
+                  다. 주제
+                </h3>
+                <p className="mt-3">
+                  부산시 9대 전략산업 분야 내 자유주제 공모
+                </p>
+              </section>
+
+              <section
+                aria-labelledby="contest-period"
+                className="landing-panel rounded-[32px] border border-[#45C4DE]/45 p-7 sm:p-10"
+              >
+                <h3 id="contest-period" className="contest-brief-title">
+                  라. 접수기간
+                </h3>
+                <p className="mt-5 rounded-[20px] border border-[#45C4DE]/25 bg-black/20 px-5 py-5 text-lg font-semibold text-white sm:px-6 sm:text-xl">
+                  2026. 9. 7.(월) ~ 9. 30.(수), 18:00
+                </p>
+              </section>
+
+              <section
+                id="schedule"
+                aria-labelledby="contest-schedule"
+                className="landing-panel scroll-mt-28 rounded-[32px] border border-[#45C4DE]/55 p-7 sm:p-10"
+              >
+                <h3 id="contest-schedule" className="contest-brief-title">
+                  마. 추진일정
+                </h3>
+                <div className="mt-4 overflow-x-auto">
+                  <table className="contest-brief-table min-w-[760px]">
+                    <thead>
+                      <tr>
+                        <th>단계</th>
+                        <th>내용</th>
+                        <th>선발팀수</th>
+                        <th>시기</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {operationPlan.map((item) => (
+                        <tr key={item.stage}>
+                          <td>
+                            <strong>{item.stage}</strong>
+                            <span>{item.tag}</span>
+                          </td>
+                          <td>{item.description}</td>
+                          <td>{item.selection}</td>
+                          <td>{item.period}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </section>
-            </div>
-            <div className="min-w-0">
-              <section>
-                <SectionTitle>참가 및 협약 핵심요건</SectionTitle>
-                <div className="mt-12 grid gap-5 lg:grid-cols-2">
-                  <div className="landing-panel interactive-card rounded-[32px] border border-[#45C4DE]/55 p-7 text-white sm:p-10">
-                    <h3 className="text-2xl font-semibold tracking-[-0.04em]">
-                      창업 경진대회 참가요건
-                    </h3>
-                    <ul className="mt-8 grid gap-5 text-sm leading-[1.65] text-white/75">
-                      {participation.map((item) => (
-                        <li className="flex items-start gap-2.5" key={item}>
-                          <span
-                            aria-hidden="true"
-                            className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-[#45C4DE]"
-                          />
-                          <span className="whitespace-pre-line">{item}</span>
-                        </li>
+
+              <section
+                aria-labelledby="contest-awards"
+                className="landing-panel rounded-[32px] border border-[#45C4DE]/55 p-7 sm:p-10"
+              >
+                <h3 id="contest-awards" className="contest-brief-title">
+                  바. 시상내역
+                  <span className="ml-1 text-sm font-medium text-white/55">
+                    (총 700만원 규모 생성형 AI 이용권)
+                  </span>
+                </h3>
+                <div className="mt-4 overflow-x-auto">
+                  <table className="contest-brief-table min-w-[620px]">
+                    <thead>
+                      <tr>
+                        <th>순위</th>
+                        <th>팀수</th>
+                        <th>훈격</th>
+                        <th>부상</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {awards.map(([rank, teams, title, prize]) => (
+                        <tr key={rank}>
+                          <td>{rank}</td>
+                          <td>{teams}</td>
+                          <td>{title}</td>
+                          <td>{prize}</td>
+                        </tr>
                       ))}
-                    </ul>
-                    <div className="mt-8 border-t border-[#45C4DE]/45 pt-6">
-                      <h4 className="text-xs font-bold tracking-[0.04em] text-white/55 uppercase">
-                        제출서류
-                      </h4>
-                      <ul className="mt-3 grid gap-3 text-sm leading-[1.65] text-white/75">
-                        {contestSubmissionDocuments.map((item) => (
-                          <li className="flex items-start gap-2.5" key={item}>
-                            <span
-                              aria-hidden="true"
-                              className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-[#45C4DE]"
-                            />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                  <div className="landing-panel interactive-card rounded-[32px] border border-[#45C4DE]/45 p-7 sm:p-10">
-                    <h3 className="text-2xl font-semibold tracking-[-0.04em]">
-                      창업·사업화 지원 협약요건
-                    </h3>
-                    <div className="mt-8 grid gap-7">
-                      {[
-                        {
-                          title: '협약대상 요건',
-                          items: agreementTargets,
-                        },
-                        {
-                          title: '필수 협약요건',
-                          items: agreementRequirements,
-                        },
-                      ].map((group) => (
-                        <div key={group.title}>
-                          <h4 className="text-xs font-bold tracking-[0.04em] text-white/55 uppercase">
-                            {group.title}
-                          </h4>
-                          <ul className="mt-3 grid gap-3 text-sm leading-[1.65] text-white/70">
-                            {group.items.map((item) => (
-                              <li
-                                className="flex items-start gap-2.5"
-                                key={item}
-                              >
-                                <span
-                                  aria-hidden="true"
-                                  className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-[#45C4DE]"
-                                />
-                                <span className="whitespace-pre-line">
-                                  {item}
-                                </span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                    </tbody>
+                  </table>
                 </div>
               </section>
+
+              <section
+                id="contest-documents"
+                aria-labelledby="contest-documents-title"
+                className="landing-panel scroll-mt-28 rounded-[32px] border border-[#45C4DE]/45 p-7 sm:p-10"
+              >
+                <h3
+                  id="contest-documents-title"
+                  className="contest-brief-title"
+                >
+                  사. 제출서류
+                </h3>
+                <ul className="mt-4 grid gap-2 pl-6 [list-style:disc] marker:text-white/60">
+                  {contestSubmissionDocuments.map((item) => (
+                    <li className="pl-1" key={item}>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </section>
             </div>
-          </div>
+          </section>
 
           <section id="support" className="scroll-mt-28">
             <SectionTitle>창업사업화 지원</SectionTitle>

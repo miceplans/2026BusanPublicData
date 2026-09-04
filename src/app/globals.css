@@ -184,6 +184,72 @@ video {
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
 }
 
+.contest-brief {
+  color: rgba(255, 255, 255, 0.94);
+}
+
+.contest-brief-title {
+  font-family: 'SUIT', Pretendard, sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.55;
+  font-weight: 700;
+  color: #fff;
+}
+
+.contest-brief-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.contest-brief-table th {
+  padding: 0.8rem 0.9rem;
+  border-bottom: 1px solid rgba(69, 196, 222, 0.45);
+  color: rgba(255, 255, 255, 0.58);
+  font-weight: 700;
+}
+
+.contest-brief-table td {
+  padding: 0.9rem;
+  border-bottom: 1px solid rgba(69, 196, 222, 0.2);
+  color: rgba(255, 255, 255, 0.85);
+  vertical-align: middle;
+}
+
+.contest-brief-table td:first-child,
+.contest-brief-table td:nth-last-child(-n + 2) {
+  white-space: nowrap;
+}
+
+.contest-brief-table td strong,
+.contest-brief-table td span {
+  display: block;
+}
+
+.contest-brief-table td strong {
+  color: #45c4de;
+}
+
+.contest-brief-table td span {
+  margin-top: 0.1rem;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 0.8125rem;
+}
+
+/* Keep supporting copy crisp against the dark landing-page artwork. */
+.landing-high-contrast [class*='text-white/'] {
+  color: #ffffff;
+}
+
+.landing-high-contrast
+  [class*='text-white/']:not(.font-bold):not(.font-semibold):not(
+    .font-extrabold
+  ):not(.font-black) {
+  font-weight: 500;
+}
+
 .faq-answer {
   height: 0;
   overflow: hidden;
