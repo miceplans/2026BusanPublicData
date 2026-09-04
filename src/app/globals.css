@@ -200,8 +200,14 @@ video {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  font-size: 0.9375rem;
+  font-size: 1.125rem;
   line-height: 1.55;
+}
+
+@media (min-width: 640px) {
+  .contest-brief-table {
+    font-size: 1.25rem;
+  }
 }
 
 .contest-brief-table th {
@@ -236,6 +242,23 @@ video {
   margin-top: 0.1rem;
   color: rgba(255, 255, 255, 0.42);
   font-size: 0.8125rem;
+}
+
+.contest-awards-table th,
+.contest-awards-table td {
+  text-align: center;
+}
+
+.contest-evaluation-table td {
+  white-space: normal;
+}
+
+.contest-evaluation-table th:first-child,
+.contest-evaluation-table td:first-child,
+.contest-evaluation-table th:last-child,
+.contest-evaluation-table td:last-child {
+  text-align: center;
+  white-space: nowrap;
 }
 
 /* Keep supporting copy crisp against the dark landing-page artwork. */

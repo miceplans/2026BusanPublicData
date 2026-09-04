@@ -116,17 +116,31 @@ export default function Page() {
       requests: f.get('requests'),
       members: app.application_members
         .sort((a, b) => a.display_order - b.display_order)
-        .map((m, i) => ({
-          name: String(f.get(`memberName${i}`)),
-          role: String(f.get(`memberRole${i}`)),
-          isLeader: m.is_leader,
-          org: String(f.get(`memberOrg${i}`)),
-          email: String(f.get(`memberEmail${i}`)),
-          phone: String(f.get(`memberPhone${i}`)),
-          birthDate: String(f.get(`memberBirthDate${i}`)),
-          gender: String(f.get(`memberGender${i}`)),
-          residence: String(f.get(`memberResidence${i}`)),
-        })),
+        .map((m, i) =>
+          m.is_leader
+            ? {
+                name: String(f.get('leaderName')),
+                role: m.role,
+                isLeader: true,
+                org: String(f.get('leaderOrg')),
+                email: String(f.get('leaderEmail')),
+                phone: String(f.get('leaderPhone')),
+                birthDate: String(f.get('leaderBirthDate')),
+                gender: String(f.get('leaderGender')),
+                residence: String(f.get('leaderResidence')),
+              }
+            : {
+                name: String(f.get(`memberName${i}`)),
+                role: String(f.get(`memberRole${i}`)),
+                isLeader: false,
+                org: String(f.get(`memberOrg${i}`)),
+                email: String(f.get(`memberEmail${i}`)),
+                phone: String(f.get(`memberPhone${i}`)),
+                birthDate: String(f.get(`memberBirthDate${i}`)),
+                gender: String(f.get(`memberGender${i}`)),
+                residence: String(f.get(`memberResidence${i}`)),
+              },
+        ),
     };
     try {
       const r = await fetch('/api/application/me', {
@@ -279,42 +293,44 @@ export default function Page() {
           </label>
           {app.application_members
             .sort((a, b) => a.display_order - b.display_order)
-            .map((m, i) => (
-              <div className="contents" key={i}>
-                <F n={`memberName${i}`} l={`팀원 ${i + 1} 이름`} v={m.name} />
-                <F n={`memberOrg${i}`} l={`팀원 ${i + 1} 소속`} v={m.org} />
-                <F n={`memberRole${i}`} l="역할" v={m.role} />
-                <F
-                  n={`memberEmail${i}`}
-                  l={`팀원 ${i + 1} 이메일`}
-                  v={m.email}
-                  type="email"
-                />
-                <F
-                  n={`memberPhone${i}`}
-                  l={`팀원 ${i + 1} 연락처`}
-                  v={m.phone}
-                  phone
-                />
-                <F
-                  n={`memberBirthDate${i}`}
-                  l={`팀원 ${i + 1} 생년월일`}
-                  v={m.birth_date}
-                  placeholder="예: 260101"
-                />
-                <S
-                  n={`memberGender${i}`}
-                  l={`팀원 ${i + 1} 성별`}
-                  v={m.gender}
-                  values={GENDERS}
-                />
-                <F
-                  n={`memberResidence${i}`}
-                  l={`팀원 ${i + 1} 거주지`}
-                  v={m.residence}
-                />
-              </div>
-            ))}
+            .map((m, i) =>
+              m.is_leader ? null : (
+                <div className="contents" key={i}>
+                  <F n={`memberName${i}`} l={`팀원 ${i} 이름`} v={m.name} />
+                  <F n={`memberOrg${i}`} l={`팀원 ${i} 소속`} v={m.org} />
+                  <F n={`memberRole${i}`} l="역할" v={m.role} />
+                  <F
+                    n={`memberEmail${i}`}
+                    l={`팀원 ${i} 이메일`}
+                    v={m.email}
+                    type="email"
+                  />
+                  <F
+                    n={`memberPhone${i}`}
+                    l={`팀원 ${i} 연락처`}
+                    v={m.phone}
+                    phone
+                  />
+                  <F
+                    n={`memberBirthDate${i}`}
+                    l={`팀원 ${i} 생년월일`}
+                    v={m.birth_date}
+                    placeholder="예: 260101"
+                  />
+                  <S
+                    n={`memberGender${i}`}
+                    l={`팀원 ${i} 성별`}
+                    v={m.gender}
+                    values={GENDERS}
+                  />
+                  <F
+                    n={`memberResidence${i}`}
+                    l={`팀원 ${i} 거주지`}
+                    v={m.residence}
+                  />
+                </div>
+              ),
+            )}
           <label className="sm:col-span-2">
             요청사항
             <textarea

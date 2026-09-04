@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 const navLinks = [
-  { href: '#contest', label: 'AI창업 경진대회' },
-  { href: '#support', label: '창업사업화 지원' },
+  { href: '#contest', label: 'AI 창업 경진대회' },
+  { href: '#support', label: '창업·사업화 지원' },
   { href: '#contact', label: '문의하기' },
 ];
 

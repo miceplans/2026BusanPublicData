@@ -29,7 +29,7 @@ create table if not exists public.applications (
   leader_name text not null,
   leader_email text not null,
   leader_phone text not null,
-  participation_type text not null check (participation_type in ('예비창업팀', '신규창업기업')),
+  participation_type text not null check (participation_type in ('예비창업자', '신규창업자')),
   industry text not null check (industry in ('해양', '에너지테크', '미래모빌리티', '융합부품·소재', '라이프스타일', '디지털테크', '금융', '문화관광', '바이오헬스')),
   item_name text not null,
   item_summary text not null,

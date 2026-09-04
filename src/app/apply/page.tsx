@@ -166,7 +166,7 @@ export default function ApplyPage() {
       >
         <div className="mb-2">
           <h1 className="mt-2 text-3xl font-extrabold tracking-[-0.04em] sm:text-4xl">
-            참가 신청
+            참가신청서
           </h1>
           <p className="mt-3 text-[15px] leading-6 text-[#6b7684]">
             필수 정보를 정확하게 입력해 주세요.
@@ -240,29 +240,29 @@ export default function ApplyPage() {
             )}
           </fieldset>
         </Section>
-        <Section title="팀장 정보">
+        <Section title="신청인(팀장 정보)">
           <Grid>
             <Field
               name="leaderName"
-              label="팀장 이름"
+              label="이름"
               value={leaderName}
               onChange={(e) => setLeaderName(e.target.value)}
               autoComplete="name"
             />
             <Field
               name="leaderOrg"
-              label="팀장 소속"
+              label="소속"
               autoComplete="organization"
             />
             <Field
               name="leaderEmail"
-              label="팀장 이메일"
+              label="이메일"
               type="email"
               autoComplete="email"
             />
             <Field
               name="leaderPhone"
-              label="팀장 연락처"
+              label="연락처"
               placeholder="010-0000-0000"
               autoComplete="tel"
               inputMode="numeric"
@@ -294,68 +294,44 @@ export default function ApplyPage() {
           </Grid>
           <GenderField name="leaderGender" legend="성별" />
         </Section>
-        <Section title="팀원 정보 (팀장 포함 2~4명)">
-          {members.map((m, i) => (
-            <div
-              className="motion-list-item flex flex-col gap-3 rounded-xl border border-[#e5e5e5] p-4"
-              key={i}
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-bold text-[#333d4b]">
-                  {i === 0 ? '팀원 1 (팀장)' : `팀원 ${i + 1}`}
-                </span>
-                {i > 1 && (
-                  <button
-                    type="button"
-                    className="motion-control rounded-lg px-3 py-1 text-sm text-red-700 hover:bg-[#f5f5f5]"
-                    onClick={() =>
-                      setMembers((v) => v.filter((_, x) => x !== i))
-                    }
-                  >
-                    삭제
-                  </button>
-                )}
-              </div>
-              {i === 0 ? (
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <input
-                    className={fieldClass}
-                    aria-label="팀장 이름과 자동으로 일치"
-                    placeholder="팀장 이름과 자동으로 일치"
-                    value={leaderName}
-                    disabled
-                  />
-                  <input
-                    className={fieldClass}
-                    aria-label="팀장 팀 내 역할"
-                    placeholder="팀 내 역할"
-                    value={m.role}
-                    onChange={(e) => updateMember(i, 'role', e.target.value)}
-                  />
-                  <p className="text-xs text-[#666] sm:col-span-2">
-                    소속·이메일·연락처·생년월일·성별·거주지는 위 &lsquo;팀장
-                    정보&rsquo;의 입력값이 그대로 사용됩니다.
-                  </p>
+        <Section title="팀원 정보 (팀장 제외, 1~3명)">
+          {members.map((m, i) =>
+            i === 0 ? null : (
+              <div
+                className="motion-list-item flex flex-col gap-3 rounded-xl border border-[#e5e5e5] p-4"
+                key={i}
+              >
+                <div className="flex items-center justify-between">
+                  {i > 1 && (
+                    <button
+                      type="button"
+                      className="motion-control rounded-lg px-3 py-1 text-sm text-red-700 hover:bg-[#f5f5f5]"
+                      onClick={() =>
+                        setMembers((v) => v.filter((_, x) => x !== i))
+                      }
+                    >
+                      삭제
+                    </button>
+                  )}
                 </div>
-              ) : (
                 <div className="grid gap-3 sm:grid-cols-2">
                   <input
                     className={fieldClass}
-                    aria-label={`${i + 1}번째 팀원 이름`}
+                    aria-label={`${i}번째 팀원 이름`}
                     placeholder="이름"
                     value={m.name}
                     onChange={(e) => updateMember(i, 'name', e.target.value)}
                   />
                   <input
                     className={fieldClass}
-                    aria-label={`${i + 1}번째 팀원 소속`}
+                    aria-label={`${i}번째 팀원 소속`}
                     placeholder="소속"
                     value={m.org}
                     onChange={(e) => updateMember(i, 'org', e.target.value)}
                   />
                   <input
                     className={fieldClass}
-                    aria-label={`${i + 1}번째 팀원 역할`}
+                    aria-label={`${i}번째 팀원 역할`}
                     placeholder="팀 내 역할"
                     value={m.role}
                     onChange={(e) => updateMember(i, 'role', e.target.value)}
@@ -363,7 +339,7 @@ export default function ApplyPage() {
                   <input
                     className={fieldClass}
                     type="email"
-                    aria-label={`${i + 1}번째 팀원 이메일`}
+                    aria-label={`${i}번째 팀원 이메일`}
                     placeholder="이메일"
                     value={m.email}
                     onChange={(e) => updateMember(i, 'email', e.target.value)}
@@ -372,7 +348,7 @@ export default function ApplyPage() {
                     className={fieldClass}
                     inputMode="numeric"
                     maxLength={13}
-                    aria-label={`${i + 1}번째 팀원 연락처`}
+                    aria-label={`${i}번째 팀원 연락처`}
                     placeholder="010-0000-0000"
                     value={m.phone}
                     onChange={(e) =>
@@ -387,7 +363,7 @@ export default function ApplyPage() {
                     className={fieldClass}
                     inputMode="numeric"
                     maxLength={6}
-                    aria-label={`${i + 1}번째 팀원 생년월일`}
+                    aria-label={`${i}번째 팀원 생년월일`}
                     placeholder="생년월일 (예: 260101)"
                     value={m.birthDate}
                     onChange={(e) =>
@@ -400,7 +376,7 @@ export default function ApplyPage() {
                   />
                   <input
                     className={fieldClass}
-                    aria-label={`${i + 1}번째 팀원 거주지`}
+                    aria-label={`${i}번째 팀원 거주지`}
                     placeholder="거주지"
                     value={m.residence}
                     onChange={(e) =>
@@ -408,7 +384,7 @@ export default function ApplyPage() {
                     }
                   />
                   <fieldset className="flex items-center gap-4 sm:col-span-2">
-                    <legend className="sr-only">{`${i + 1}번째 팀원 성별`}</legend>
+                    <legend className="sr-only">{`${i}번째 팀원 성별`}</legend>
                     {GENDERS.map((g) => (
                       <label
                         className="flex items-center gap-2 text-sm"
@@ -426,9 +402,9 @@ export default function ApplyPage() {
                     ))}
                   </fieldset>
                 </div>
-              )}
-            </div>
-          ))}
+              </div>
+            ),
+          )}
           {members.length < 4 && (
             <button
               type="button"
@@ -447,17 +423,17 @@ export default function ApplyPage() {
             <div className="flex flex-col gap-2">
               <DocumentDownload
                 href="/downloads/idea-proposal.hwp"
-                fileName="[신청서 양식] 2026 AI 창업 경진대회 아이디어 제안서.hwp"
+                fileName="[제출서류] 2026 AI 창업 경진대회 아이디어 제안서.hwp"
                 label="아이디어 제안서 양식"
               />
               <DocumentDownload
                 href="/downloads/privacy-consent.hwp"
-                fileName="개인정보 수집 및 이용에 관한 동의서.hwp"
+                fileName="[제출서류] 2026 AI 창업 경진대회 개인정보동의서.hwp"
                 label="개인정보 수집·이용 동의서"
               />
               <DocumentDownload
                 href="/downloads/participation-pledge.hwp"
-                fileName="2026 AI 창업 경진대회 참가 서약서.hwp"
+                fileName="[제출서류] 2026 AI 창업 경진대회 참가서약서.hwp"
                 label="참가 서약서"
               />
             </div>

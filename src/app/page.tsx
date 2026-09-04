@@ -29,7 +29,7 @@ const awards = [
   ['대상', '1팀', '부산광역시장상', '200만원 상당'],
   ['최우수', '2팀', '부산정보산업진흥원장상', '100만원 상당'],
   ['우수', '3팀', '부산정보산업진흥원장상', '50만원 상당'],
-  ['장려', '5팀', '부산창조경제혁신센터 대표이사상', '30만원 상당'],
+  ['장려', '5팀', '부산창조경제혁신센터대표이사상', '30만원 상당'],
 ];
 
 const contestSubmissionDocuments = [
@@ -39,51 +39,84 @@ const contestSubmissionDocuments = [
   '참가자 서약서',
 ];
 
+const evaluationCriteria = [
+  {
+    category: '문제인식',
+    items: ['창업 아이디어 제안배경(목적 및 문제의식 등)', '시장 분석 및 환경분석'],
+    score: 20,
+  },
+  {
+    category: '경쟁력',
+    items: [
+      'AI를 활용한 창업 아이디어의 핵심 기능 및 경쟁력',
+      '아이디어의 독창성 및 차별화 전략',
+    ],
+    score: 30,
+  },
+  {
+    category: '실현가능성 및 사업성',
+    items: ['아이디어의 실현가능성 및 우수성', '아이디어의 수익화 모델 전개 가능여부'],
+    score: 30,
+  },
+  {
+    category: '기대효과',
+    items: [
+      '아이디어 구현에 따른 기대효과',
+      '아이디어 구현에 따른 사회문제 해결효과',
+    ],
+    score: 20,
+  },
+];
+
 const strategicIndustries = [
   {
     icon: '/assets/industries/ocean.png',
     label: '해양',
-    description: '해양물류·항만·수산 등 해양산업 AI',
+    description: '스마트물류, 해운항만, 해양데이터서비스, 스마트양식',
+    // ocean.png is a very wide/flat product shot (689x144) — a small scale
+    // bump keeps it from reading as tiny next to the other icons without
+    // making it stretch too wide across the card.
+    iconScaleClassName: 'scale-110',
   },
   {
     icon: '/assets/industries/energy-tech.png',
     label: '에너지테크',
-    description: '에너지 생산·관리·효율화 AI',
+    description: '전력반도체, 이차전지, 수소에너지, ESS',
   },
   {
     icon: '/assets/industries/future-mobility.png',
     label: '미래모빌리티',
-    description: '자율주행·스마트 물류 등 이동수단 AI',
+    description: '전기차, 친환경선박, 미래항공',
   },
   {
     icon: '/assets/industries/fusion-parts.png',
     label: '융합부품 소재',
-    description: '첨단 부품·소재 산업 AI',
+    description: '로봇, 스마트제조, 우주기, 복합소재',
   },
   {
     icon: '/assets/industries/lifestyle.png',
     label: '라이프스타일',
-    description: '생활·소비 전반 AI 서비스',
+    description: '섬유(신발, 패션의류), 블루푸드, 커피화장품, 재난안전',
   },
   {
     icon: '/assets/industries/digital-tech.png',
     label: '디지털테크',
-    description: 'AI·데이터 기반 디지털 기술 서비스',
+    description: '인공지능, 빅데이터, 블록체인, 클라우드',
   },
   {
     icon: '/assets/industries/finance.png',
     label: '금융',
-    description: '핀테크 등 금융 서비스 AI',
+    description: '핀테크, 디지털자산, 특화금융',
   },
   {
     icon: '/assets/industries/culture-tourism.png',
     label: '문화관광',
-    description: '관광·문화 콘텐츠 AI 서비스',
+    description: '영화영상콘텐츠, 게임, 의료뷰티, 해양레저관광·전시·컨벤션',
   },
   {
     icon: '/assets/industries/bio-health.png',
     label: '바이오헬스',
-    description: '의료·헬스케어 분야 AI 서비스',
+    description: '의료기기, 의료서비스, 실버케어',
   },
 ];
 
@@ -100,8 +133,7 @@ const operationPlan = [
     stage: '오리엔테이션',
     tag: '온라인',
     qualification: '예선 서면평가 통과팀',
-    description:
-      'ZOOM을 활용해 본선일정·운영규정·평가항목·발표순서 안내(팀별 1~2인 접속)',
+    description: '본선일정·운영규정·평가항목·발표순서 안내(팀별 1~2인 접속)',
     selection: '20팀',
     period: '10월 중',
   },
@@ -239,14 +271,21 @@ export default async function HomePage() {
                 >
                   신청 확인·수정
                 </Link>
+                <a
+                  className="inline-flex min-h-14 items-center justify-center rounded-full border border-white/25 bg-white/5 px-7 text-base font-bold text-white hover:bg-white/15"
+                  href="/downloads/announcement-documents.zip"
+                  download="2026 AI 창업 경진대회 공고문 및 서류 양식.zip"
+                >
+                  공고문 다운로드
+                </a>
               </div>
             </div>
             <div className="hero-stats mx-auto mt-20 grid max-w-[1120px] border-t border-[#45C4DE]/55 pt-8 text-center sm:grid-cols-4 sm:gap-6 lg:gap-8">
               {[
                 ['접수기간', '9.7.(월) ~ 9.30.(수), 18:00'],
                 ['본선일정', '10.31.(토)'],
-                ['1억 7백만원', '시상·사업화 지원'],
-                ['2~4인', '팀 단위 참가'],
+                ['시상·사업화 지원', '1억 7백만원'],
+                ['팀 단위 참가', '2~4인'],
               ].map(([value, label]) => (
                 <div
                   className="border-b border-[#45C4DE]/55 py-5 sm:border-0 sm:py-0"
@@ -309,9 +348,9 @@ export default async function HomePage() {
 
         <div className="mx-auto max-w-[1280px] space-y-28 px-5 py-24 sm:px-8 sm:py-32 lg:space-y-40">
           <section id="contest" className="contest-brief scroll-mt-28">
-            <SectionTitle>AI창업 경진대회</SectionTitle>
+            <SectionTitle>AI 창업 경진대회</SectionTitle>
 
-            <div className="mt-12 grid gap-10 text-base leading-[1.75] text-white/72 sm:text-[1.0625rem]">
+            <div className="mt-12 grid gap-10 text-lg leading-[1.75] text-white/72 sm:text-xl">
               <div aria-labelledby="contest-eligibility">
                 <h3 id="contest-eligibility" className="contest-brief-title">
                   참가자격
@@ -336,30 +375,32 @@ export default async function HomePage() {
                     className="grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-3"
                     aria-label="모집분야"
                   >
-                    {strategicIndustries.map(({ icon, label, description }) => (
-                      <li
-                        className="interactive-card flex flex-col items-center gap-3 rounded-2xl px-4 py-5 text-center"
-                        key={label}
-                      >
-                        <span className="text-base leading-[1.3] font-bold break-keep text-white/90 sm:text-lg">
-                          {label}
-                        </span>
-                        <span className="relative h-14 w-full sm:h-16">
-                          <Image
-                            alt=""
-                            aria-hidden="true"
-                            className="object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.35)]"
-                            fill
-                            sizes="80px"
-                            src={icon}
-                            unoptimized
-                          />
-                        </span>
-                        <span className="text-xs leading-[1.5] break-keep text-white/50 sm:text-sm">
-                          {description}
-                        </span>
-                      </li>
-                    ))}
+                    {strategicIndustries.map(
+                      ({ icon, label, description, iconScaleClassName }) => (
+                        <li
+                          className="interactive-card flex flex-col items-center gap-3 rounded-2xl px-4 py-5 text-center"
+                          key={label}
+                        >
+                          <span className="text-lg leading-[1.3] font-bold break-keep text-white/90 sm:text-xl">
+                            {label}
+                          </span>
+                          <span className="relative h-16 w-full sm:h-20">
+                            <Image
+                              alt=""
+                              aria-hidden="true"
+                              className={`object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.35)] ${iconScaleClassName ?? ''}`}
+                              fill
+                              sizes="96px"
+                              src={icon}
+                              unoptimized
+                            />
+                          </span>
+                          <span className="text-sm leading-[1.5] break-keep text-white/50 sm:text-base">
+                            {description}
+                          </span>
+                        </li>
+                      ),
+                    )}
                   </ul>
                 </section>
               </div>
@@ -369,7 +410,7 @@ export default async function HomePage() {
                   주제
                 </h3>
                 <section className="landing-panel mt-5 rounded-[32px] border border-[#45C4DE]/45 p-7 sm:p-10">
-                  <p>부산시 9대 전략산업 분야 내 자유주제 공모</p>
+                  <p>모집분야 내 AI를 활용한 자유주제</p>
                 </section>
               </div>
 
@@ -424,13 +465,13 @@ export default async function HomePage() {
               <div aria-labelledby="contest-awards">
                 <h3 id="contest-awards" className="contest-brief-title">
                   시상내역
-                  <span className="ml-1 text-sm font-medium text-white/55">
+                  <span className="ml-1 text-lg font-medium text-white/55 sm:text-xl">
                     (총 700만원 규모 생성형 AI 이용권)
                   </span>
                 </h3>
                 <section className="landing-panel mt-5 rounded-[32px] border border-[#45C4DE]/55 p-7 sm:p-10">
                   <div className="overflow-x-auto">
-                    <table className="contest-brief-table min-w-[620px]">
+                    <table className="contest-brief-table contest-awards-table min-w-[620px]">
                       <thead>
                         <tr>
                           <th>순위</th>
@@ -451,6 +492,50 @@ export default async function HomePage() {
                       </tbody>
                     </table>
                   </div>
+                </section>
+              </div>
+
+              <div aria-labelledby="contest-evaluation">
+                <h3 id="contest-evaluation" className="contest-brief-title">
+                  평가 방법
+                </h3>
+                <section className="landing-panel mt-5 rounded-[32px] border border-[#45C4DE]/55 p-7 sm:p-10">
+                  <div className="overflow-x-auto">
+                    <table className="contest-brief-table contest-evaluation-table min-w-[620px]">
+                      <thead>
+                        <tr>
+                          <th>구분</th>
+                          <th>평가 항목</th>
+                          <th>배점</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {evaluationCriteria.map((row) => (
+                          <tr key={row.category}>
+                            <td>{row.category}</td>
+                            <td>
+                              <ul className="grid gap-1 pl-4 [list-style:disc] marker:text-white/40">
+                                {row.items.map((item) => (
+                                  <li key={item}>{item}</li>
+                                ))}
+                              </ul>
+                            </td>
+                            <td>{row.score}</td>
+                          </tr>
+                        ))}
+                        <tr>
+                          <td colSpan={2}>총점</td>
+                          <td>100점</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p className="mt-5 text-lg leading-[1.6] text-white/50 sm:text-xl">
+                    ※ 평가위원별 최저점과 최고점을 제외한 점수들의 평균 점수를 산출
+                    <br />※ 최저 또는 최고점이 2개 이상일 경우 각각 1개만 제외
+                    <br />※ 결과 개별 연락(문자, 이메일, 전화) 후 두절 시
+                    불합격 처리
+                  </p>
                 </section>
               </div>
 
@@ -479,7 +564,7 @@ export default async function HomePage() {
           </section>
 
           <section id="support" className="scroll-mt-28">
-            <SectionTitle>창업사업화 지원</SectionTitle>
+            <SectionTitle>창업·사업화 지원</SectionTitle>
 
             <div className="mt-12">
               <h3 className="text-2xl font-semibold tracking-[-0.04em]">
@@ -499,7 +584,7 @@ export default async function HomePage() {
                   </li>
                 ))}
               </ol>
-              <p className="mt-7 text-center text-sm font-semibold text-white/55">
+              <p className="mt-7 text-center text-lg font-semibold text-white/55 sm:text-xl">
                 11월 중 순차 진행
               </p>
             </div>
@@ -508,7 +593,7 @@ export default async function HomePage() {
               <h3 className="text-2xl font-semibold tracking-[-0.04em]">
                 지원내용
               </h3>
-              <p className="mt-3 text-base font-semibold text-white/60">
+              <p className="mt-3 text-lg font-semibold text-white/60 sm:text-xl">
                 창업·사업화 지원 (총 1억원 규모)
               </p>
               <div className="mt-6 grid gap-5 lg:grid-cols-[1fr_0.9fr_1fr]">
@@ -516,7 +601,7 @@ export default async function HomePage() {
                   <p className="text-sm font-bold text-[#45C4DE]">
                     창업·사업화 컨설팅
                   </p>
-                  <p className="mt-5 text-lg leading-[1.65] font-semibold text-white/80">
+                  <p className="mt-5 text-lg leading-[1.65] font-semibold text-white/80 sm:text-xl">
                     창업·사업화 전문가 매칭 및 컨설팅을 통한 역량 강화
                   </p>
                 </article>
@@ -546,21 +631,21 @@ export default async function HomePage() {
                 </article>
                 <article className="landing-panel rounded-[28px] border border-[#45C4DE]/45 p-7 sm:p-8">
                   <p className="text-sm font-bold text-[#45C4DE]">비고</p>
-                  <p className="mt-5 text-lg leading-[1.65] font-semibold text-white/80">
+                  <p className="mt-5 text-lg leading-[1.65] font-semibold text-white/80 sm:text-xl">
                     경진대회 수상순위에 따라 협약요건 충족팀 순차 지원
                   </p>
                 </article>
               </div>
-              <p className="mt-5 text-sm leading-[1.6] text-white/50">
+              <p className="mt-5 text-lg leading-[1.6] text-white/50 sm:text-xl">
                 ※ 지원 대상자는 부산지역 내 창업 또는 사업장 이전 필수
               </p>
             </div>
 
             <div className="mt-16">
               <h3 className="text-2xl font-semibold tracking-[-0.04em]">
-                지원조건(협약요건)
+                자격요건
               </h3>
-              <ul className="mt-6 grid gap-3 text-sm leading-[1.65] text-white/75">
+              <ul className="mt-6 grid gap-3 text-lg leading-[1.65] text-white/75 sm:text-xl">
                 {commercializationEligibility.map((item) => (
                   <li className="flex items-start gap-2.5" key={item}>
                     <span
@@ -574,7 +659,7 @@ export default async function HomePage() {
               <div className="mt-6 grid gap-5 lg:grid-cols-2">
                 <article className="landing-panel rounded-[28px] border border-[#45C4DE]/55 p-7 sm:p-8">
                   <h4 className="text-lg font-semibold">필수 협약요건</h4>
-                  <ol className="mt-6 grid gap-4 text-sm leading-[1.7] text-white/75">
+                  <ol className="mt-6 grid gap-4 text-lg leading-[1.7] text-white/75 sm:text-xl">
                     {mandatoryAgreementRequirements.map(
                       (requirement, index) => (
                         <li
@@ -592,7 +677,7 @@ export default async function HomePage() {
                 </article>
                 <article className="landing-panel rounded-[28px] border border-[#45C4DE]/45 p-7 sm:p-8">
                   <h4 className="text-lg font-semibold">지원제외 대상</h4>
-                  <ul className="mt-6 grid gap-3 text-sm leading-[1.65] text-white/70">
+                  <ul className="mt-6 grid gap-3 text-lg leading-[1.65] text-white/70 sm:text-xl">
                     {excludedFromSupport.map((item) => (
                       <li className="flex items-start gap-2.5" key={item}>
                         <span
@@ -609,7 +694,7 @@ export default async function HomePage() {
 
             <div className="landing-panel mt-5 rounded-[28px] border border-[#45C4DE]/45 p-7 sm:p-8">
               <h3 className="text-lg font-semibold">제출서류</h3>
-              <p className="mt-4 flex items-start gap-2.5 text-sm leading-[1.65] text-white/75">
+              <p className="mt-4 flex items-start gap-2.5 text-lg leading-[1.65] text-white/75 sm:text-xl">
                 <span
                   aria-hidden="true"
                   className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-[#45C4DE]"
@@ -626,7 +711,7 @@ export default async function HomePage() {
 
           <section id="contact" className="scroll-mt-28">
             <SectionTitle>문의하기</SectionTitle>
-            <p className="mt-5 text-sm leading-[1.7] text-white/70 sm:text-base">
+            <p className="mt-5 text-lg leading-[1.7] text-white/70 sm:text-xl">
               대회 참가에 대해 궁금한 점이 있으신가요?
               <br />
               카카오톡 오픈 채팅방으로 편하게 문의해 주세요.

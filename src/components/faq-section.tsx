@@ -11,7 +11,7 @@ export function FaqSection({ faqs }: { faqs: FaqItem[] }) {
         자주 묻는 질문
       </h2>
       {faqs.length === 0 ? (
-        <p className="mt-12 rounded-[28px] border border-[#45C4DE]/45 p-7 text-sm leading-[1.7] text-white/60 sm:p-10">
+        <p className="mt-12 rounded-[28px] border border-[#45C4DE]/45 p-7 text-lg leading-[1.7] text-white/60 sm:p-10 sm:text-xl">
           등록된 자주 묻는 질문이 없습니다.
         </p>
       ) : (
@@ -31,7 +31,7 @@ export function FaqSection({ faqs }: { faqs: FaqItem[] }) {
                   className="flex min-h-16 w-full items-center justify-between gap-4 px-6 text-left transition-colors duration-300 hover:bg-[#45C4DE]/10 sm:px-8"
                   onClick={() => setOpenIndex(open ? null : index)}
                 >
-                  <span className="text-base leading-[1.5] font-bold tracking-[-0.02em] sm:text-lg">
+                  <span className="text-lg leading-[1.5] font-bold tracking-[-0.02em] sm:text-xl">
                     {faq.question}
                   </span>
                   <span
@@ -51,7 +51,15 @@ export function FaqSection({ faqs }: { faqs: FaqItem[] }) {
   );
 }
 
-function FaqAnswer({ answer, index, open }: { answer: string; index: number; open: boolean }) {
+function FaqAnswer({
+  answer,
+  index,
+  open,
+}: {
+  answer: string;
+  index: number;
+  open: boolean;
+}) {
   const answerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const previousOpenRef = useRef(open);
@@ -111,7 +119,7 @@ function FaqAnswer({ answer, index, open }: { answer: string; index: number; ope
       className="faq-answer"
     >
       <div ref={contentRef} className="faq-answer-inner">
-        <p className="border-t border-[#45C4DE]/35 px-6 py-6 text-sm leading-[1.75] whitespace-pre-line text-white/75 sm:px-8 sm:text-base">
+        <p className="border-t border-[#45C4DE]/35 px-6 py-6 text-lg leading-[1.75] whitespace-pre-line text-white/75 sm:px-8 sm:text-xl">
           {answer}
         </p>
       </div>

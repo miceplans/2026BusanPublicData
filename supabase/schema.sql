@@ -11,7 +11,7 @@ create table if not exists public.applications (
  leader_email text not null, leader_phone text not null, leader_residence text not null default '',
  leader_org text not null default '', leader_birth_date text not null default '' check (leader_birth_date = '' or leader_birth_date ~ '^[0-9]{6}$'),
  leader_gender text not null default '' check (leader_gender in ('','남','여')),
- participation_type text not null check (participation_type in ('예비창업팀','신규창업기업')),
+ participation_type text not null check (participation_type in ('예비창업자','신규창업자')),
  industry text not null check (industry in ('해양','에너지테크','미래모빌리티','융합부품·소재','라이프스타일','디지털테크','금융','문화관광','바이오헬스')),
  information_source text check (information_source in ('공모 관련 사이트','SNS','검색포털','학교안내','지인소개','기타')),
  information_source_other text check (char_length(information_source_other) <= 100),

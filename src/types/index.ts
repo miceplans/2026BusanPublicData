@@ -7,10 +7,9 @@ export const INDUSTRIES = [
   '디지털테크',
   '금융',
   '문화관광',
-  '바이오헬스',
-  '혁신기술분야'
+  '바이오헬스'
 ] as const;
-export const PARTICIPATION_TYPES = ['예비창업팀', '신규창업기업'] as const;
+export const PARTICIPATION_TYPES = ['예비창업자', '신규창업자'] as const;
 export const INFORMATION_SOURCES = [
   '공모 관련 사이트',
   'SNS',
