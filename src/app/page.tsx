@@ -286,18 +286,17 @@ export default async function HomePage() {
                 </Link>
                 <a
                   className="inline-flex min-h-14 items-center justify-center rounded-full border border-white/25 bg-white/5 px-7 text-base font-bold text-white hover:bg-white/15"
-                  href="/downloads/announcement-documents.zip"
-                  download="2026 AI 창업 경진대회 공고문 및 서류 양식.zip"
+                  href="/downloads/[모집공고문] 2026 AI 창업 경진대회.hwp"
+                  download="[모집공고문] 2026 AI 창업 경진대회.hwp"
                 >
                   공고문 다운로드
                 </a>
               </div>
             </div>
-            <div className="hero-stats mx-auto mt-20 grid max-w-[1120px] border-t border-[#45C4DE]/55 pt-8 text-center sm:grid-cols-4 sm:gap-6 lg:gap-8">
+            <div className="hero-stats mx-auto mt-20 grid max-w-[1120px] border-t border-[#45C4DE]/55 pt-8 text-center sm:grid-cols-3 sm:gap-6 lg:gap-8">
               {[
                 ['접수기간', '9.7.(월) ~ 9.30.(수), 18:00'],
                 ['본선 일정', '10.31.(토)'],
-                ['총 지원 규모', '1억 7백만원'],
                 ['참가 단위', '2~4인 팀'],
               ].map(([value, label]) => (
                 <div
@@ -307,7 +306,13 @@ export default async function HomePage() {
                   <strong className="block text-base font-semibold tracking-[-0.05em] text-white sm:text-2xl">
                     {value}
                   </strong>
-                  <span className="mt-4 block text-3xl text-white/60 sm:mt-5 sm:text-4xl">
+                  <span
+                    className={`mt-4 block text-white/60 sm:mt-5 ${
+                      label === '9.7.(월) ~ 9.30.(수), 18:00'
+                        ? 'whitespace-nowrap text-xl sm:text-2xl'
+                        : 'text-3xl sm:text-4xl'
+                    }`}
+                  >
                     {label}
                   </span>
                 </div>
@@ -330,7 +335,7 @@ export default async function HomePage() {
                   height: 66,
                 },
                 {
-                  role: '×',
+                  role: '참여',
                   alt: '부산창조경제혁신센터 로고',
                   src: '/assets/partner-busan-center-for-creative-economy-innovation-white.png',
                   width: 365,
@@ -604,7 +609,7 @@ export default async function HomePage() {
           </section>
 
           <section id="support" className="scroll-mt-28">
-            <SectionTitle>창업·사업화 지원</SectionTitle>
+            <SectionTitle>후속 - 창업·사업화 지원</SectionTitle>
 
             <div className="mt-12">
               <h3 className="text-2xl font-semibold tracking-[-0.04em]">
