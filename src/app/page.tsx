@@ -745,12 +745,9 @@ export default async function HomePage() {
                 />
                 <span>사업자등록증 사본(협약일로부터 2개월 이내)</span>
               </p>
-              <p className="mt-4 flex items-start gap-2.5 text-lg leading-[1.65] text-white/75 sm:text-xl">
-                <span
-                  aria-hidden="true"
-                  className="mt-[0.65em] block size-1.5 shrink-0 rounded-full bg-white/45"
-                />
-                <span>부산시 관내 사업장 소재지 확인이 가능한 발급분</span>
+              <p className="sm:text-m mt-4 flex items-start gap-2.5 text-lg leading-[1.65] text-white/75">
+                &nbsp;&nbsp; ※ 부산시 관내 사업장 소재지 확인이 가능한
+                발급분
               </p>
             </div>
           </section>
