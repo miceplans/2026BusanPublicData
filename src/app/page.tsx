@@ -287,8 +287,8 @@ export default async function HomePage() {
                 </Link>
                 <a
                   className="inline-flex min-h-14 items-center justify-center rounded-full border border-white/25 bg-white/5 px-7 text-base font-bold text-white hover:bg-white/15"
-                  href="/downloads/[모집공고문] 2026 AI 창업 경진대회.hwpx"
-                  download="[모집공고문] 2026 AI 창업 경진대회.hwpx"
+                  href="/downloads/[모집공고문] 2026 AI 창업 경진대회.hwp"
+                  download="[모집공고문] 2026 AI 창업 경진대회.hwp"
                 >
                   공고문 다운로드
                 </a>
