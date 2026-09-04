@@ -60,36 +60,57 @@ const contestSubmissionDocuments = [
 ];
 
 const partners = [
-  {
-    name: '부산광역시',
-    logo: '/assets/partner-busan-metropolitan-city.png',
-    width: 3332,
-    height: 714,
-  },
-  {
-    name: '부산정보산업진흥원',
-    logo: '/assets/partner-busan-it-industry-promotion-agency.png',
-    width: 865,
-    height: 143,
-  },
-  {
-    name: '부산창조경제혁신센터',
-    logo: '/assets/partner-busan-center-for-creative-economy-innovation.png',
-    width: 1387,
-    height: 273,
-  },
+  '부산광역시',
+  '부산정보산업진흥원',
+  '부산창조경제혁신센터',
 ];
 
 const strategicIndustries = [
-  { icon: '/assets/industries/ocean.png', label: '해양' },
-  { icon: '/assets/industries/energy-tech.png', label: '에너지테크' },
-  { icon: '/assets/industries/future-mobility.png', label: '미래모빌리티' },
-  { icon: '/assets/industries/fusion-parts.png', label: '융합부품 소재' },
-  { icon: '/assets/industries/lifestyle.png', label: '라이프스타일' },
-  { icon: '/assets/industries/digital-tech.png', label: '디지털테크' },
-  { icon: '/assets/industries/finance.png', label: '금융' },
-  { icon: '/assets/industries/culture-tourism.png', label: '문화관광' },
-  { icon: '/assets/industries/bio-health.png', label: '바이오헬스' },
+  {
+    icon: '/assets/industries/ocean.png',
+    label: '해양',
+    description: '해양물류·항만·수산 등 해양산업 AI',
+  },
+  {
+    icon: '/assets/industries/energy-tech.png',
+    label: '에너지테크',
+    description: '에너지 생산·관리·효율화 AI',
+  },
+  {
+    icon: '/assets/industries/future-mobility.png',
+    label: '미래모빌리티',
+    description: '자율주행·스마트 물류 등 이동수단 AI',
+  },
+  {
+    icon: '/assets/industries/fusion-parts.png',
+    label: '융합부품 소재',
+    description: '첨단 부품·소재 산업 AI',
+  },
+  {
+    icon: '/assets/industries/lifestyle.png',
+    label: '라이프스타일',
+    description: '생활·소비 전반 AI 서비스',
+  },
+  {
+    icon: '/assets/industries/digital-tech.png',
+    label: '디지털테크',
+    description: 'AI·데이터 기반 디지털 기술 서비스',
+  },
+  {
+    icon: '/assets/industries/finance.png',
+    label: '금융',
+    description: '핀테크 등 금융 서비스 AI',
+  },
+  {
+    icon: '/assets/industries/culture-tourism.png',
+    label: '문화관광',
+    description: '관광·문화 콘텐츠 AI 서비스',
+  },
+  {
+    icon: '/assets/industries/bio-health.png',
+    label: '바이오헬스',
+    description: '의료·헬스케어 분야 AI 서비스',
+  },
 ];
 
 const schedule = [
@@ -238,9 +259,6 @@ export default async function HomePage() {
                   priority
                   unoptimized
                 />
-                <span className="mt-6 block max-w-[820px] text-[clamp(1.2rem,2.4vw,2.15rem)] leading-[1.3] font-bold tracking-[-0.035em] text-white/75">
-                  부산의 전략산업 분야 우수 AI 창업 아이디어 발굴·육성
-                </span>
               </h1>
               <p className="mt-10 text-3xl font-black tracking-[-0.035em] text-white sm:text-5xl">
                 <span className="text-[#45C4DE]">
@@ -271,8 +289,8 @@ export default async function HomePage() {
               {[
                 ['접수기간', '9.7.(월) ~ 9.30.(수), 18:00'],
                 ['본선일정', '10.31.(토)'],
-                ['2~4인', '팀 단위 참가'],
                 ['1억 7백만원', '시상·사업화 지원'],
+                ['2~4인', '팀 단위 참가'],
               ].map(([value, label]) => (
                 <div
                   className="border-b border-[#45C4DE]/55 py-5 sm:border-0 sm:py-0"
@@ -291,7 +309,7 @@ export default async function HomePage() {
               {partners.map((partner, index) => (
                 <div
                   className="flex shrink-0 items-center gap-4 sm:gap-6"
-                  key={partner.name}
+                  key={partner}
                 >
                   {index > 0 && (
                     <span
@@ -301,13 +319,9 @@ export default async function HomePage() {
                       ×
                     </span>
                   )}
-                  <Image
-                    alt={`${partner.name} 로고`}
-                    className="max-h-6 w-auto shrink-0 object-contain sm:max-h-8"
-                    height={partner.height}
-                    src={partner.logo}
-                    width={partner.width}
-                  />
+                  <span className="text-sm font-semibold tracking-[-0.02em] text-white/75 sm:text-base">
+                    {partner}
+                  </span>
                 </div>
               ))}
             </div>
@@ -378,14 +392,17 @@ export default async function HomePage() {
                 주제 : 모집분야 내 AI를 활용한 자유주제
               </p>
               <ul
-                className="mt-6 grid grid-cols-3 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-9"
+                className="mt-6 grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-3"
                 aria-label="모집분야"
               >
-                {strategicIndustries.map(({ icon, label }) => (
+                {strategicIndustries.map(({ icon, label, description }) => (
                   <li
-                    className="interactive-card flex flex-col items-center gap-2 rounded-2xl px-2 py-4 text-center sm:gap-3 sm:py-5"
+                    className="interactive-card flex flex-col items-center gap-3 rounded-2xl px-4 py-5 text-center"
                     key={label}
                   >
+                    <span className="text-sm leading-[1.3] font-bold break-keep text-white/80">
+                      {label}
+                    </span>
                     <span className="relative h-14 w-full sm:h-16">
                       <Image
                         alt=""
@@ -397,8 +414,8 @@ export default async function HomePage() {
                         unoptimized
                       />
                     </span>
-                    <span className="text-xs leading-[1.3] font-bold break-keep text-white/80 sm:text-sm">
-                      {label}
+                    <span className="text-xs leading-[1.5] break-keep text-white/50 sm:text-sm">
+                      {description}
                     </span>
                   </li>
                 ))}
