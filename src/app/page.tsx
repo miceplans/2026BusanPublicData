@@ -708,7 +708,7 @@ export default async function HomePage() {
                           className="flex items-start gap-3"
                           key={requirement}
                         >
-                          <span className="flex size-7 shrink-0 items-center justify-center border-[#45C4DE]/50 text-s font-bold text-[#45C4DE]">
+                          <span className="text-s flex size-7 shrink-0 items-center justify-center border-[#45C4DE]/50 font-bold text-[#45C4DE]">
                             {index + 1}
                           </span>
                           <span>{requirement}</span>
@@ -746,8 +746,7 @@ export default async function HomePage() {
                 <span>사업자등록증 사본(협약일로부터 2개월 이내)</span>
               </p>
               <p className="sm:text-m mt-4 flex items-start gap-2.5 text-lg leading-[1.65] text-white/75">
-                &nbsp;&nbsp; ※ 부산시 관내 사업장 소재지 확인이 가능한
-                발급분
+                &nbsp;&nbsp; ※ 부산시 관내 사업장 소재지 확인이 가능한 발급분
               </p>
             </div>
           </section>
@@ -761,21 +760,24 @@ export default async function HomePage() {
               <br />
               카카오톡 오픈 채팅방으로 편하게 문의해 주세요.
             </p>
-            <a
-              className="mt-8 flex min-h-14 w-fit items-center gap-2 rounded-full bg-[#FEE500] px-8 font-bold text-[#191919] transition-opacity hover:opacity-90"
-              href="http://pf.kakao.com/_uwqJX"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <Image
-                alt=""
-                aria-hidden="true"
-                src="/assets/kakaoicon.png"
-                width={21}
-                height={21}
-              />
-              카카오톡 오픈 채팅방 문의하기
-            </a>
+            <div className="mt-8 flex flex-col items-center gap-6 sm:flex-row sm:gap-8">
+              <a
+                className="flex min-h-14 w-full items-center justify-center gap-2 rounded-full bg-[#FEE500] px-5 py-3 text-center text-sm font-bold text-[#191919] transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FEE500] sm:w-fit sm:px-8 sm:text-base"
+                href="http://pf.kakao.com/_uwqJX"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <Image
+                  alt=""
+                  aria-hidden="true"
+                  className="shrink-0"
+                  src="/assets/kakaoicon.png"
+                  width={21}
+                  height={21}
+                />
+                카카오톡 오픈 채팅방 문의하기
+              </a>
+            </div>
           </section>
         </div>
 
@@ -791,7 +793,17 @@ export default async function HomePage() {
                 unoptimized
               />
             </h2>
-            <div className="flex flex-col items-center gap-6 sm:flex-row">
+            <div className="flex w-fit max-w-full flex-col items-stretch gap-6">
+              <div className="w-0 min-w-full shrink-0 rounded-2xl bg-white p-4">
+                <Image
+                  alt="참가 신청 QR 코드"
+                  className="h-auto w-full"
+                  src="/assets/qr.png"
+                  width={253}
+                  height={252}
+                  unoptimized
+                />
+              </div>
               <Link
                 className="brand-gradient inline-flex min-h-14 shrink-0 items-center justify-center rounded-full px-8 font-bold"
                 href="/apply"
