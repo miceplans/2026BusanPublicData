@@ -213,7 +213,7 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="landing-high-contrast min-h-screen bg-[#05070f] bg-[url('/assets/bg.webp')] bg-cover bg-fixed bg-center text-white">
+    <div className="landing-high-contrast min-h-screen bg-[#05070f] bg-[url('/assets/bg-mobile.webp')] bg-cover bg-fixed bg-center text-white sm:bg-[url('/assets/bg-desktop.webp')]">
       <header className="sticky top-0 z-20 border-b border-[#45C4DE]/35 bg-[#0D1E5E]/80 backdrop-blur-xl">
         <div className="relative mx-auto flex min-h-[76px] max-w-[1280px] items-center justify-between gap-4 px-5 sm:px-8">
           <Link
@@ -243,7 +243,7 @@ export default async function HomePage() {
               alt=""
               className="hero-ai-art block h-auto max-w-none drop-shadow-[0_0_40px_rgba(69,196,222,0.12)]"
               style={{ width: 3000, maxWidth: 'none' }}
-              src="/assets/ai.svg"
+              src="/assets/ai.webp"
               width={1118}
               height={931}
               unoptimized
@@ -708,7 +708,7 @@ export default async function HomePage() {
                           className="flex items-start gap-3"
                           key={requirement}
                         >
-                          <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-[#45C4DE]/50 text-xs font-bold text-[#45C4DE]">
+                          <span className="flex size-7 shrink-0 items-center justify-center border-[#45C4DE]/50 text-s font-bold text-[#45C4DE]">
                             {index + 1}
                           </span>
                           <span>{requirement}</span>
