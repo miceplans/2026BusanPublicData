@@ -455,6 +455,7 @@ export default function ApplyPage() {
                   </button>
                 </div>
               ))}
+
               <div
                 className={`flex items-center justify-between py-2 ${
                   files.length > 0 ? 'border-t border-[#e5e5e5]' : ''
@@ -472,6 +473,9 @@ export default function ApplyPage() {
                 </button>
               </div>
             </div>
+            <p className="text-xs font-semibold text-[#111]">
+              파일은 작성 후 합쳐 pdf로 첨부
+            </p>
             <input
               ref={fileInputRef}
               type="file"
