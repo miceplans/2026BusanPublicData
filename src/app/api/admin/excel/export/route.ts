@@ -94,8 +94,9 @@ export async function GET(request: NextRequest) {
     const members = [...(v.application_members ?? [])].sort(
       (a, b) => a.display_order - b.display_order,
     );
+    const nonLeaderMembers = members.filter((member) => !member.is_leader);
     const memberCells = Array.from({ length: 4 }, (_, index) => {
-      const member = members[index];
+      const member = nonLeaderMembers[index];
       return member
         ? [
             member.name,
