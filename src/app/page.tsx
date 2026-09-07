@@ -144,12 +144,19 @@ const operationPlan = [
     period: '10.1.(목) ~ 10.7.(수)',
   },
   {
+    stage: '예선 결과 발표',
+    tag: '',
+    description: '예선(서류) 심사 결과 개별 안내',
+    selection: '20팀',
+    period: '10. 8.(목), 16:00',
+  },
+  {
     stage: '오리엔테이션',
     tag: '온라인',
     qualification: '예선 서면평가 통과팀',
     description: '본선일정·운영규정·평가항목·발표순서 안내(팀별 1~2인 접속)',
     selection: '20팀',
-    period: '10월 중',
+    period: '10. 15.(목), 16:00',
   },
   {
     stage: '본선 및 시상식',
