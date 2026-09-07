@@ -35,7 +35,6 @@ const headers = [
   ...memberHeaders(1),
   ...memberHeaders(2),
   ...memberHeaders(3),
-  ...memberHeaders(4),
   '증빙자료수',
   '요청사항',
   '신청일시',
@@ -95,7 +94,7 @@ export async function GET(request: NextRequest) {
       (a, b) => a.display_order - b.display_order,
     );
     const nonLeaderMembers = members.filter((member) => !member.is_leader);
-    const memberCells = Array.from({ length: 4 }, (_, index) => {
+    const memberCells = Array.from({ length: 3 }, (_, index) => {
       const member = nonLeaderMembers[index];
       return member
         ? [
