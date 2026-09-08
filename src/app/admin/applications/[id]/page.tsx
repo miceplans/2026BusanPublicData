@@ -1,5 +1,4 @@
 'use client';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
@@ -51,6 +50,41 @@ type Detail = Record<string, unknown> & {
     error_summary: string | null;
   }[];
 };
+const EXT_COLORS: Record<string, string> = {
+  pdf: '#e5352b',
+  doc: '#2b579a',
+  docx: '#2b579a',
+  xls: '#1d6f42',
+  xlsx: '#1d6f42',
+  ppt: '#d24726',
+  pptx: '#d24726',
+  hwp: '#2e7ff1',
+};
+function FileIcon({ extension }: { extension: string }) {
+  const ext = extension.toLowerCase();
+  const color = EXT_COLORS[ext] ?? '#8a8a8a';
+  return (
+    <svg width="64" height="80" viewBox="0 0 64 80" aria-hidden>
+      <path
+        d="M8 1h28l19 19v51a8 8 0 0 1-8 8H8a8 8 0 0 1-8-8V9a8 8 0 0 1 8-8z"
+        fill="#fff"
+        stroke="#ddd"
+      />
+      <path d="M36 1l19 19H40a4 4 0 0 1-4-4V1z" fill="#f0f0f0" />
+      <rect x="0" y="50" width="64" height="20" rx="3" fill={color} />
+      <text
+        x="32"
+        y="64"
+        textAnchor="middle"
+        fontSize="11"
+        fontWeight="bold"
+        fill="#fff"
+      >
+        {ext.toUpperCase()}
+      </text>
+    </svg>
+  );
+}
 export default function Page() {
   const router = useRouter();
   const { showToast } = useToast();
@@ -204,14 +238,10 @@ export default function Page() {
                   rel="noreferrer"
                   title={`${f.original_name} 새 창에서 보기`}
                 >
-                  <Image
-                    alt={`${f.original_name} 미리보기`}
-                    className="h-auto max-h-96 w-auto object-contain"
-                    height={400}
-                    loading="lazy"
-                    src={`/api/admin/files/${f.id}`}
-                    unoptimized
-                    width={640}
+                  <FileIcon
+                    extension={
+                      f.original_name.match(/\.([^./\\]+)$/)?.[1] ?? '파일'
+                    }
                   />
                 </a>
                 <div className="flex items-center justify-between gap-3 p-3 text-sm">
