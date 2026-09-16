@@ -29,34 +29,41 @@ export function validateFiles(files: File[]) {
     if (file.size <= 0) throw new Error('빈 파일은 첨부할 수 없습니다.');
   }
 }
-export async function uploadFiles(applicationId: string, files: File[]) {
+export async function uploadFiles(
+  applicationId: string,
+  files: File[],
+  onUploaded?: (objectKey: string) => void,
+) {
   const client = createAdminClient();
-  const uploaded: string[] = [];
-  for (const file of files) {
-    const extensionMatch = file.name.match(/\.([^./\\]+)$/);
-    const ext = extensionMatch?.[1].toLowerCase() ?? '';
-    const objectKey = `${applicationId}/${randomUUID()}${ext ? `.${ext}` : ''}`;
-    const compressed = await compressImage(
-      Buffer.from(await file.arrayBuffer()),
-      file.type,
-    );
-    const { error } = await client.storage
-      .from('application-files')
-      .upload(objectKey, compressed, {
-        contentType: file.type || 'application/octet-stream',
-        upsert: false,
-      });
-    if (error) throw error;
-    uploaded.push(objectKey);
-    const { error: metaError } = await client.from('application_files').insert({
-      application_id: applicationId,
-      object_key: objectKey,
-      original_name: file.name,
-      extension: ext,
-      mime_type: file.type || 'application/octet-stream',
-      size_bytes: compressed.byteLength,
-    });
-    if (metaError) throw metaError;
-  }
-  return uploaded;
+  return Promise.all(
+    files.map(async (file) => {
+      const extensionMatch = file.name.match(/\.([^./\\]+)$/);
+      const ext = extensionMatch?.[1].toLowerCase() ?? '';
+      const objectKey = `${applicationId}/${randomUUID()}${ext ? `.${ext}` : ''}`;
+      const compressed = await compressImage(
+        Buffer.from(await file.arrayBuffer()),
+        file.type,
+      );
+      const { error } = await client.storage
+        .from('application-files')
+        .upload(objectKey, compressed, {
+          contentType: file.type || 'application/octet-stream',
+          upsert: false,
+        });
+      if (error) throw error;
+      onUploaded?.(objectKey);
+      const { error: metaError } = await client
+        .from('application_files')
+        .insert({
+          application_id: applicationId,
+          object_key: objectKey,
+          original_name: file.name,
+          extension: ext,
+          mime_type: file.type || 'application/octet-stream',
+          size_bytes: compressed.byteLength,
+        });
+      if (metaError) throw metaError;
+      return objectKey;
+    }),
+  );
 }

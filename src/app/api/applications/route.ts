@@ -1,5 +1,5 @@
 import { hash } from 'bcryptjs';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse, after } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import {
   applicationSchema,
@@ -127,18 +127,21 @@ export async function POST(request: NextRequest) {
     );
     if (memberError) throw memberError;
     stage = 'upload_files';
-    uploaded = await uploadFiles(application.id, files);
-    stage = 'send_email';
-    await sendCompletionEmail({
-      applicationId: application.id,
-      receiptNumber,
-      teamName: parsed.data.teamName,
-      email: parsed.data.leaderEmail,
-      createdAt: application.created_at,
-      body: settings.completion_email_body,
-      contact: settings.contact,
-    });
+    uploaded = await uploadFiles(application.id, files, (key) =>
+      uploaded.push(key),
+    );
     invalidateApplicationList();
+    after(() =>
+      sendCompletionEmail({
+        applicationId: application.id,
+        receiptNumber,
+        teamName: parsed.data.teamName,
+        email: parsed.data.leaderEmail,
+        createdAt: application.created_at,
+        body: settings.completion_email_body,
+        contact: settings.contact,
+      }),
+    );
     return NextResponse.json({ ok: true, receiptNumber }, { status: 201 });
   } catch (error) {
     const safeError = error as {
