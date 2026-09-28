@@ -11,8 +11,13 @@ import { uploadFiles, validateFiles } from '@/lib/files';
 import { sendCompletionEmail } from '@/lib/email';
 import { jsonError, validationError } from '@/lib/http';
 import { invalidateApplicationList } from '@/lib/admin-application-list';
+import { isPastLateSubmissionGrace } from '@/lib/application-deadline';
 
 export async function POST(request: NextRequest) {
+  if (isPastLateSubmissionGrace())
+    return jsonError('접수 신청 기간이 종료되었습니다.', 403, {
+      reason: 'application_closed',
+    });
   const db = createAdminClient();
   let applicationId: string | null = null;
   let uploaded: string[] = [];

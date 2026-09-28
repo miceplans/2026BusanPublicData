@@ -143,6 +143,10 @@ export default function ApplyPage() {
       });
       const result = await response.json();
       if (!response.ok) {
+        if (result.details?.reason === 'application_closed') {
+          router.replace('/apply/closed');
+          return;
+        }
         showToast(result.error ?? '제출하지 못했습니다.');
         return;
       }

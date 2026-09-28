@@ -2,9 +2,17 @@ import { createServerClient } from '@supabase/ssr';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getClientEnv } from '@/lib/env/client';
+import {
+  APPLICATION_CLOSED_PATH,
+  isApplicationClosed,
+} from '@/lib/application-deadline';
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  if (pathname === '/apply') {
+    if (!isApplicationClosed()) return NextResponse.next();
+    return NextResponse.redirect(new URL(APPLICATION_CLOSED_PATH, request.url));
+  }
   const isPublicAdminRoute =
     pathname === '/admin/login' || pathname === '/admin/signup';
 
@@ -55,5 +63,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/apply', '/admin/:path*'],
 };

@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { ContestHeader } from '@/components/contest-header';
 import { useToast } from '@/components/toast';
 import { formatKoreanDateTime } from '@/lib/date-format';
+import { isLateApplication } from '@/lib/application-deadline';
 type Row = {
   id: string;
   receipt_number: string;
@@ -17,14 +18,21 @@ type Row = {
   created_at: string;
   application_files: { count: number }[];
 };
+const PAGE_SIZE = 50;
 export default function Page() {
   const router = useRouter();
   const { showToast } = useToast();
   const [items, setItems] = useState<Row[]>([]);
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
   const load = useCallback(() => {
-    const q = new URLSearchParams({ search });
+    const q = new URLSearchParams({
+      search,
+      page: String(page),
+      size: String(PAGE_SIZE),
+    });
     fetch(`/api/admin/applications?${q}`)
       .then(async (r) => {
         if (r.status === 401) {
@@ -46,7 +54,7 @@ export default function Page() {
       })
       .catch(() => showToast('네트워크 오류로 목록을 불러오지 못했습니다.'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
+  }, [search, page]);
   useEffect(load, [load]);
   return (
     <div>
@@ -65,7 +73,10 @@ export default function Page() {
             aria-label="검색"
             placeholder="팀명, 팀장, 연락처 검색"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
             className="h-11 min-w-64 flex-1 rounded-[10px] border border-[#e5e5e5] bg-white px-4 text-sm text-[#111] outline-none placeholder:text-[#b9b9b9] focus:border-[#35c1de] focus:ring-2 focus:ring-[#35c1de]/10"
           />
           <a
@@ -146,9 +157,15 @@ export default function Page() {
                   <td className="p-3 whitespace-nowrap text-[#333]">
                     {x.industry}
                   </td>
-                  <td className="p-3 whitespace-nowrap text-[#666]">
-                    {formatKoreanDateTime(x.created_at)}
-                  </td>
+                  {isLateApplication(x.created_at) ? (
+                    <td className="p-3 whitespace-nowrap font-semibold text-red-600">
+                      지각 {formatKoreanDateTime(x.created_at)}
+                    </td>
+                  ) : (
+                    <td className="p-3 whitespace-nowrap text-[#666]">
+                      {formatKoreanDateTime(x.created_at)}
+                    </td>
+                  )}
                   <td className="p-3 text-center text-[#333]">
                     {x.application_files?.[0]?.count ?? 0}
                   </td>
@@ -157,6 +174,32 @@ export default function Page() {
             </tbody>
           </table>
         </div>
+        {totalPages > 1 && (
+          <nav
+            aria-label="페이지 이동"
+            className="mt-5 flex items-center justify-center gap-2 text-sm"
+          >
+            <button
+              type="button"
+              disabled={page <= 1}
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              className="motion-control inline-flex h-9 items-center justify-center rounded-[10px] border border-[#e5e5e5] px-3 font-bold text-[#111] hover:bg-[#f7f7f7] disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              이전
+            </button>
+            <span className="px-2 text-[#666]" aria-live="polite">
+              {page} / {totalPages}
+            </span>
+            <button
+              type="button"
+              disabled={page >= totalPages}
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              className="motion-control inline-flex h-9 items-center justify-center rounded-[10px] border border-[#e5e5e5] px-3 font-bold text-[#111] hover:bg-[#f7f7f7] disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              다음
+            </button>
+          </nav>
+        )}
       </main>
     </div>
   );
