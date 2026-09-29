@@ -11,6 +11,12 @@ import {
 } from '@/types';
 import { useToast } from '@/components/toast';
 import { formatKoreanDateTime } from '@/lib/date-format';
+import {
+  DirectUploadError,
+  describeFiles,
+  uploadToTargets,
+} from '@/lib/direct-upload';
+import { apiErrorMessage, readJson } from '@/lib/api-error';
 type App = {
   receipt_number: string;
   team_name: string;
@@ -58,9 +64,11 @@ export default function Page() {
   async function reload() {
     try {
       const r = await fetch('/api/application/me');
-      const v = await r.json();
+      const v = await readJson(r);
       if (!r.ok) {
-        showToast(v.error ?? '신청 정보를 새로 불러오지 못했습니다.');
+        showToast(
+          apiErrorMessage(r.status, v, '신청 정보를 새로 불러오지 못했습니다.'),
+        );
         return;
       }
       setApp(v.application);
@@ -76,9 +84,11 @@ export default function Page() {
           router.push('/application/login');
           return null;
         }
-        const v = await r.json();
+        const v = await readJson(r);
         if (!r.ok) {
-          showToast(v.error ?? '신청 정보를 불러오지 못했습니다.');
+          showToast(
+            apiErrorMessage(r.status, v, '신청 정보를 불러오지 못했습니다.'),
+          );
           return null;
         }
         return v;
@@ -150,9 +160,9 @@ export default function Page() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
-      const v = await r.json();
+      const v = await readJson(r);
       if (!r.ok) {
-        showToast(v.error ?? '저장하지 못했습니다.');
+        showToast(apiErrorMessage(r.status, v, '저장하지 못했습니다.'));
         return;
       }
       showToast('수정 내용을 저장했습니다.', 'success');
@@ -166,9 +176,9 @@ export default function Page() {
       const r = await fetch(`/api/application/files/${id}`, {
         method: 'DELETE',
       });
-      const v = await r.json();
+      const v = await readJson(r);
       if (!r.ok) {
-        showToast(v.error ?? '삭제하지 못했습니다.');
+        showToast(apiErrorMessage(r.status, v, '삭제하지 못했습니다.'));
         return;
       }
       showToast('증빙자료를 삭제했습니다.', 'success');
@@ -180,23 +190,40 @@ export default function Page() {
   async function addFiles() {
     const files = fileInputRef.current?.files;
     if (!files?.length) return;
-    const body = new FormData();
-    for (const file of Array.from(files)) body.append('files', file);
+    const selected = Array.from(files);
     try {
+      const prepareResponse = await fetch('/api/application/files/uploads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ files: describeFiles(selected) }),
+      });
+      const prepared = await readJson(prepareResponse);
+      if (!prepareResponse.ok) {
+        showToast(
+          apiErrorMessage(prepareResponse.status, prepared, '추가하지 못했습니다.'),
+        );
+        return;
+      }
+      const uploaded = await uploadToTargets(selected, prepared.uploads);
       const r = await fetch('/api/application/files', {
         method: 'POST',
-        body,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ files: uploaded }),
       });
-      const v = await r.json();
+      const v = await readJson(r);
       if (!r.ok) {
-        showToast(v.error ?? '추가하지 못했습니다.');
+        showToast(apiErrorMessage(r.status, v, '추가하지 못했습니다.'));
         return;
       }
       showToast('증빙자료를 추가했습니다.', 'success');
       if (fileInputRef.current) fileInputRef.current.value = '';
       reload();
-    } catch {
-      showToast('네트워크 오류로 추가하지 못했습니다. 다시 시도해주세요.');
+    } catch (error) {
+      showToast(
+        error instanceof DirectUploadError
+          ? error.message
+          : '네트워크 오류로 추가하지 못했습니다. 다시 시도해주세요.',
+      );
     }
   }
   if (!app)

@@ -1,76 +1,67 @@
 import { hash } from 'bcryptjs';
 import { NextRequest, NextResponse, after } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { phoneLastFour } from '@/validations';
 import {
-  applicationSchema,
-  normalizeTeamName,
-  phoneLastFour,
-} from '@/validations';
-import { getSettings } from '@/lib/settings';
-import { uploadFiles, validateFiles } from '@/lib/files';
+  registerUploadedFiles,
+  uploadedFilesSchema,
+  UploadVerificationError,
+} from '@/lib/files';
 import { sendCompletionEmail } from '@/lib/email';
 import { jsonError, validationError } from '@/lib/http';
 import { invalidateApplicationList } from '@/lib/admin-application-list';
 import { isPastLateSubmissionGrace } from '@/lib/application-deadline';
+import {
+  preflightApplication,
+  submissionFilePrefix,
+} from '@/lib/application-submission';
+import { readSubmissionTicketIssuedAt } from '@/lib/submission-ticket';
 
+const closedResponse = () =>
+  jsonError('접수 신청 기간이 종료되었습니다.', 403, {
+    reason: 'application_closed',
+  });
+
+// 2단계: 파일이 Storage에 직접 업로드된 뒤 신청서를 저장한다.
+// 요청에는 파일 본문이 없으므로 Vercel 요청 크기 제한과 무관하다.
 export async function POST(request: NextRequest) {
-  if (isPastLateSubmissionGrace())
-    return jsonError('접수 신청 기간이 종료되었습니다.', 403, {
-      reason: 'application_closed',
-    });
+  if (!request.headers.get('content-type')?.includes('application/json'))
+    return jsonError(
+      '신청 페이지가 업데이트되었습니다. 입력 내용을 복사해 둔 뒤 페이지를 새로고침하고 다시 제출해 주세요.',
+      409,
+    );
   const db = createAdminClient();
   let applicationId: string | null = null;
-  let uploaded: string[] = [];
   let stage = 'parse_request';
   try {
-    const form = await request.formData();
-    const raw = form.get('data');
-    if (typeof raw !== 'string') return jsonError('신청 데이터가 없습니다.');
-    let json: unknown;
+    let body: { data?: unknown; ticket?: unknown; files?: unknown };
     try {
-      json = JSON.parse(raw);
+      body = await request.json();
     } catch {
       return jsonError('신청 데이터 형식이 올바르지 않습니다.');
     }
-    stage = 'validate_application';
-    const parsed = applicationSchema.safeParse(json);
-    if (!parsed.success) return validationError(parsed.error);
-    stage = 'load_settings';
-    const settings = await getSettings();
-    if (
-      settings.item_summary_max_length &&
-      parsed.data.itemSummary.length > settings.item_summary_max_length
-    )
-      return jsonError(
-        `아이템 요약은 ${settings.item_summary_max_length}자 이하로 입력해 주세요.`,
-        422,
-      );
-    const files = form
-      .getAll('files')
-      .filter((value): value is File => value instanceof File);
+    const idempotencyKey =
+      body.data && typeof body.data === 'object'
+        ? (body.data as { idempotencyKey?: unknown }).idempotencyKey
+        : undefined;
+    // 마감 판정은 제출 버튼을 누른 시각(티켓 발급 시각) 기준이다.
+    const issuedAt =
+      typeof idempotencyKey === 'string'
+        ? readSubmissionTicketIssuedAt(body.ticket, idempotencyKey)
+        : null;
+    if (issuedAt === null) {
+      if (isPastLateSubmissionGrace()) return closedResponse();
+      return jsonError('제출 정보가 만료되었습니다. 다시 제출해 주세요.', 409);
+    }
+    if (isPastLateSubmissionGrace(new Date(issuedAt))) return closedResponse();
     stage = 'validate_files';
-    validateFiles(files);
-    stage = 'check_idempotency';
-    const { data: duplicate } = await db
-      .from('applications')
-      .select('id,receipt_number')
-      .eq('idempotency_key', parsed.data.idempotencyKey)
-      .maybeSingle();
-    if (duplicate)
-      return NextResponse.json({
-        ok: true,
-        receiptNumber: duplicate.receipt_number,
-        duplicate: true,
-      });
-    stage = 'check_team_name';
-    const normalized = normalizeTeamName(parsed.data.teamName);
-    const { data: team, error: teamLookupError } = await db
-      .from('applications')
-      .select('id')
-      .eq('normalized_team_name', normalized)
-      .maybeSingle();
-    if (teamLookupError) throw teamLookupError;
-    if (team) return jsonError('이미 사용 중인 팀명입니다.', 409);
+    const files = uploadedFilesSchema.safeParse(body.files ?? []);
+    if (!files.success) return validationError(files.error);
+    stage = 'validate_application';
+    const preflight = await preflightApplication(body.data);
+    if ('response' in preflight) return preflight.response;
+    const { settings, normalized } = preflight;
+    const parsed = preflight;
     const receiptNumber = `BSAI-2026-${crypto.randomUUID().replace(/-/g, '').slice(0, 8).toUpperCase()}`;
     const now = new Date().toISOString();
     stage = 'hash_password';
@@ -112,6 +103,20 @@ export async function POST(request: NextRequest) {
       })
       .select('id,created_at')
       .single();
+    if (error?.code === '23505' && error.message.includes('idempotency_key')) {
+      // 같은 신청이 동시에 재전송되어 다른 요청이 먼저 저장한 경우
+      const { data: duplicate } = await db
+        .from('applications')
+        .select('receipt_number')
+        .eq('idempotency_key', parsed.data.idempotencyKey)
+        .maybeSingle();
+      if (duplicate)
+        return NextResponse.json({
+          ok: true,
+          receiptNumber: duplicate.receipt_number,
+          duplicate: true,
+        });
+    }
     if (error || !application) throw error ?? new Error('신청 저장 실패');
     applicationId = application.id;
     stage = 'save_members';
@@ -131,9 +136,11 @@ export async function POST(request: NextRequest) {
       })),
     );
     if (memberError) throw memberError;
-    stage = 'upload_files';
-    uploaded = await uploadFiles(application.id, files, (key) =>
-      uploaded.push(key),
+    stage = 'register_files';
+    await registerUploadedFiles(
+      application.id,
+      submissionFilePrefix(parsed.data.idempotencyKey),
+      files.data,
     );
     invalidateApplicationList();
     after(() =>
@@ -166,18 +173,12 @@ export async function POST(request: NextRequest) {
           ? safeError.message.slice(0, 300)
           : undefined,
     });
-    if (uploaded.length)
-      await db.storage.from('application-files').remove(uploaded);
+    // Storage 객체는 지우지 않는다. 같은 신청이 동시에 재전송된 경우 먼저
+    // 성공한 요청의 파일일 수 있다. 연결되지 않은 객체는 조회되지 않는다.
     if (applicationId)
       await db.from('applications').delete().eq('id', applicationId);
-    if (
-      stage === 'upload_files' &&
-      (safeError?.code === 'EntityTooLarge' || safeError?.status === 413)
-    )
-      return jsonError(
-        '파일이 Supabase 프로젝트의 전역 업로드 한도를 초과했습니다. 더 작은 파일을 선택하거나 운영사무국에 문의해 주세요.',
-        413,
-      );
+    if (error instanceof UploadVerificationError)
+      return jsonError(error.message, 422);
     if (
       stage === 'save_application' &&
       safeError?.code === '23505' &&

@@ -12,6 +12,12 @@ import { useToast } from '@/components/toast';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { formatPhoneNumber } from '@/validations';
+import {
+  DirectUploadError,
+  describeFiles,
+  uploadToTargets,
+} from '@/lib/direct-upload';
+import { apiErrorMessage, readJson } from '@/lib/api-error';
 type Member = {
   name: string;
   role: string;
@@ -133,31 +139,59 @@ export default function ApplyPage() {
       setBusy(false);
       return;
     }
-    const body = new FormData();
-    body.set('data', JSON.stringify(data));
-    for (const file of files) body.append('files', file);
     try {
-      const response = await fetch('/api/applications', {
+      const prepareResponse = await fetch('/api/applications/prepare', {
         method: 'POST',
-        body,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data, files: describeFiles(files) }),
       });
-      const result = await response.json();
-      if (!response.ok) {
-        if (result.details?.reason === 'application_closed') {
-          router.replace('/apply/closed');
-          return;
-        }
-        showToast(result.error ?? '제출하지 못했습니다.');
+      const prepared = await readJson(prepareResponse);
+      if (!prepareResponse.ok || prepared.duplicate) {
+        handleSubmitResult(prepareResponse, prepared);
         return;
       }
-      router.push(
-        `/apply/complete?receipt=${encodeURIComponent(result.receiptNumber)}`,
+      const uploaded = await uploadToTargets(files, prepared.uploads);
+      const response = await fetch('/api/applications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          data,
+          ticket: prepared.ticket,
+          files: uploaded,
+        }),
+      });
+      handleSubmitResult(response, await readJson(response));
+    } catch (error) {
+      showToast(
+        error instanceof DirectUploadError
+          ? error.message
+          : '네트워크 오류로 제출하지 못했습니다. 다시 시도해주세요.',
       );
-    } catch {
-      showToast('네트워크 오류로 제출하지 못했습니다. 다시 시도해주세요.');
     } finally {
       setBusy(false);
     }
+  }
+  function handleSubmitResult(
+    response: Response,
+    result: {
+      error?: string;
+      details?: { reason?: string };
+      receiptNumber?: string;
+    },
+  ) {
+    if (!response.ok) {
+      if (result.details?.reason === 'application_closed') {
+        router.replace('/apply/closed');
+        return;
+      }
+      showToast(
+        apiErrorMessage(response.status, result, '제출하지 못했습니다.'),
+      );
+      return;
+    }
+    router.push(
+      `/apply/complete?receipt=${encodeURIComponent(result.receiptNumber ?? '')}`,
+    );
   }
   return (
     <div className="apply-page service-page">
