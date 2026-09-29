@@ -17,7 +17,8 @@ import {
   describeFiles,
   uploadToTargets,
 } from '@/lib/direct-upload';
-import { apiErrorMessage, readJson } from '@/lib/api-error';
+import type { UploadTarget } from '@/lib/direct-upload';
+import { apiErrorMessage, readJson, type ApiBody } from '@/lib/api-error';
 type Member = {
   name: string;
   role: string;
@@ -145,7 +146,9 @@ export default function ApplyPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ data, files: describeFiles(files) }),
       });
-      const prepared = await readJson(prepareResponse);
+      const prepared = await readJson<ApiBody & { uploads: UploadTarget[] }>(
+        prepareResponse,
+      );
       if (!prepareResponse.ok || prepared.duplicate) {
         handleSubmitResult(prepareResponse, prepared);
         return;

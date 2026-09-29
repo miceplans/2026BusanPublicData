@@ -16,7 +16,9 @@ import {
   describeFiles,
   uploadToTargets,
 } from '@/lib/direct-upload';
-import { apiErrorMessage, readJson } from '@/lib/api-error';
+import type { UploadTarget } from '@/lib/direct-upload';
+import { apiErrorMessage, readJson, type ApiBody } from '@/lib/api-error';
+type PrepareResponse = ApiBody & { uploads: UploadTarget[] };
 type App = {
   receipt_number: string;
   team_name: string;
@@ -55,6 +57,7 @@ type App = {
     size_bytes: number;
   }[];
 };
+type MeResponse = ApiBody & { application: App; editable: boolean };
 export default function Page() {
   const router = useRouter();
   const { showToast } = useToast();
@@ -64,8 +67,8 @@ export default function Page() {
   async function reload() {
     try {
       const r = await fetch('/api/application/me');
-      const v = await readJson(r);
-      if (!r.ok) {
+      const v = await readJson<MeResponse>(r);
+      if (!r.ok || !v.application) {
         showToast(
           apiErrorMessage(r.status, v, '신청 정보를 새로 불러오지 못했습니다.'),
         );
@@ -84,8 +87,8 @@ export default function Page() {
           router.push('/application/login');
           return null;
         }
-        const v = await readJson(r);
-        if (!r.ok) {
+        const v = await readJson<MeResponse>(r);
+        if (!r.ok || !v.application) {
           showToast(
             apiErrorMessage(r.status, v, '신청 정보를 불러오지 못했습니다.'),
           );
@@ -197,7 +200,7 @@ export default function Page() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ files: describeFiles(selected) }),
       });
-      const prepared = await readJson(prepareResponse);
+      const prepared = await readJson<PrepareResponse>(prepareResponse);
       if (!prepareResponse.ok) {
         showToast(
           apiErrorMessage(prepareResponse.status, prepared, '추가하지 못했습니다.'),
