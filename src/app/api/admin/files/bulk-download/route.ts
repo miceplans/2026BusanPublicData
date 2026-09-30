@@ -116,15 +116,14 @@ export async function POST(request: NextRequest) {
     originalName: string;
   }[] = [];
   for (const [receiptNumber, items] of groups) {
-    const receipt = sanitizeSegment(receiptNumber, '접수번호없음', 40);
     const team = sanitizeSegment(
       items[0].applications?.team_name ?? '',
       '팀명없음',
       60,
     );
-    let folder = `${receipt}_${team}`;
+    let folder = team;
     let suffix = 2;
-    while (usedFolders.has(folder)) folder = `${receipt}_${team}_${suffix++}`;
+    while (usedFolders.has(folder)) folder = `${team}_${suffix++}`;
     usedFolders.add(folder);
     const usedNames = new Set<string>();
     items.forEach((item) => {
