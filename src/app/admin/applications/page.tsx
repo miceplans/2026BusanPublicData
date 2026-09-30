@@ -6,6 +6,7 @@ import { ContestHeader } from '@/components/contest-header';
 import { useToast } from '@/components/toast';
 import { formatKoreanDateTime } from '@/lib/date-format';
 import { isLateApplication } from '@/lib/application-deadline';
+import { BulkExportError, runFileBulkExport } from '@/lib/file-bulk-export';
 type Row = {
   id: string;
   receipt_number: string;
@@ -26,7 +27,54 @@ export default function Page() {
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
+  const [exporting, setExporting] = useState(false);
+  const [exportProgress, setExportProgress] = useState('');
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const handleBulkDownload = useCallback(async () => {
+    if (exporting) return;
+    setExporting(true);
+    setExportProgress('목록 준비 중…');
+    try {
+      const result = await runFileBulkExport((progress) => {
+        if (progress.phase === 'preparing' || !progress.total) {
+          setExportProgress('목록 준비 중…');
+          return;
+        }
+        const percent =
+          progress.totalBytes > 0
+            ? Math.min(
+                100,
+                Math.round((progress.bytesDone / progress.totalBytes) * 100),
+              )
+            : Math.round((progress.completed / progress.total) * 100);
+        setExportProgress(
+          `${progress.completed}/${progress.total} · ${percent}%`,
+        );
+      });
+      if (!result) {
+        showToast('일괄 다운로드를 취소했습니다.');
+      } else if (result.failedCount > 0) {
+        showToast(
+          `일괄 다운로드 완료: ${result.fileCount}건 (실패 ${result.failedCount}건은 ZIP 내 내역 참고)`,
+        );
+      } else {
+        showToast(`일괄 다운로드 완료: ${result.fileCount}건`);
+      }
+    } catch (error) {
+      if (error instanceof BulkExportError && error.status === 401) {
+        router.push('/admin/login');
+        return;
+      }
+      showToast(
+        error instanceof Error
+          ? error.message
+          : '일괄 다운로드에 실패했습니다.',
+      );
+    } finally {
+      setExporting(false);
+      setExportProgress('');
+    }
+  }, [exporting, router, showToast]);
   const load = useCallback(() => {
     const q = new URLSearchParams({
       search,
@@ -85,6 +133,14 @@ export default function Page() {
           >
             엑셀 다운로드
           </a>
+          <button
+            type="button"
+            onClick={handleBulkDownload}
+            disabled={exporting}
+            className="motion-control inline-flex h-11 items-center justify-center rounded-[10px] border border-[#e5e5e5] px-4 text-sm font-bold text-[#111] hover:bg-[#f7f7f7] disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {exporting ? `다운로드 중 ${exportProgress}` : '증빙 일괄 다운로드'}
+          </button>
           <Link
             href="/admin/audit-logs"
             className="motion-control inline-flex h-11 items-center justify-center rounded-[10px] border border-[#e5e5e5] px-4 text-sm font-bold text-[#111] hover:bg-[#f7f7f7]"
@@ -158,7 +214,7 @@ export default function Page() {
                     {x.industry}
                   </td>
                   {isLateApplication(x.created_at) ? (
-                    <td className="p-3 whitespace-nowrap font-semibold text-red-600">
+                    <td className="p-3 font-semibold whitespace-nowrap text-red-600">
                       지각 {formatKoreanDateTime(x.created_at)}
                     </td>
                   ) : (

@@ -155,4 +155,7 @@ export const adminSignupSchema = z
     path: ['passwordConfirm'],
     message: '비밀번호가 일치하지 않습니다.',
   });
+export const bulkDownloadSchema = z.object({
+  keys: z.array(z.string().min(1).max(512)).max(1000).optional(),
+});
 export type ApplicationInput = z.infer<typeof applicationSchema>;
