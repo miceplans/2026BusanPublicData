@@ -1,4 +1,4 @@
-import { Zip, ZipDeflate, strToU8 } from 'fflate';
+import { strToU8, zipSync, type Zippable } from 'fflate';
 
 export type BulkExportProgress = {
   phase: 'preparing' | 'downloading' | 'finalizing' | 'done';
@@ -138,16 +138,9 @@ export async function runFileBulkExport(
   }
 
   try {
-    const chunks: Uint8Array[] = [];
-    let zipError: Error | null = null;
-    const zip = new Zip();
-    zip.ondata = (error, chunk) => {
-      if (error) {
-        zipError = error;
-        return;
-      }
-      chunks.push(chunk);
-    };
+    // Windows 탐색기는 스트리밍 ZIP(data descriptor)을 열지 못하는 경우가 있어
+    // 항목 크기를 헤더에 기록하는 zipSync로 만든다. 이미지는 이미 압축된 형식이라 저장만 한다.
+    const entries: Zippable = {};
 
     let refreshPromise: Promise<void> | null = null;
     async function refreshSignedUrls() {
@@ -205,9 +198,7 @@ export async function runFileBulkExport(
       const data = await pending[index];
       completed += 1;
       if (data) {
-        const entry = new ZipDeflate(file.zipPath, { level: 6 });
-        zip.add(entry);
-        entry.push(data, true);
+        entries[file.zipPath] = [data, { level: 0 }];
         bytesDone += data.length;
       } else {
         failures.push({
@@ -233,14 +224,10 @@ export async function runFileBulkExport(
       bytesDone,
       totalBytes,
     });
-    const manifestEntry = new ZipDeflate('_다운로드_내역.txt');
-    zip.add(manifestEntry);
-    manifestEntry.push(strToU8(buildResultText(files.length, failures)), true);
-    zip.end();
-
-    if (zipError)
-      throw new BulkExportError('압축 파일을 만드는 중 오류가 발생했습니다.');
-    triggerBlobDownload(fileName, chunks);
+    entries['_다운로드_내역.txt'] = strToU8(
+      buildResultText(files.length, failures),
+    );
+    triggerBlobDownload(fileName, [zipSync(entries)]);
 
     onProgress?.({
       phase: 'done',
