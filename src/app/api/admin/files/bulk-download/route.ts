@@ -11,7 +11,11 @@ type FileRow = {
   original_name: string;
   size_bytes: number | string;
   created_at: string;
-  applications: { receipt_number: string; team_name: string } | null;
+  applications: {
+    receipt_number: string;
+    team_name: string;
+    participation_type: string;
+  } | null;
 };
 
 const UNSAFE_CODES = new Set<number>(
@@ -78,7 +82,7 @@ export async function POST(request: NextRequest) {
   let query = db
     .from('application_files')
     .select(
-      'object_key,original_name,size_bytes,created_at,applications!inner(receipt_number,team_name)',
+      'object_key,original_name,size_bytes,created_at,applications!inner(receipt_number,team_name,participation_type)',
     )
     .order('application_id', { ascending: true })
     .order('created_at', { ascending: true });
@@ -121,9 +125,15 @@ export async function POST(request: NextRequest) {
       '팀명없음',
       60,
     );
-    let folder = team;
+    const type = sanitizeSegment(
+      items[0].applications?.participation_type ?? '',
+      '유형없음',
+      20,
+    );
+    const base = `${type}_${team}`;
+    let folder = base;
     let suffix = 2;
-    while (usedFolders.has(folder)) folder = `${team}_${suffix++}`;
+    while (usedFolders.has(folder)) folder = `${base}_${suffix++}`;
     usedFolders.add(folder);
     const usedNames = new Set<string>();
     items.forEach((item) => {
